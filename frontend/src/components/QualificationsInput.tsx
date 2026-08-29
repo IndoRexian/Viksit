@@ -100,19 +100,20 @@ export const QualificationsInput: React.FC<QualificationsInputProps> = ({
   return (
     <div className="flex flex-col gap-1.5 text-left">
       <div className="flex justify-between items-baseline">
-        <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
-          Educational Qualifications <span className="text-red-600">*</span>
+        <label className="text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+          Educational Qualifications{" "}
+          <span className="text-red-600 dark:text-red-400">*</span>
         </label>
-        <span className="text-[11px] font-mono text-slate-500">
+        <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
           Press [Enter] or comma to add
         </span>
       </div>
 
       <div
-        className={`min-h-[44px] bg-white rounded border px-2.5 py-1.5 flex flex-wrap items-center gap-1.5 transition-colors cursor-text ${
+        className={`min-h-[44px] bg-white dark:bg-slate-950 rounded border px-2.5 py-1.5 flex flex-wrap items-center gap-1.5 transition-colors cursor-text ${
           hasError
-            ? "border-red-500 ring-1 ring-red-500 bg-red-50/20"
-            : "border-slate-300 focus-within:border-blue-700 focus-within:ring-1 focus-within:ring-blue-700 shadow-xs"
+            ? "border-red-500 ring-1 ring-red-500 bg-red-50/20 dark:bg-red-950/30"
+            : "border-slate-300 dark:border-slate-700 focus-within:border-blue-700 dark:focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-700 dark:focus-within:ring-blue-500 shadow-xs"
         }`}
         onClick={() => inputRef.current?.focus()}
       >
@@ -121,13 +122,13 @@ export const QualificationsInput: React.FC<QualificationsInputProps> = ({
             return (
               <div
                 key={index}
-                className="inline-flex items-center gap-1 bg-blue-50 border border-blue-600 rounded px-2 py-0.5"
+                className="inline-flex items-center gap-1 bg-blue-50 dark:bg-blue-950/80 border border-blue-600 dark:border-blue-500 rounded px-2 py-0.5"
                 onClick={(e) => e.stopPropagation()}
               >
                 <input
                   ref={editInputRef}
                   type="text"
-                  className="border-none bg-transparent outline-none text-xs font-medium text-slate-900 px-1 py-0.5"
+                  className="border-none bg-transparent outline-none text-xs font-medium text-slate-900 dark:text-slate-100 px-1 py-0.5"
                   value={editingText}
                   onChange={(e) => setEditingText(e.target.value)}
                   onKeyDown={handleEditKeyDown}
@@ -135,7 +136,7 @@ export const QualificationsInput: React.FC<QualificationsInputProps> = ({
                 />
                 <button
                   type="button"
-                  className="bg-blue-700 text-white border-none rounded p-0.5 flex items-center justify-center hover:bg-blue-800 cursor-pointer"
+                  className="bg-blue-700 dark:bg-blue-600 text-white border-none rounded p-0.5 flex items-center justify-center hover:bg-blue-800 dark:hover:bg-blue-500 cursor-pointer"
                   onClick={saveEdit}
                   title="Save qualification"
                 >
@@ -148,7 +149,7 @@ export const QualificationsInput: React.FC<QualificationsInputProps> = ({
           return (
             <div
               key={index}
-              className="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 px-2.5 py-1 rounded text-xs font-medium cursor-pointer transition-all duration-200 select-none animate-badge-pop"
+              className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 px-2.5 py-1 rounded text-xs font-medium cursor-pointer transition-all duration-200 select-none animate-badge-pop"
               onClick={(e) => {
                 e.stopPropagation();
                 startEditing(index);
@@ -158,7 +159,7 @@ export const QualificationsInput: React.FC<QualificationsInputProps> = ({
               <span>{qualification}</span>
               <button
                 type="button"
-                className="inline-flex items-center justify-center p-0.5 text-slate-400 hover:text-red-700 transition-colors btn-press"
+                className="inline-flex items-center justify-center p-0.5 text-slate-400 hover:text-red-700 dark:hover:text-red-400 transition-colors btn-press"
                 onClick={(e) => removePill(index, e)}
                 title="Remove qualification"
                 aria-label={`Remove ${qualification}`}
@@ -173,7 +174,7 @@ export const QualificationsInput: React.FC<QualificationsInputProps> = ({
           <input
             ref={inputRef}
             type="text"
-            className="w-full border-none outline-none bg-transparent text-xs text-slate-900 placeholder:text-slate-400 py-1"
+            className="w-full border-none outline-none bg-transparent text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 py-1"
             value={inputValue}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
@@ -185,11 +186,11 @@ export const QualificationsInput: React.FC<QualificationsInputProps> = ({
       </div>
 
       {hasError ? (
-        <span className="text-[11px] font-medium text-red-600">
+        <span className="text-[11px] font-medium text-red-600 dark:text-red-400">
           At least one verified educational qualification is required.
         </span>
       ) : (
-        <span className="text-[11px] text-slate-500">
+        <span className="text-[11px] text-slate-500 dark:text-slate-400">
           Degrees in Statistics, Mathematics, Economics, Demography, Data
           Science, or related fields.
         </span>

@@ -332,14 +332,14 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
     totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
 
   return (
-    <div className="bg-white border-2 border-blue-900/40 rounded-lg shadow-sm ring-1 ring-blue-900/10 p-3.5 sm:p-6 animate-tab-enter space-y-4 sm:space-y-6 relative overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-1 bg-blue-900" />
+    <div className="bg-white dark:bg-slate-900 border-2 border-blue-900/40 dark:border-blue-500/30 rounded-lg shadow-sm ring-1 ring-blue-900/10 dark:ring-blue-500/10 p-3.5 sm:p-6 animate-tab-enter space-y-4 sm:space-y-6 relative overflow-hidden text-slate-900 dark:text-slate-100">
+      <div className="absolute top-0 left-0 right-0 h-1 bg-blue-900 dark:bg-blue-600" />
 
-      <div className="border-b border-slate-200 pb-4 sm:pb-5 pt-1">
-        <h2 className="font-serif text-lg sm:text-xl font-bold text-slate-900">
+      <div className="border-b border-slate-200 dark:border-slate-800 pb-4 sm:pb-5 pt-1">
+        <h2 className="font-serif text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
           Document-Driven MCQ Quiz Generator
         </h2>
-        <p className="text-xs text-slate-600 mt-1 max-w-3xl leading-relaxed">
+        <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 max-w-3xl leading-relaxed">
           Upload any official statistical manual, training handbook, survey
           schedule, or policy guideline. The AI engine analyzes the content
           directly and generates calibrated multi-choice questions with
@@ -348,11 +348,14 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
       </div>
 
       {error && (
-        <div className="p-3.5 bg-red-50 border border-red-200 rounded flex items-start gap-3 text-xs text-red-800 animate-fade-in">
-          <AlertCircle size={16} className="text-red-600 shrink-0 mt-0.5" />
+        <div className="p-3.5 bg-red-50 dark:bg-red-950/80 border border-red-200 dark:border-red-800 rounded flex items-start gap-3 text-xs text-red-800 dark:text-red-300 animate-fade-in">
+          <AlertCircle
+            size={16}
+            className="text-red-600 dark:text-red-400 shrink-0 mt-0.5"
+          />
           <div className="flex-1">
             <p className="font-semibold">Generation Failed</p>
-            <p className="mt-0.5 text-red-700">{error}</p>
+            <p className="mt-0.5 text-red-700 dark:text-red-300">{error}</p>
           </div>
         </div>
       )}
@@ -363,7 +366,7 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
           className="space-y-4 sm:space-y-6 animate-fade-in"
         >
           <div>
-            <label className="block text-xs font-semibold text-slate-800 uppercase tracking-wider mb-2 font-mono">
+            <label className="block text-xs font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2 font-mono">
               1. Upload Learning Material
             </label>
             <div
@@ -373,10 +376,10 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
               onClick={() => fileInputRef.current?.click()}
               className={`border-2 border-dashed rounded-lg p-5 sm:p-8 text-center cursor-pointer transition-all duration-200 ${
                 isDragging
-                  ? "border-blue-600 bg-blue-50/60 scale-[0.99]"
+                  ? "border-blue-600 bg-blue-50/60 dark:bg-blue-950/60 scale-[0.99]"
                   : selectedFile
-                    ? "border-emerald-500 bg-emerald-50/30"
-                    : "border-slate-300 hover:border-slate-400 bg-slate-50/50 hover:bg-slate-50"
+                    ? "border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/30"
+                    : "border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 bg-slate-50/50 dark:bg-slate-950/50 hover:bg-slate-50 dark:hover:bg-slate-950/80"
               }`}
             >
               <input
@@ -389,39 +392,39 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
 
               {selectedFile ? (
                 <div className="flex flex-col items-center gap-2 max-w-full min-w-0 px-1">
-                  <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
                     <FileText size={24} />
                   </div>
                   <div className="max-w-full min-w-0 text-center">
                     <p
-                      className="text-xs sm:text-sm font-semibold text-slate-900 break-all leading-snug px-1"
+                      className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white break-all leading-snug px-1"
                       title={selectedFile.name}
                     >
                       {selectedFile.name}
                     </p>
-                    <p className="text-xs text-slate-500 font-mono mt-0.5">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">
                       {(selectedFile.size / 1024).toFixed(1)} KB • Click to
                       change file
                     </p>
                   </div>
-                  <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-medium text-emerald-700 bg-emerald-100/70 px-2.5 py-0.5 rounded-full mt-1 text-center leading-tight">
+                  <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-100/70 dark:bg-emerald-950/70 px-2.5 py-0.5 rounded-full mt-1 text-center leading-tight">
                     <Check size={12} className="shrink-0" />
                     <span>Document Ready for Direct AI Evaluation</span>
                   </span>
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-2.5 py-2 sm:py-4">
-                  <div className="w-12 h-12 rounded-full bg-blue-50 text-blue-900 border border-blue-100 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-950/80 text-blue-900 dark:text-blue-300 border border-blue-100 dark:border-blue-800 flex items-center justify-center">
                     <Upload size={22} />
                   </div>
                   <div>
-                    <p className="text-xs sm:text-sm font-medium text-slate-800">
-                      <span className="text-blue-900 font-semibold underline underline-offset-2">
+                    <p className="text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200">
+                      <span className="text-blue-900 dark:text-blue-400 font-semibold underline underline-offset-2">
                         Click to upload
                       </span>{" "}
                       or drag & drop learning material here
                     </p>
-                    <p className="text-[11px] text-slate-500 font-mono mt-1">
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 font-mono mt-1">
                       Supported: PDF, TXT, DOCX, CSV, Markdown, Presentation
                       (Max 50MB)
                     </p>
@@ -430,12 +433,12 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
               )}
             </div>
 
-            <div className="mt-3 p-2.5 sm:p-3 bg-slate-50 border border-slate-200 rounded flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-              <div className="flex items-center gap-2 text-xs text-slate-700">
-                <span className="text-amber-700 font-semibold font-mono text-[11px] uppercase">
+            <div className="mt-3 p-2.5 sm:p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <div className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300">
+                <span className="text-amber-700 dark:text-amber-400 font-semibold font-mono text-[11px] uppercase">
                   Test Instantly:
                 </span>
-                <span className="text-[11px] text-slate-500">
+                <span className="text-[11px] text-slate-500 dark:text-slate-400">
                   Select a preloaded official MoSPI technical manual:
                 </span>
               </div>
@@ -445,10 +448,13 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                     key={sample.name}
                     type="button"
                     onClick={() => handleLoadSample(sample)}
-                    className="px-2.5 py-1 bg-white hover:bg-slate-100 border border-slate-300 hover:border-slate-400 text-slate-800 text-[11px] font-semibold rounded cursor-pointer transition-all duration-200 inline-flex items-center gap-1 shadow-2xs btn-press"
+                    className="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 hover:border-slate-400 text-slate-800 dark:text-slate-200 text-[11px] font-semibold rounded cursor-pointer transition-all duration-200 inline-flex items-center gap-1 shadow-2xs btn-press"
                     title={sample.title}
                   >
-                    <FileText size={11} className="text-blue-900" />
+                    <FileText
+                      size={11}
+                      className="text-blue-900 dark:text-blue-400"
+                    />
                     <span>{sample.badge}</span>
                   </button>
                 ))}
@@ -457,8 +463,8 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            <div className="p-3 sm:p-4 bg-slate-50 border border-slate-200 rounded">
-              <label className="block text-xs font-semibold text-slate-800 uppercase tracking-wider mb-2 font-mono">
+            <div className="p-3 sm:p-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded">
+              <label className="block text-xs font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2 font-mono">
                 2. Question Count
               </label>
               <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
@@ -469,8 +475,8 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                     onClick={() => setNumQuestions(count)}
                     className={`py-2 px-1 sm:px-3 rounded text-xs font-semibold border text-center transition-all duration-200 cursor-pointer btn-press min-w-0 ${
                       numQuestions === count
-                        ? "bg-slate-900 text-white border-slate-900 shadow-xs"
-                        : "bg-white text-slate-700 border-slate-300 hover:bg-slate-100 hover:border-slate-400"
+                        ? "bg-slate-900 dark:bg-blue-600 text-white border-slate-900 dark:border-blue-600 shadow-xs"
+                        : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 hover:border-slate-400"
                     }`}
                   >
                     <span className="block text-sm sm:text-base font-bold font-mono">
@@ -484,8 +490,8 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
               </div>
             </div>
 
-            <div className="p-3 sm:p-4 bg-slate-50 border border-slate-200 rounded">
-              <label className="block text-xs font-semibold text-slate-800 uppercase tracking-wider mb-2 font-mono">
+            <div className="p-3 sm:p-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded">
+              <label className="block text-xs font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2 font-mono">
                 3. Difficulty Level
               </label>
               <div className="grid grid-cols-1 xs:grid-cols-2 gap-1.5 sm:gap-2">
@@ -505,8 +511,8 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                     }
                     className={`py-2 px-2.5 rounded text-[11px] font-medium border text-left transition-all duration-200 cursor-pointer btn-press leading-tight ${
                       difficulty === diff.id
-                        ? "bg-slate-900 text-white border-slate-900 shadow-xs"
-                        : "bg-white text-slate-700 border-slate-300 hover:bg-slate-100"
+                        ? "bg-slate-900 dark:bg-blue-600 text-white border-slate-900 dark:border-blue-600 shadow-xs"
+                        : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700"
                     }`}
                   >
                     {diff.label}
@@ -517,14 +523,14 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
           </div>
 
           {availableCompetencies.length > 0 && (
-            <div className="p-3 sm:p-4 bg-slate-50 border border-slate-200 rounded">
-              <label className="block text-xs font-semibold text-slate-800 uppercase tracking-wider mb-1.5 font-mono">
+            <div className="p-3 sm:p-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded">
+              <label className="block text-xs font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-1.5 font-mono">
                 4. Target Competency Focus (Optional)
               </label>
               <select
                 value={selectedCompetency}
                 onChange={(e) => setSelectedCompetency(e.target.value)}
-                className="w-full text-xs bg-white border border-slate-300 rounded px-3 py-2 text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-900 cursor-pointer transition-colors"
+                className="w-full text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded px-3 py-2 text-slate-800 dark:text-white focus:outline-none focus:ring-1 focus:ring-blue-900 dark:focus:ring-blue-500 cursor-pointer transition-colors"
               >
                 <option value="all">
                   All Official FRAC Competencies (Auto-Map Closest Matches)
@@ -545,8 +551,8 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
               disabled={!selectedFile}
               className={`w-full py-3 px-3 sm:px-4 rounded font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer btn-press text-center leading-snug ${
                 selectedFile
-                  ? "bg-blue-900 hover:bg-blue-950 text-white shadow-xs"
-                  : "bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300"
+                  ? "bg-blue-900 dark:bg-blue-600 hover:bg-blue-950 dark:hover:bg-blue-700 text-white shadow-xs"
+                  : "bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed border border-slate-300 dark:border-slate-700"
               }`}
             >
               <FileText size={15} className="shrink-0" />
@@ -564,19 +570,19 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
           className="py-16 flex flex-col items-center justify-center text-center space-y-6 animate-fade-in"
         >
           <div className="relative">
-            <div className="w-16 h-16 border-3 border-blue-100 border-t-blue-900 rounded-full animate-spin" />
-            <div className="absolute inset-0 flex items-center justify-center text-blue-900">
+            <div className="w-16 h-16 border-3 border-blue-100 dark:border-blue-950 border-t-blue-900 dark:border-t-blue-500 rounded-full animate-spin" />
+            <div className="absolute inset-0 flex items-center justify-center text-blue-900 dark:text-blue-400">
               <FileText size={20} />
             </div>
           </div>
           <div className="max-w-md space-y-2">
-            <h3 className="font-serif text-lg font-bold text-slate-900">
+            <h3 className="font-serif text-lg font-bold text-slate-900 dark:text-white">
               Generating MoSPI Assessment Quiz
             </h3>
-            <p className="text-xs font-mono text-blue-900 font-semibold tracking-wide bg-blue-50 px-3 py-1.5 rounded-full inline-block border border-blue-200 animate-pulse-subtle">
+            <p className="text-xs font-mono text-blue-900 dark:text-blue-300 font-semibold tracking-wide bg-blue-50 dark:bg-blue-950/80 px-3 py-1.5 rounded-full inline-block border border-blue-200 dark:border-blue-800 animate-pulse-subtle">
               {generationStep || "Processing with Gemini Files API..."}
             </p>
-            <p className="text-xs text-slate-500 mt-2">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
               Uploading "{selectedFile?.name}" via Gemini Files API and
               calibrating {numQuestions} questions with source-based
               explanations.
@@ -589,28 +595,28 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
         <div key="player-view" className="space-y-6 animate-fade-in">
           {isEvaluating ? (
             /* EVALUATING TRANSITION VIEW */
-            <div className="py-20 flex flex-col items-center justify-center text-center space-y-6 animate-fade-in bg-white rounded border border-slate-200 shadow-2xs p-8">
+            <div className="py-20 flex flex-col items-center justify-center text-center space-y-6 animate-fade-in bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 shadow-2xs p-8">
               <div className="relative">
-                <div className="w-16 h-16 border-3 border-emerald-100 border-t-emerald-700 rounded-full animate-spin" />
-                <div className="absolute inset-0 flex items-center justify-center text-emerald-700">
+                <div className="w-16 h-16 border-3 border-emerald-100 dark:border-emerald-950 border-t-emerald-700 dark:border-t-emerald-500 rounded-full animate-spin" />
+                <div className="absolute inset-0 flex items-center justify-center text-emerald-700 dark:text-emerald-400">
                   <Award size={24} className="animate-bounce-soft" />
                 </div>
               </div>
               <div className="max-w-md space-y-3">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-800 font-bold bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200 inline-block">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-800 dark:text-emerald-300 font-bold bg-emerald-50 dark:bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-200 dark:border-emerald-800 inline-block">
                   MoSPI Evaluation Engine
                 </span>
-                <h3 className="font-serif text-lg sm:text-xl font-bold text-slate-900">
+                <h3 className="font-serif text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
                   Grading Assessment & Calibrating Competencies
                 </h3>
-                <p className="text-xs font-mono text-slate-700 font-semibold tracking-wide bg-slate-100 px-3.5 py-1.5 rounded-full inline-block border border-slate-200">
+                <p className="text-xs font-mono text-slate-700 dark:text-slate-300 font-semibold tracking-wide bg-slate-100 dark:bg-slate-800 px-3.5 py-1.5 rounded-full inline-block border border-slate-200 dark:border-slate-700">
                   {evaluationStage ||
                     "Tabulating officer responses against official source standards..."}
                 </p>
-                <div className="w-64 mx-auto bg-slate-200 h-1.5 rounded-full overflow-hidden mt-3">
+                <div className="w-64 mx-auto bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mt-3">
                   <div className="bg-emerald-600 h-full rounded-full animate-eval-progress" />
                 </div>
-                <p className="text-xs text-slate-500 pt-1">
+                <p className="text-xs text-slate-500 dark:text-slate-400 pt-1">
                   Evaluating {answeredCount} answered of {totalQuestions}{" "}
                   questions and calculating statistical mastery ratings.
                 </p>
@@ -619,18 +625,18 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
           ) : !isSubmitted ? (
             /* LIVE QUESTION-BY-QUESTION TEST MODE */
             <div className="space-y-5">
-              <div className="bg-slate-50 border border-slate-200 rounded p-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
+              <div className="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded p-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-700">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <span className="px-2 py-0.5 bg-blue-900 text-white rounded text-[10px] font-mono font-semibold uppercase">
                         Official Assessment
                       </span>
-                      <span className="text-xs text-slate-500 font-mono">
+                      <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                         {totalQuestions} Questions Total
                       </span>
                     </div>
-                    <h3 className="font-serif text-base sm:text-lg font-bold text-slate-900">
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-slate-900 dark:text-white">
                       {quizData.quizTitle || "Official Assessment Quiz"}
                     </h3>
                   </div>
@@ -638,7 +644,7 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                   <div className="flex items-center gap-3">
                     <button
                       onClick={handleReset}
-                      className="px-3 py-1 text-xs text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 rounded border border-slate-300 font-medium cursor-pointer transition-all duration-200 btn-press"
+                      className="px-3 py-1 text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded border border-slate-300 dark:border-slate-700 font-medium cursor-pointer transition-all duration-200 btn-press"
                       title="Upload new file"
                     >
                       New Document
@@ -647,7 +653,7 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                 </div>
 
                 <div className="pt-3">
-                  <div className="flex items-center justify-between text-xs font-mono text-slate-500 mb-1.5">
+                  <div className="flex items-center justify-between text-xs font-mono text-slate-500 dark:text-slate-400 mb-1.5">
                     <span>
                       Question {currentIdx + 1} of {totalQuestions}
                     </span>
@@ -655,9 +661,9 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                       Answered: {answeredCount}/{totalQuestions}
                     </span>
                   </div>
-                  <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
                     <div
-                      className="bg-blue-900 h-full rounded-full transition-all duration-500 ease-out"
+                      className="bg-blue-900 dark:bg-blue-500 h-full rounded-full transition-all duration-500 ease-out"
                       style={{
                         width: `${((currentIdx + 1) / totalQuestions) * 100}%`,
                       }}
@@ -671,13 +677,14 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                   const isAnswered = selectedAnswers[idx] !== undefined;
                   const isCurrent = idx === currentIdx;
 
-                  let btnColor = "bg-white text-slate-700 border-slate-300";
+                  let btnColor =
+                    "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700";
                   if (isCurrent) {
                     btnColor =
-                      "bg-slate-900 text-white border-slate-900 ring-2 ring-blue-300";
+                      "bg-slate-900 dark:bg-blue-600 text-white border-slate-900 dark:border-blue-600 ring-2 ring-blue-300 dark:ring-blue-800";
                   } else if (isAnswered) {
                     btnColor =
-                      "bg-slate-200 text-slate-900 border-slate-300 font-semibold";
+                      "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white border-slate-300 dark:border-slate-600 font-semibold";
                   }
 
                   return (
@@ -695,29 +702,29 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
               {currentQuestion && (
                 <div
                   key={currentIdx}
-                  className="bg-white border border-slate-300 rounded p-5 sm:p-6 shadow-2xs space-y-5 animate-fade-in card-interactive"
+                  className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded p-5 sm:p-6 shadow-2xs space-y-5 animate-fade-in card-interactive"
                 >
                   <div className="flex flex-wrap items-center gap-2">
                     <span
                       className={`px-2 py-0.5 rounded text-[10px] font-mono uppercase font-semibold border animate-badge-pop ${
                         currentQuestion.difficulty === "easy"
-                          ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                          ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800"
                           : currentQuestion.difficulty === "medium"
-                            ? "bg-blue-50 text-blue-800 border-blue-200"
-                            : "bg-amber-50 text-amber-800 border-amber-200"
+                            ? "bg-blue-50 dark:bg-blue-950/80 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800"
+                            : "bg-amber-50 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800"
                       }`}
                     >
                       {currentQuestion.difficulty}
                     </span>
                     {currentQuestion.competencyTag && (
-                      <span className="px-2 py-0.5 bg-slate-100 text-slate-800 border border-slate-200 rounded text-[10px] font-mono">
+                      <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded text-[10px] font-mono">
                         {currentQuestion.competencyTag}
                       </span>
                     )}
                   </div>
 
-                  <h4 className="text-sm sm:text-base font-semibold text-slate-900 leading-relaxed">
-                    <span className="font-mono text-blue-900 mr-2">
+                  <h4 className="text-sm sm:text-base font-semibold text-slate-900 dark:text-white leading-relaxed">
+                    <span className="font-mono text-blue-900 dark:text-blue-400 mr-2">
                       Q{currentIdx + 1}.
                     </span>
                     {currentQuestion.text}
@@ -728,14 +735,15 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                       const isSelected = selectedAnswers[currentIdx] === opt.id;
 
                       let optionClass =
-                        "border-slate-300 bg-white hover:bg-slate-50 text-slate-800";
+                        "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200";
                       let badgeClass =
-                        "bg-slate-100 text-slate-600 border-slate-300";
+                        "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700";
 
                       if (isSelected) {
                         optionClass =
-                          "border-blue-900 bg-blue-50/70 text-blue-950 font-medium ring-1 ring-blue-900";
-                        badgeClass = "bg-blue-900 text-white border-blue-900";
+                          "border-blue-900 dark:border-blue-500 bg-blue-50/70 dark:bg-blue-950/70 text-blue-950 dark:text-blue-100 font-medium ring-1 ring-blue-900 dark:ring-blue-500";
+                        badgeClass =
+                          "bg-blue-900 dark:bg-blue-600 text-white border-blue-900 dark:border-blue-600";
                       }
 
                       return (
@@ -758,12 +766,12 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                     })}
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
                     <button
                       type="button"
                       disabled={currentIdx === 0}
                       onClick={() => setCurrentIdx((p) => Math.max(0, p - 1))}
-                      className="px-3 py-1.5 border border-slate-300 rounded text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 cursor-pointer transition-all duration-200 btn-press"
+                      className="px-3 py-1.5 border border-slate-300 dark:border-slate-700 rounded text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 cursor-pointer transition-all duration-200 btn-press"
                     >
                       <ChevronLeft size={14} /> Previous
                     </button>
@@ -776,7 +784,7 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                             Math.min(totalQuestions - 1, p + 1),
                           )
                         }
-                        className="px-4 py-1.5 bg-slate-900 text-white rounded text-xs font-semibold hover:bg-slate-800 flex items-center gap-1 cursor-pointer transition-all duration-200 btn-press"
+                        className="px-4 py-1.5 bg-slate-900 dark:bg-slate-800 text-white rounded text-xs font-semibold hover:bg-slate-800 dark:hover:bg-slate-700 flex items-center gap-1 cursor-pointer transition-all duration-200 btn-press"
                       >
                         Next <ChevronRight size={14} />
                       </button>
@@ -785,7 +793,7 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                         type="button"
                         onClick={handleSubmitQuiz}
                         disabled={answeredCount === 0}
-                        className="px-5 py-2 bg-emerald-700 text-white rounded text-xs font-bold hover:bg-emerald-800 flex items-center gap-1.5 shadow-xs cursor-pointer transition-all duration-200 btn-press"
+                        className="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded text-xs font-bold flex items-center gap-1.5 shadow-xs cursor-pointer transition-all duration-200 btn-press"
                       >
                         <CheckCircle2 size={15} /> Submit Evaluation
                       </button>
@@ -797,22 +805,22 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
           ) : (
             /* SUBMITTED ALL-QUESTIONS ROW BREAKDOWN VIEW */
             <div className="space-y-6 animate-fade-in">
-              <div className="bg-white border border-slate-300 rounded p-5 sm:p-6 shadow-xs space-y-5">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+              <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded p-5 sm:p-6 shadow-xs space-y-5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
                   <div className="flex items-center gap-3.5">
-                    <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
                       <Award size={26} />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-800 font-bold">
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-800 dark:text-emerald-300 font-bold">
                           Official Evaluation Scorecard
                         </span>
-                        <span className="px-2 py-0.2 bg-slate-100 text-slate-600 border border-slate-200 text-[10px] font-mono rounded">
+                        <span className="px-2 py-0.2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 text-[10px] font-mono rounded">
                           {totalQuestions} Questions Evaluated
                         </span>
                       </div>
-                      <h3 className="font-serif text-lg sm:text-xl font-bold text-slate-900 mt-0.5">
+                      <h3 className="font-serif text-lg sm:text-xl font-bold text-slate-900 dark:text-white mt-0.5">
                         {scorePct >= 80
                           ? "Exemplary Statistical Mastery"
                           : scorePct >= 60
@@ -822,48 +830,51 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                     </div>
                   </div>
 
-                  <div className="flex items-baseline gap-2 bg-slate-50 border border-slate-200 px-5 py-2.5 rounded">
-                    <span className="text-3xl font-bold font-mono text-slate-900">
+                  <div className="flex items-baseline gap-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 py-2.5 rounded">
+                    <span className="text-3xl font-bold font-mono text-slate-900 dark:text-white">
                       {score}/{totalQuestions}
                     </span>
-                    <span className="text-sm font-mono font-bold text-emerald-700">
+                    <span className="text-sm font-mono font-bold text-emerald-700 dark:text-emerald-400">
                       ({scorePct}%)
                     </span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 text-center">
-                  <div className="p-3 bg-emerald-50/50 rounded border border-emerald-200 card-interactive">
-                    <span className="text-[10px] font-mono uppercase text-emerald-800 font-semibold block">
+                  <div className="p-3 bg-emerald-50/50 dark:bg-emerald-950/40 rounded border border-emerald-200 dark:border-emerald-800 card-interactive">
+                    <span className="text-[10px] font-mono uppercase text-emerald-800 dark:text-emerald-300 font-semibold block">
                       Correct Answers
                     </span>
-                    <span className="text-xl font-bold font-mono text-emerald-700">
+                    <span className="text-xl font-bold font-mono text-emerald-700 dark:text-emerald-400">
                       {score}
                     </span>
                   </div>
-                  <div className="p-3 bg-red-50/50 rounded border border-red-200 card-interactive">
-                    <span className="text-[10px] font-mono uppercase text-red-800 font-semibold block">
+                  <div className="p-3 bg-red-50/50 dark:bg-red-950/40 rounded border border-red-200 dark:border-red-800 card-interactive">
+                    <span className="text-[10px] font-mono uppercase text-red-800 dark:text-red-300 font-semibold block">
                       Incorrect / Skipped
                     </span>
-                    <span className="text-xl font-bold font-mono text-red-600">
+                    <span className="text-xl font-bold font-mono text-red-600 dark:text-red-400">
                       {totalQuestions - score}
                     </span>
                   </div>
-                  <div className="p-3 bg-blue-50/50 rounded border border-blue-200 card-interactive">
-                    <span className="text-[10px] font-mono uppercase text-blue-900 font-semibold block">
+                  <div className="p-3 bg-blue-50/50 dark:bg-blue-950/40 rounded border border-blue-200 dark:border-blue-800 card-interactive">
+                    <span className="text-[10px] font-mono uppercase text-blue-900 dark:text-blue-300 font-semibold block">
                       Accuracy Rating
                     </span>
-                    <span className="text-xl font-bold font-mono text-blue-900">
+                    <span className="text-xl font-bold font-mono text-blue-900 dark:text-blue-300">
                       {scorePct}%
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50 border border-slate-200 p-3 rounded">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded">
                 <div className="flex items-center gap-2">
-                  <Filter size={14} className="text-slate-500" />
-                  <span className="text-xs font-semibold text-slate-800">
+                  <Filter
+                    size={14}
+                    className="text-slate-500 dark:text-slate-400"
+                  />
+                  <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     Comprehensive Question Review:
                   </span>
                 </div>
@@ -874,8 +885,8 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                     onClick={() => setReviewFilter("all")}
                     className={`px-3 py-1 text-xs font-semibold rounded border transition-all duration-200 cursor-pointer btn-press ${
                       reviewFilter === "all"
-                        ? "bg-slate-900 text-white border-slate-900 shadow-xs"
-                        : "bg-white text-slate-700 border-slate-300 hover:bg-slate-100"
+                        ? "bg-slate-900 dark:bg-blue-600 text-white border-slate-900 dark:border-blue-600 shadow-xs"
+                        : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700"
                     }`}
                   >
                     All ({totalQuestions})
@@ -885,8 +896,8 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                     onClick={() => setReviewFilter("correct")}
                     className={`px-3 py-1 text-xs font-semibold rounded border transition-all duration-200 cursor-pointer btn-press ${
                       reviewFilter === "correct"
-                        ? "bg-emerald-800 text-white border-emerald-800 shadow-xs"
-                        : "bg-white text-emerald-800 border-emerald-300 hover:bg-emerald-50"
+                        ? "bg-emerald-800 dark:bg-emerald-700 text-white border-emerald-800 dark:border-emerald-700 shadow-xs"
+                        : "bg-white dark:bg-slate-800 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/50"
                     }`}
                   >
                     Correct ({score})
@@ -896,8 +907,8 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                     onClick={() => setReviewFilter("incorrect")}
                     className={`px-3 py-1 text-xs font-semibold rounded border transition-all duration-200 cursor-pointer btn-press ${
                       reviewFilter === "incorrect"
-                        ? "bg-red-800 text-white border-red-800 shadow-xs"
-                        : "bg-white text-red-800 border-red-300 hover:bg-red-50"
+                        ? "bg-red-800 dark:bg-red-700 text-white border-red-800 dark:border-red-700 shadow-xs"
+                        : "bg-white dark:bg-slate-800 text-red-800 dark:text-red-300 border-red-300 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-950/50"
                     }`}
                   >
                     Incorrect ({totalQuestions - score})
@@ -923,58 +934,61 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                     return (
                       <div
                         key={originalIdx}
-                        className={`bg-white border rounded p-5 sm:p-6 shadow-2xs space-y-4 transition-all duration-200 card-interactive ${
+                        className={`bg-white dark:bg-slate-900 border rounded p-5 sm:p-6 shadow-2xs space-y-4 transition-all duration-200 card-interactive ${
                           isCorrect
-                            ? "border-slate-300 border-l-4 border-l-emerald-600"
+                            ? "border-slate-300 dark:border-slate-800 border-l-4 border-l-emerald-600"
                             : isUnanswered
-                              ? "border-slate-300 border-l-4 border-l-slate-400"
-                              : "border-slate-300 border-l-4 border-l-red-600"
+                              ? "border-slate-300 dark:border-slate-800 border-l-4 border-l-slate-400"
+                              : "border-slate-300 dark:border-slate-800 border-l-4 border-l-red-600"
                         }`}
                       >
-                        <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                        <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
                           <div className="flex items-center gap-2">
-                            <span className="font-mono text-xs font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                            <span className="font-mono text-xs font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
                               Question {originalIdx + 1}
                             </span>
                             <span
                               className={`px-2 py-0.5 rounded text-[10px] font-mono uppercase font-semibold border animate-badge-pop ${
                                 q.difficulty === "easy"
-                                  ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                  ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800"
                                   : q.difficulty === "medium"
-                                    ? "bg-blue-50 text-blue-800 border-blue-200"
-                                    : "bg-amber-50 text-amber-800 border-amber-200"
+                                    ? "bg-blue-50 dark:bg-blue-950/80 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800"
+                                    : "bg-amber-50 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800"
                               }`}
                             >
                               {q.difficulty}
                             </span>
                             {q.competencyTag && (
-                              <span className="px-2 py-0.5 bg-slate-50 text-slate-700 border border-slate-200 rounded text-[10px] font-mono">
+                              <span className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded text-[10px] font-mono">
                                 {q.competencyTag}
                               </span>
                             )}
                           </div>
 
                           {isCorrect ? (
-                            <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded animate-badge-pop">
+                            <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 rounded animate-badge-pop">
                               <CheckCircle2
                                 size={13}
-                                className="text-emerald-700"
+                                className="text-emerald-700 dark:text-emerald-400"
                               />
                               <span>Correct (+1)</span>
                             </span>
                           ) : isUnanswered ? (
-                            <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded">
+                            <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2.5 py-0.5 rounded">
                               <span>Unanswered</span>
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-800 bg-red-50 border border-red-200 px-2.5 py-0.5 rounded animate-badge-pop">
-                              <XCircle size={13} className="text-red-600" />
+                            <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-800 dark:text-red-300 bg-red-50 dark:bg-red-950/80 border border-red-200 dark:border-red-800 px-2.5 py-0.5 rounded animate-badge-pop">
+                              <XCircle
+                                size={13}
+                                className="text-red-600 dark:text-red-400"
+                              />
                               <span>Incorrect</span>
                             </span>
                           )}
                         </div>
 
-                        <h4 className="text-sm font-semibold text-slate-900 leading-relaxed">
+                        <h4 className="text-sm font-semibold text-slate-900 dark:text-white leading-relaxed">
                           {q.text}
                         </h4>
 
@@ -984,18 +998,18 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                             const isThisSelected = userAns === opt.id;
 
                             let optCardStyle =
-                              "bg-slate-50/50 border-slate-200 text-slate-700";
+                              "bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300";
                             let optBadgeStyle =
-                              "bg-white border-slate-300 text-slate-600";
+                              "bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300";
 
                             if (isThisCorrect) {
                               optCardStyle =
-                                "bg-emerald-50 border-emerald-400 text-emerald-950 font-semibold ring-1 ring-emerald-400";
+                                "bg-emerald-50 dark:bg-emerald-950/80 border-emerald-400 dark:border-emerald-600 text-emerald-950 dark:text-emerald-100 font-semibold ring-1 ring-emerald-400";
                               optBadgeStyle =
                                 "bg-emerald-600 border-emerald-600 text-white";
                             } else if (isThisSelected && !isThisCorrect) {
                               optCardStyle =
-                                "bg-red-50 border-red-400 text-red-950 font-semibold ring-1 ring-red-400";
+                                "bg-red-50 dark:bg-red-950/80 border-red-400 dark:border-red-600 text-red-950 dark:text-red-100 font-semibold ring-1 ring-red-400";
                               optBadgeStyle =
                                 "bg-red-600 border-red-600 text-white";
                             }
@@ -1014,12 +1028,12 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                                   {opt.text}
                                 </span>
                                 {isThisCorrect && (
-                                  <span className="text-[10px] font-mono font-bold text-emerald-800 shrink-0 bg-emerald-100/80 px-1.5 py-0.5 rounded">
+                                  <span className="text-[10px] font-mono font-bold text-emerald-800 dark:text-emerald-300 shrink-0 bg-emerald-100/80 dark:bg-emerald-950/90 px-1.5 py-0.5 rounded">
                                     ✓ Correct
                                   </span>
                                 )}
                                 {isThisSelected && !isThisCorrect && (
-                                  <span className="text-[10px] font-mono font-bold text-red-800 shrink-0 bg-red-100/80 px-1.5 py-0.5 rounded">
+                                  <span className="text-[10px] font-mono font-bold text-red-800 dark:text-red-300 shrink-0 bg-red-100/80 dark:bg-red-950/90 px-1.5 py-0.5 rounded">
                                     ✗ Your Selection
                                   </span>
                                 )}
@@ -1029,12 +1043,15 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                         </div>
 
                         {q.explanation && (
-                          <div className="p-3.5 bg-slate-50 border border-slate-200 rounded text-xs text-slate-700 space-y-1">
-                            <div className="flex items-center gap-1.5 font-semibold text-slate-900">
-                              <HelpCircle size={13} className="text-blue-900" />
+                          <div className="p-3.5 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded text-xs text-slate-700 dark:text-slate-300 space-y-1">
+                            <div className="flex items-center gap-1.5 font-semibold text-slate-900 dark:text-white">
+                              <HelpCircle
+                                size={13}
+                                className="text-blue-900 dark:text-blue-400"
+                              />
                               <span>Source Document Rationale:</span>
                             </div>
-                            <p className="leading-relaxed pl-5 text-slate-700">
+                            <p className="leading-relaxed pl-5 text-slate-700 dark:text-slate-300">
                               {q.explanation}
                             </p>
                           </div>
@@ -1044,11 +1061,11 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                   })}
               </div>
 
-              <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-200 bg-white p-4 rounded border">
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 rounded border">
                 <button
                   type="button"
                   onClick={handleExportJson}
-                  className="px-4 py-2 border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded inline-flex items-center gap-1.5 cursor-pointer transition-all duration-200 btn-press"
+                  className="px-4 py-2 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs rounded inline-flex items-center gap-1.5 cursor-pointer transition-all duration-200 btn-press"
                 >
                   <Download size={14} />
                   <span>Export Quiz JSON</span>
@@ -1058,7 +1075,7 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
                   <button
                     type="button"
                     onClick={handleRetake}
-                    className="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 font-semibold text-xs rounded inline-flex items-center gap-1.5 cursor-pointer transition-all duration-200 btn-press"
+                    className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs rounded inline-flex items-center gap-1.5 cursor-pointer transition-all duration-200 btn-press"
                   >
                     <RotateCw size={14} />
                     <span>Retake Quiz</span>

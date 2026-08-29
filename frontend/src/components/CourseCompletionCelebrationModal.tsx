@@ -40,8 +40,8 @@ export const CourseCompletionCelebrationModal: React.FC<
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-backdrop-enter">
-      <div className="bg-white border-2 border-amber-500 rounded-lg shadow-2xl max-w-xl w-full overflow-hidden flex flex-col max-h-[90vh] animate-modal-enter">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-xs animate-backdrop-enter">
+      <div className="bg-white dark:bg-slate-900 border-2 border-amber-500 rounded-lg shadow-2xl max-w-xl w-full overflow-hidden flex flex-col max-h-[90vh] animate-modal-enter text-slate-900 dark:text-slate-100">
         <div className="bg-radial from-slate-900 via-slate-950 to-blue-950 text-white p-6 text-center relative border-b-2 border-amber-500">
           <button
             onClick={onClose}
@@ -69,19 +69,19 @@ export const CourseCompletionCelebrationModal: React.FC<
         </div>
 
         <div className="p-6 space-y-5 overflow-y-auto">
-          <div className="bg-slate-50 border border-slate-200 rounded p-4 card-interactive">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-semibold block mb-1">
+          <div className="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded p-4 card-interactive">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold block mb-1">
               Accredited Curriculum
             </span>
-            <h3 className="text-base font-bold text-slate-900 mb-2">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white mb-2">
               {completionData.course_name}
             </h3>
 
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-800 border border-emerald-300 rounded font-semibold font-mono animate-badge-pop">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 rounded font-semibold font-mono animate-badge-pop">
                 <CheckCircle2 size={13} /> 100% Completed
               </span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-50 text-blue-900 border border-blue-200 rounded font-mono">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-50 dark:bg-blue-950/80 text-blue-900 dark:text-blue-300 border border-blue-200 dark:border-blue-800 rounded font-mono">
                 {new Date(completionData.completed_at).toLocaleDateString(
                   "en-IN",
                   {
@@ -99,13 +99,13 @@ export const CourseCompletionCelebrationModal: React.FC<
               <div className="flex items-center gap-1.5">
                 <TrendingUp
                   size={16}
-                  className="text-emerald-700 animate-bounce-soft"
+                  className="text-emerald-700 dark:text-emerald-400 animate-bounce-soft"
                 />
-                <span className="text-xs font-bold font-mono uppercase tracking-wider text-slate-900">
+                <span className="text-xs font-bold font-mono uppercase tracking-wider text-slate-900 dark:text-white">
                   Automatic Competency Elevation (L1 ➔ L2/L3)
                 </span>
               </div>
-              <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold animate-badge-pop">
+              <span className="text-[10px] font-mono text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800 font-semibold animate-badge-pop">
                 Auto-Upskilling Active
               </span>
             </div>
@@ -115,33 +115,35 @@ export const CourseCompletionCelebrationModal: React.FC<
                 {completionData.elevated_competencies.map((comp) => (
                   <div
                     key={comp.competency_id}
-                    className="p-3 bg-emerald-50/50 border border-emerald-200 rounded flex flex-col sm:flex-row sm:items-center justify-between gap-2 card-interactive"
+                    className="p-3 bg-emerald-50/50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded flex flex-col sm:flex-row sm:items-center justify-between gap-2 card-interactive"
                   >
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-slate-900">
+                        <span className="text-xs font-bold text-slate-900 dark:text-white">
                           {comp.name}
                         </span>
-                        <span className="text-[10px] font-mono px-1.5 py-0.2 bg-white border border-slate-200 text-slate-600 rounded">
+                        <span className="text-[10px] font-mono px-1.5 py-0.2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded">
                           {comp.code}
                         </span>
                       </div>
-                      <span className="text-[11px] text-slate-600">
+                      <span className="text-[11px] text-slate-600 dark:text-slate-400">
                         {comp.department}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
                       <div className="flex items-center gap-1.5 font-mono text-xs">
-                        <span className="px-2 py-0.5 bg-slate-200 text-slate-700 font-bold rounded">
+                        <span className="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded">
                           L{comp.previous_level}
                         </span>
-                        <span className="text-emerald-700 font-bold">➔</span>
+                        <span className="text-emerald-700 dark:text-emerald-400 font-bold">
+                          ➔
+                        </span>
                         <span className="px-2 py-0.5 bg-emerald-700 text-white font-bold rounded shadow-2xs animate-badge-pop">
                           L{comp.new_level}
                         </span>
                       </div>
-                      <span className="text-[10px] font-mono text-slate-500">
+                      <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">
                         (Target: L{comp.target_level})
                       </span>
                     </div>
@@ -149,19 +151,19 @@ export const CourseCompletionCelebrationModal: React.FC<
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-slate-500 italic p-3 bg-slate-50 border border-slate-200 rounded">
+              <p className="text-xs text-slate-500 dark:text-slate-400 italic p-3 bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded">
                 General domain competencies and micro-credits accredited to your
                 profile.
               </p>
             )}
           </div>
 
-          <div className="border border-amber-300 bg-amber-50/60 p-3.5 rounded flex items-center justify-between gap-3 card-interactive">
+          <div className="border border-amber-300 dark:border-amber-700/80 bg-amber-50/60 dark:bg-amber-950/30 p-3.5 rounded flex items-center justify-between gap-3 card-interactive">
             <div>
-              <span className="text-[10px] font-mono uppercase tracking-wider text-amber-900 font-semibold block">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-amber-900 dark:text-amber-300 font-semibold block">
                 Official Credential Verification ID
               </span>
-              <span className="font-mono text-xs font-bold text-slate-900 select-all">
+              <span className="font-mono text-xs font-bold text-slate-900 dark:text-slate-100 select-all">
                 {completionData.certificate_id}
               </span>
             </div>
@@ -169,11 +171,14 @@ export const CourseCompletionCelebrationModal: React.FC<
             <div className="flex items-center gap-1.5">
               <button
                 onClick={handleCopyCert}
-                className="px-2.5 py-1.5 bg-white hover:bg-amber-100 border border-amber-300 text-amber-950 rounded text-xs font-semibold inline-flex items-center gap-1 cursor-pointer transition-all duration-200 shadow-2xs btn-press"
+                className="px-2.5 py-1.5 bg-white dark:bg-slate-800 hover:bg-amber-100 dark:hover:bg-slate-700 border border-amber-300 dark:border-amber-700 text-amber-950 dark:text-amber-300 rounded text-xs font-semibold inline-flex items-center gap-1 cursor-pointer transition-all duration-200 shadow-2xs btn-press"
               >
                 {copied ? (
                   <>
-                    <CheckCircle2 size={13} className="text-emerald-600" />
+                    <CheckCircle2
+                      size={13}
+                      className="text-emerald-600 dark:text-emerald-400"
+                    />
                     <span>Copied!</span>
                   </>
                 ) : (
@@ -187,7 +192,7 @@ export const CourseCompletionCelebrationModal: React.FC<
           </div>
         </div>
 
-        <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-end gap-2">
+        <div className="p-4 bg-slate-50 dark:bg-slate-950/80 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-end gap-2">
           {onDownloadCertificate && (
             <button
               onClick={() => {
@@ -206,7 +211,7 @@ export const CourseCompletionCelebrationModal: React.FC<
                 onClose();
                 onViewDossier();
               }}
-              className="px-4 py-2 bg-blue-900 hover:bg-blue-950 text-white rounded text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-all duration-200 shadow-xs btn-press"
+              className="px-4 py-2 bg-blue-900 dark:bg-blue-600 hover:bg-blue-950 dark:hover:bg-blue-700 text-white rounded text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-all duration-200 shadow-xs btn-press"
             >
               <span>View in Service Dossier</span>
               <ChevronRight size={13} />
@@ -215,7 +220,7 @@ export const CourseCompletionCelebrationModal: React.FC<
 
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 rounded text-xs font-medium cursor-pointer transition-all duration-200 btn-press"
+            className="px-4 py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded text-xs font-medium cursor-pointer transition-all duration-200 btn-press"
           >
             Close
           </button>

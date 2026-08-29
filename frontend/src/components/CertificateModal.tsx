@@ -607,7 +607,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
         {/* Responsive Landscape Canvas Container */}
         <div
           ref={containerRef}
-          className="p-2 sm:p-6 bg-slate-200 flex-1 overflow-auto flex items-center justify-center min-h-[220px]"
+          className="p-2 sm:p-6 bg-slate-200 dark:bg-slate-950/90 flex-1 overflow-auto flex items-center justify-center min-h-[220px]"
         >
           {/* Scaled Bounding Box */}
           <div

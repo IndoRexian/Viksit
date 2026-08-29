@@ -87,17 +87,17 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
   return (
     <div className="flex flex-col gap-2 text-left">
       <div className="flex justify-between items-baseline">
-        <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+        <label className="text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
           Professional Service Record & Specializations
         </label>
-        <span className="text-[11px] font-mono text-slate-500">
+        <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
           {value.length} Record{value.length === 1 ? "" : "s"} Entered
         </span>
       </div>
 
-      <div className="flex flex-col gap-1.5 border border-slate-200 rounded bg-slate-50/50 p-1.5">
+      <div className="flex flex-col gap-1.5 border border-slate-200 dark:border-slate-800 rounded bg-slate-50/50 dark:bg-slate-900/50 p-1.5">
         {value.length === 0 ? (
-          <div className="py-4 text-center text-xs text-slate-400 font-mono">
+          <div className="py-4 text-center text-xs text-slate-400 dark:text-slate-500 font-mono">
             No service records added yet. Enter domain experience below.
           </div>
         ) : (
@@ -108,15 +108,15 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
               return (
                 <div
                   key={index}
-                  className="flex items-center gap-2 bg-white border border-blue-600 rounded p-2 shadow-xs"
+                  className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-blue-600 dark:border-blue-500 rounded p-2 shadow-xs"
                 >
-                  <span className="font-mono text-xs font-bold text-blue-700 shrink-0">
+                  <span className="font-mono text-xs font-bold text-blue-700 dark:text-blue-400 shrink-0">
                     [{indexNumber}]
                   </span>
                   <input
                     ref={editInputRef}
                     type="text"
-                    className="flex-1 border-none outline-none text-xs text-slate-900 bg-transparent"
+                    className="flex-1 border-none outline-none text-xs text-slate-900 dark:text-slate-100 bg-transparent"
                     value={editingText}
                     onChange={(e) => setEditingText(e.target.value)}
                     onKeyDown={handleEditKeyDown}
@@ -124,7 +124,7 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
                   />
                   <button
                     type="button"
-                    className="bg-blue-700 text-white rounded p-1 text-xs hover:bg-blue-800 cursor-pointer"
+                    className="bg-blue-700 dark:bg-blue-600 text-white rounded p-1 text-xs hover:bg-blue-800 dark:hover:bg-blue-500 cursor-pointer"
                     onClick={saveEdit}
                     title="Save"
                   >
@@ -137,14 +137,14 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
             return (
               <div
                 key={index}
-                className="group flex items-start justify-between bg-white border border-slate-200 hover:border-slate-300 rounded p-2.5 transition-all duration-200 animate-badge-pop"
+                className="group flex items-start justify-between bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 rounded p-2.5 transition-all duration-200 animate-badge-pop"
                 onClick={() => startEditing(index)}
               >
                 <div className="flex items-start gap-2.5 flex-1 pr-2">
-                  <span className="font-mono text-[11px] font-semibold text-slate-500 shrink-0 mt-0.5">
+                  <span className="font-mono text-[11px] font-semibold text-slate-500 dark:text-slate-400 shrink-0 mt-0.5">
                     [{indexNumber}]
                   </span>
-                  <p className="text-xs text-slate-800 leading-relaxed font-normal">
+                  <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed font-normal">
                     {exp}
                   </p>
                 </div>
@@ -152,7 +152,7 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
                 <div className="flex items-center gap-1 shrink-0 opacity-80 group-hover:opacity-100">
                   <button
                     type="button"
-                    className="p-1 text-slate-400 hover:text-blue-700 rounded transition-colors btn-press"
+                    className="p-1 text-slate-400 hover:text-blue-700 dark:hover:text-blue-400 rounded transition-colors btn-press"
                     onClick={(e) => {
                       e.stopPropagation();
                       startEditing(index);
@@ -163,7 +163,7 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
                   </button>
                   <button
                     type="button"
-                    className="p-1 text-slate-400 hover:text-red-700 rounded transition-colors btn-press"
+                    className="p-1 text-slate-400 hover:text-red-700 dark:hover:text-red-400 rounded transition-colors btn-press"
                     onClick={(e) => removeExperience(index, e)}
                     title="Delete record"
                     aria-label={`Remove record ${indexNumber}`}
@@ -181,7 +181,7 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
         <input
           ref={inputRef}
           type="text"
-          className="flex-1 h-9 px-3 rounded border border-slate-300 bg-white text-slate-900 text-xs shadow-xs placeholder:text-slate-400 focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+          className="flex-1 h-9 px-3 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-xs shadow-xs placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -189,7 +189,7 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
         />
         <button
           type="button"
-          className="h-9 px-3.5 bg-slate-800 hover:bg-slate-900 text-white rounded text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 btn-press"
+          className="h-9 px-3.5 bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white rounded text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 btn-press"
           onClick={() => addExperience(inputValue)}
           disabled={!inputValue.trim()}
         >
@@ -197,7 +197,7 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
           Add Record
         </button>
       </div>
-      <span className="text-[11px] text-slate-500">
+      <span className="text-[11px] text-slate-500 dark:text-slate-400">
         Specify division, key survey rounds (e.g. NSS 78th Round, PLFS, ASI),
         national accounting accounts, or analytical responsibilities.
       </span>

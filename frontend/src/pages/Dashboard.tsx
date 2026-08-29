@@ -25,6 +25,7 @@ import {
   type CertificateDetails,
 } from "../components/CertificateModal";
 import { AIChatPill } from "../components/AIChatPill";
+import { ThemeToggle } from "../components/ThemeToggle";
 
 import {
   LogOut,
@@ -380,7 +381,7 @@ export const Dashboard: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col justify-between font-sans text-slate-900">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 flex flex-col justify-between font-sans text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <header className="bg-slate-900 text-white border-b-2 border-amber-600 sticky top-0 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -400,79 +401,83 @@ export const Dashboard: React.FC = () => {
           </div>
 
           {/* Mobile Navigation Dropdown Menu (< sm) */}
-          <div className="sm:hidden relative">
-            <button
-              type="button"
-              onClick={() => setIsUserMenuOpen((prev) => !prev)}
-              className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 flex items-center justify-center cursor-pointer transition-colors shadow-2xs btn-press"
-              aria-expanded={isUserMenuOpen}
-              aria-haspopup="true"
-              aria-label="Account and Navigation Menu"
-            >
-              <Menu size={16} />
-            </button>
+          <div className="sm:hidden flex items-center gap-2">
+            <ThemeToggle />
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 flex items-center justify-center cursor-pointer transition-colors shadow-2xs btn-press"
+                aria-expanded={isUserMenuOpen}
+                aria-haspopup="true"
+                aria-label="Account and Navigation Menu"
+              >
+                <Menu size={16} />
+              </button>
 
-            {isUserMenuOpen && (
-              <>
-                <div
-                  className="fixed inset-0 z-40"
-                  onClick={() => setIsUserMenuOpen(false)}
-                />
-                <div className="absolute right-0 top-full mt-2 z-50 w-56 bg-slate-900/98 backdrop-blur-md border border-slate-700 text-white rounded-xl shadow-2xl ring-1 ring-slate-800 p-1.5 space-y-1 animate-scale-in">
-                  {/* User Identity Header */}
-                  <div className="px-2.5 py-2 border-b border-slate-800">
-                    <p className="text-xs font-bold text-white truncate">
-                      {user?.name}
-                    </p>
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="font-mono text-[10px] text-slate-400 truncate">
-                        @{user?.username}
-                      </span>
-                      {user?.role === "admin" && (
-                        <span className="px-1.5 py-0.2 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-mono font-bold rounded uppercase">
-                          Admin
+              {isUserMenuOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setIsUserMenuOpen(false)}
+                  />
+                  <div className="absolute right-0 top-full mt-2 z-50 w-56 bg-slate-900/98 backdrop-blur-md border border-slate-700 text-white rounded-xl shadow-2xl ring-1 ring-slate-800 p-1.5 space-y-1 animate-scale-in">
+                    {/* User Identity Header */}
+                    <div className="px-2.5 py-2 border-b border-slate-800">
+                      <p className="text-xs font-bold text-white truncate">
+                        {user?.name}
+                      </p>
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <span className="font-mono text-[10px] text-slate-400 truncate">
+                          @{user?.username}
                         </span>
-                      )}
+                        {user?.role === "admin" && (
+                          <span className="px-1.5 py-0.2 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-mono font-bold rounded uppercase">
+                            Admin
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Admin Console Option */}
-                  {user?.role === "admin" && (
+                    {/* Admin Console Option */}
+                    {user?.role === "admin" && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsUserMenuOpen(false);
+                          navigate("/admin");
+                        }}
+                        className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs font-bold text-amber-400 hover:bg-slate-800 transition-colors cursor-pointer text-left"
+                      >
+                        <ShieldCheck
+                          size={14}
+                          className="text-amber-400 shrink-0"
+                        />
+                        <span>Admin Console</span>
+                      </button>
+                    )}
+
+                    {/* Sign Out Option */}
                     <button
                       type="button"
                       onClick={() => {
                         setIsUserMenuOpen(false);
-                        navigate("/admin");
+                        handleLogout();
                       }}
-                      className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs font-bold text-amber-400 hover:bg-slate-800 transition-colors cursor-pointer text-left"
+                      className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs font-semibold text-rose-300 hover:bg-rose-950/40 hover:text-rose-200 transition-colors cursor-pointer text-left"
                     >
-                      <ShieldCheck
-                        size={14}
-                        className="text-amber-400 shrink-0"
-                      />
-                      <span>Admin Console</span>
+                      <LogOut size={14} className="shrink-0" />
+                      <span>Sign Out</span>
                     </button>
-                  )}
-
-                  {/* Sign Out Option */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsUserMenuOpen(false);
-                      handleLogout();
-                    }}
-                    className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs font-semibold text-rose-300 hover:bg-rose-950/40 hover:text-rose-200 transition-colors cursor-pointer text-left"
-                  >
-                    <LogOut size={14} className="shrink-0" />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
-              </>
-            )}
+                  </div>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Desktop Action Buttons (>= sm) */}
           <div className="hidden sm:flex items-center gap-3">
+            <ThemeToggle />
             {user?.role === "admin" && (
               <button
                 onClick={() => navigate("/admin")}
@@ -497,27 +502,27 @@ export const Dashboard: React.FC = () => {
       </header>
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        <section className="bg-white border border-slate-300 rounded shadow-xs mb-6 overflow-hidden transition-shadow duration-300 hover:shadow-sm">
+        <section className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs mb-6 overflow-hidden transition-shadow duration-300 hover:shadow-sm">
           <div className="p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                <span className="px-2 py-0.5 bg-blue-50 border border-blue-200 text-blue-900 font-mono text-[11px] font-semibold uppercase rounded transition-colors">
+                <span className="px-2 py-0.5 bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 text-blue-900 dark:text-blue-300 font-mono text-[11px] font-semibold uppercase rounded transition-colors">
                   {user.designation || "Statistical Officer"}
                 </span>
-                <span className="px-2 py-0.5 bg-slate-100 border border-slate-200 text-slate-700 font-mono text-[11px] rounded">
+                <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-mono text-[11px] rounded">
                   Cadre ID: @{user.username}
                 </span>
-                <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700 font-medium ml-1">
+                <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700 dark:text-emerald-400 font-medium ml-1">
                   <ShieldCheck size={14} className="animate-pulse-subtle" />{" "}
                   Verified Official
                 </span>
               </div>
-              <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+              <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
                 {user.name}
               </h1>
-              <p className="text-xs text-slate-600 mt-0.5">
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
                 Posting:{" "}
-                <strong className="text-slate-800 font-medium">
+                <strong className="text-slate-800 dark:text-slate-200 font-medium">
                   {user.department || "National Accounts Division"}
                 </strong>{" "}
                 • Integrated with iGOT Karmayogi & NSSTA TPAC Framework
@@ -525,14 +530,14 @@ export const Dashboard: React.FC = () => {
             </div>
 
             <div className="shrink-0">
-              <span className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-mono text-[11px] rounded transition-colors">
+              <span className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-mono text-[11px] rounded transition-colors">
                 iGOT • NSSTA Integrated
               </span>
             </div>
           </div>
 
           {/* Mobile Navigation Dropdown (< sm) - Custom shadcn-styled Dropdown */}
-          <div className="sm:hidden px-3.5 py-2.5 bg-slate-50 border-t border-b border-slate-200 relative">
+          <div className="sm:hidden px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border-t border-b border-slate-200 dark:border-slate-800 relative">
             {(() => {
               const navTabs = [
                 {
@@ -574,19 +579,19 @@ export const Dashboard: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setIsNavDropdownOpen((prev) => !prev)}
-                    className="w-full bg-white border border-slate-300 hover:border-slate-400 focus:border-blue-900 text-slate-900 rounded-lg px-3 py-2 shadow-2xs flex items-center justify-between gap-2.5 transition-all duration-200 cursor-pointer btn-press text-left"
+                    className="w-full bg-white dark:bg-slate-850 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 focus:border-blue-900 dark:focus:border-blue-500 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 shadow-2xs flex items-center justify-between gap-2.5 transition-all duration-200 cursor-pointer btn-press text-left"
                     aria-expanded={isNavDropdownOpen}
                     aria-haspopup="true"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-7 h-7 rounded-md bg-blue-50 text-blue-900 flex items-center justify-center shrink-0 border border-blue-100">
+                      <div className="w-7 h-7 rounded-md bg-blue-50 dark:bg-blue-950/80 text-blue-900 dark:text-blue-300 flex items-center justify-center shrink-0 border border-blue-100 dark:border-blue-800">
                         <CurrentIcon size={14} />
                       </div>
                       <div className="min-w-0">
-                        <span className="font-bold text-xs text-slate-900 block truncate">
+                        <span className="font-bold text-xs text-slate-900 dark:text-white block truncate">
                           {currentTab.label}
                         </span>
-                        <span className="text-[10px] text-slate-500 block truncate">
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate">
                           {currentTab.sublabel}
                         </span>
                       </div>
@@ -595,7 +600,9 @@ export const Dashboard: React.FC = () => {
                     <ChevronDown
                       size={15}
                       className={`text-slate-400 shrink-0 transition-transform duration-200 ${
-                        isNavDropdownOpen ? "rotate-180 text-blue-900" : ""
+                        isNavDropdownOpen
+                          ? "rotate-180 text-blue-900 dark:text-amber-400"
+                          : ""
                       }`}
                     />
                   </button>
@@ -606,8 +613,8 @@ export const Dashboard: React.FC = () => {
                         className="fixed inset-0 z-40"
                         onClick={() => setIsNavDropdownOpen(false)}
                       />
-                      <div className="absolute top-full left-0 right-0 mt-1.5 z-50 bg-white/98 backdrop-blur-md border border-slate-200 rounded-xl shadow-xl ring-1 ring-slate-900/10 p-1 space-y-1 animate-scale-in">
-                        <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold border-b border-slate-100">
+                      <div className="absolute top-full left-0 right-0 mt-1.5 z-50 bg-white/98 dark:bg-slate-900/98 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl ring-1 ring-slate-900/10 dark:ring-slate-800 p-1 space-y-1 animate-scale-in">
+                        <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold border-b border-slate-100 dark:border-slate-800">
                           Select View
                         </div>
                         {navTabs.map((tab) => {
@@ -623,16 +630,16 @@ export const Dashboard: React.FC = () => {
                               }}
                               className={`w-full flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg text-left transition-all duration-150 cursor-pointer ${
                                 isSelected
-                                  ? "bg-slate-900 text-white shadow-xs font-semibold"
-                                  : "text-slate-700 hover:bg-slate-100/80 hover:text-slate-900"
+                                  ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 shadow-xs font-semibold"
+                                  : "text-slate-700 dark:text-slate-300 hover:bg-slate-100/80 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white"
                               }`}
                             >
                               <div className="flex items-center gap-2.5 min-w-0">
                                 <div
                                   className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 ${
                                     isSelected
-                                      ? "bg-slate-800 text-amber-400"
-                                      : "bg-slate-100 text-slate-600"
+                                      ? "bg-slate-800 dark:bg-slate-700 text-amber-400"
+                                      : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
                                   }`}
                                 >
                                   <TabIcon size={14} />
@@ -644,8 +651,8 @@ export const Dashboard: React.FC = () => {
                                   <span
                                     className={`text-[10px] block truncate ${
                                       isSelected
-                                        ? "text-slate-300"
-                                        : "text-slate-500"
+                                        ? "text-slate-300 dark:text-slate-400"
+                                        : "text-slate-500 dark:text-slate-400"
                                     }`}
                                   >
                                     {tab.sublabel}
@@ -671,22 +678,22 @@ export const Dashboard: React.FC = () => {
           </div>
 
           {/* Desktop Navigation Tabs (>= sm) */}
-          <div className="hidden sm:flex px-5 sm:px-6 py-2.5 bg-slate-50 border-t border-b border-slate-200 items-center justify-between gap-3">
+          <div className="hidden sm:flex px-5 sm:px-6 py-2.5 bg-slate-50 dark:bg-slate-900/60 border-t border-b border-slate-200 dark:border-slate-800 items-center justify-between gap-3">
             <div className="flex items-center gap-2 overflow-x-auto">
               <button
                 onClick={() => setActiveTab("overview")}
                 className={`px-3.5 py-1.5 text-xs font-semibold rounded border cursor-pointer transition-all duration-200 shrink-0 inline-flex items-center gap-1.5 btn-press ${
                   activeTab === "overview"
-                    ? "bg-slate-900 text-white border-slate-900 shadow-xs"
-                    : "bg-white text-slate-700 border-slate-300 hover:bg-slate-100 hover:border-slate-400"
+                    ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 border-slate-900 dark:border-slate-700 shadow-xs"
+                    : "bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-600"
                 }`}
               >
                 <User
                   size={13}
                   className={
                     activeTab === "overview"
-                      ? "text-slate-200"
-                      : "text-slate-500"
+                      ? "text-slate-200 dark:text-amber-300"
+                      : "text-slate-500 dark:text-slate-400"
                   }
                 />
                 <span>Service Dossier</span>
@@ -695,14 +702,16 @@ export const Dashboard: React.FC = () => {
                 onClick={() => setActiveTab("matrix")}
                 className={`px-3.5 py-1.5 text-xs font-semibold rounded border cursor-pointer transition-all duration-200 shrink-0 inline-flex items-center gap-1.5 btn-press ${
                   activeTab === "matrix"
-                    ? "bg-slate-900 text-white border-slate-900 shadow-xs"
-                    : "bg-white text-slate-700 border-slate-300 hover:bg-slate-100 hover:border-slate-400"
+                    ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 border-slate-900 dark:border-slate-700 shadow-xs"
+                    : "bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-600"
                 }`}
               >
                 <Grid3X3
                   size={13}
                   className={
-                    activeTab === "matrix" ? "text-slate-200" : "text-slate-500"
+                    activeTab === "matrix"
+                      ? "text-slate-200 dark:text-amber-300"
+                      : "text-slate-500 dark:text-slate-400"
                   }
                 />
                 <span>FRAC Competency Matrix</span>
@@ -711,16 +720,16 @@ export const Dashboard: React.FC = () => {
                 onClick={() => setActiveTab("pathways")}
                 className={`px-3.5 py-1.5 text-xs font-semibold rounded border cursor-pointer transition-all duration-200 shrink-0 inline-flex items-center gap-1.5 btn-press ${
                   activeTab === "pathways"
-                    ? "bg-slate-900 text-white border-slate-900 shadow-xs"
-                    : "bg-white text-slate-700 border-slate-300 hover:bg-slate-100 hover:border-slate-400"
+                    ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 border-slate-900 dark:border-slate-700 shadow-xs"
+                    : "bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-600"
                 }`}
               >
                 <BookOpen
                   size={13}
                   className={
                     activeTab === "pathways"
-                      ? "text-slate-200"
-                      : "text-slate-500"
+                      ? "text-slate-200 dark:text-amber-300"
+                      : "text-slate-500 dark:text-slate-400"
                   }
                 />
                 <span>Learning Pathways</span>
@@ -729,8 +738,8 @@ export const Dashboard: React.FC = () => {
                 onClick={() => setActiveTab("quiz-studio")}
                 className={`px-3.5 py-1.5 text-xs font-bold rounded cursor-pointer transition-all duration-200 shrink-0 inline-flex items-center gap-1.5 btn-press ${
                   activeTab === "quiz-studio"
-                    ? "bg-blue-900 text-white border-2 border-blue-950 shadow-sm ring-2 ring-blue-900/30"
-                    : "bg-blue-50/80 text-blue-950 border-2 border-blue-800 hover:bg-blue-100 hover:border-blue-900 shadow-2xs ring-1 ring-blue-900/20"
+                    ? "bg-blue-900 dark:bg-blue-800 text-white border-2 border-blue-950 dark:border-blue-700 shadow-sm ring-2 ring-blue-900/30"
+                    : "bg-blue-50/80 dark:bg-blue-950/40 text-blue-950 dark:text-blue-300 border-2 border-blue-800 dark:border-blue-700/80 hover:bg-blue-100 dark:hover:bg-blue-900/60 shadow-2xs"
                 }`}
               >
                 <FileText
@@ -738,118 +747,118 @@ export const Dashboard: React.FC = () => {
                   className={
                     activeTab === "quiz-studio"
                       ? "text-blue-200"
-                      : "text-blue-900"
+                      : "text-blue-900 dark:text-blue-300"
                   }
                 />
                 <span>Document Quiz Generator</span>
               </button>
             </div>
 
-            <span className="hidden lg:inline-block text-[11px] font-mono text-slate-500">
+            <span className="hidden lg:inline-block text-[11px] font-mono text-slate-500 dark:text-slate-400">
               MoSPI Statistical Human Resource System
             </span>
           </div>
 
           <div className="p-3 sm:p-5 grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4">
             {/* 1. Composite Skill Index */}
-            <div className="border border-slate-200 bg-slate-50/70 p-2.5 sm:p-3.5 rounded-lg card-interactive min-w-0 flex flex-col justify-between">
+            <div className="border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/60 p-2.5 sm:p-3.5 rounded-lg card-interactive min-w-0 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 block mb-1 leading-snug">
+                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 leading-snug">
                   Composite Skill Index
                 </span>
                 <div className="flex items-baseline justify-between gap-1 flex-wrap pt-0.5">
-                  <span className="font-mono text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-none">
+                  <span className="font-mono text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight leading-none">
                     {matrixData
                       ? `${matrixData.composite_skill_index}%`
                       : matrixLoading
                         ? "..."
                         : "—"}
                   </span>
-                  <span className="text-[10px] sm:text-[11px] font-mono text-emerald-700 font-semibold shrink-0">
+                  <span className="text-[10px] sm:text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-semibold shrink-0">
                     {matrixData && matrixData.gap_count === 0
                       ? "Target Met"
                       : "Active Gap"}
                   </span>
                 </div>
-                <div className="w-full bg-slate-200 h-1 rounded-full overflow-hidden mt-2">
+                <div className="w-full bg-slate-200 dark:bg-slate-800 h-1 rounded-full overflow-hidden mt-2">
                   <div
-                    className="bg-blue-900 h-full rounded-full transition-all duration-1000 ease-out"
+                    className="bg-blue-900 dark:bg-blue-500 h-full rounded-full transition-all duration-1000 ease-out"
                     style={{
                       width: `${matrixData ? Math.min(100, matrixData.composite_skill_index) : 0}%`,
                     }}
                   />
                 </div>
               </div>
-              <span className="text-[10px] text-slate-500 block mt-2 leading-tight">
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-2 leading-tight">
                 Across {matrixData?.total_competencies || 0} mapped competencies
               </span>
             </div>
 
             {/* 2. FRAC Competencies */}
-            <div className="border border-slate-200 bg-slate-50/70 p-2.5 sm:p-3.5 rounded-lg card-interactive min-w-0 flex flex-col justify-between">
+            <div className="border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/60 p-2.5 sm:p-3.5 rounded-lg card-interactive min-w-0 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 block mb-1 leading-snug">
+                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 leading-snug">
                   FRAC Competencies
                 </span>
                 <div className="flex items-baseline justify-between gap-1 flex-wrap pt-0.5">
-                  <span className="font-mono text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-none">
+                  <span className="font-mono text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight leading-none">
                     {matrixData
                       ? `${matrixData.achieved_count} / ${matrixData.total_competencies}`
                       : matrixLoading
                         ? "..."
                         : "—"}
                   </span>
-                  <span className="text-[10px] sm:text-[11px] font-mono text-blue-700 font-semibold shrink-0">
+                  <span className="text-[10px] sm:text-[11px] font-mono text-blue-700 dark:text-blue-400 font-semibold shrink-0">
                     Achieved
                   </span>
                 </div>
               </div>
-              <span className="text-[10px] text-slate-500 block mt-2 leading-tight">
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-2 leading-tight">
                 Mapped to {user.designation || "Officer"} role
               </span>
             </div>
 
             {/* 3. Academic Qualifications */}
-            <div className="border border-slate-200 bg-slate-50/70 p-2.5 sm:p-3.5 rounded-lg card-interactive min-w-0 flex flex-col justify-between">
+            <div className="border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/60 p-2.5 sm:p-3.5 rounded-lg card-interactive min-w-0 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 block mb-1 leading-snug">
+                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 leading-snug">
                   Academic Qualifications
                 </span>
                 <div className="flex items-baseline justify-between gap-1 flex-wrap pt-0.5">
-                  <span className="font-mono text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-none">
+                  <span className="font-mono text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight leading-none">
                     {user.qualifications?.length || 0}
                   </span>
-                  <span className="text-[10px] sm:text-[11px] font-mono text-slate-600 shrink-0">
+                  <span className="text-[10px] sm:text-[11px] font-mono text-slate-600 dark:text-slate-400 shrink-0">
                     Verified
                   </span>
                 </div>
               </div>
-              <span className="text-[10px] text-slate-500 block mt-2 leading-tight">
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-2 leading-tight">
                 Recorded in Service Book
               </span>
             </div>
 
             {/* 4. Curriculum Status */}
-            <div className="border border-slate-200 bg-slate-50/70 p-2.5 sm:p-3.5 rounded-lg card-interactive min-w-0 flex flex-col justify-between">
+            <div className="border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/60 p-2.5 sm:p-3.5 rounded-lg card-interactive min-w-0 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 block mb-1 leading-snug">
+                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 leading-snug">
                   Curriculum Status
                 </span>
                 <div className="flex items-baseline justify-between gap-1 flex-wrap pt-0.5">
                   <div className="flex items-baseline gap-1">
-                    <span className="font-mono text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-none">
+                    <span className="font-mono text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight leading-none">
                       {enrolledIds.length}
                     </span>
-                    <span className="text-xs font-sans font-medium text-slate-600">
+                    <span className="text-xs font-sans font-medium text-slate-600 dark:text-slate-400">
                       Enrolled
                     </span>
                   </div>
-                  <span className="text-[10px] sm:text-[11px] font-mono text-amber-700 font-semibold shrink-0">
+                  <span className="text-[10px] sm:text-[11px] font-mono text-amber-700 dark:text-amber-400 font-semibold shrink-0">
                     {enrolledIds.length > 0 ? "Active" : "None"}
                   </span>
                 </div>
               </div>
-              <span className="text-[10px] text-slate-500 block mt-2 leading-tight">
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-2 leading-tight">
                 iGOT / NSSTA Accredited
               </span>
             </div>
@@ -862,74 +871,86 @@ export const Dashboard: React.FC = () => {
             className="animate-tab-enter grid grid-cols-1 lg:grid-cols-12 gap-6"
           >
             <div className="lg:col-span-5 space-y-6">
-              <div className="bg-white border border-slate-300 rounded shadow-xs p-5 card-interactive">
-                <div className="flex items-center gap-2.5 border-b border-slate-200 pb-3 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-blue-100/80 text-blue-900 flex items-center justify-center shrink-0 border border-blue-200/60 shadow-2xs">
+              <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs p-5 card-interactive">
+                <div className="flex items-center gap-2.5 border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
+                  <div className="w-8 h-8 rounded-lg bg-blue-100/80 dark:bg-blue-950/80 text-blue-900 dark:text-blue-300 flex items-center justify-center shrink-0 border border-blue-200/60 dark:border-blue-800/60 shadow-2xs">
                     <User size={18} className="shrink-0" />
                   </div>
-                  <h2 className="font-serif text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 leading-snug">
+                  <h2 className="font-serif text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white leading-snug">
                     Official Service Ledger
                   </h2>
                 </div>
 
                 <div className="space-y-3 text-xs">
-                  <div className="flex justify-between py-1.5 border-b border-slate-100 hover:bg-slate-50 px-1 rounded transition-colors">
-                    <span className="text-slate-500">Official Full Name</span>
-                    <span className="font-semibold text-slate-900">
+                  <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 px-1 rounded transition-colors">
+                    <span className="text-slate-500 dark:text-slate-400">
+                      Official Full Name
+                    </span>
+                    <span className="font-semibold text-slate-900 dark:text-white">
                       {user.name}
                     </span>
                   </div>
 
-                  <div className="flex justify-between py-1.5 border-b border-slate-100 hover:bg-slate-50 px-1 rounded transition-colors">
-                    <span className="text-slate-500">Cadre Username</span>
-                    <span className="font-mono font-medium text-slate-900">
+                  <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 px-1 rounded transition-colors">
+                    <span className="text-slate-500 dark:text-slate-400">
+                      Cadre Username
+                    </span>
+                    <span className="font-mono font-medium text-slate-900 dark:text-amber-400">
                       @{user.username}
                     </span>
                   </div>
 
-                  <div className="flex justify-between items-center gap-3 py-1.5 border-b border-slate-100 hover:bg-slate-50 px-1 rounded transition-colors">
-                    <span className="text-slate-500 shrink-0">
+                  <div className="flex justify-between items-center gap-3 py-1.5 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 px-1 rounded transition-colors">
+                    <span className="text-slate-500 dark:text-slate-400 shrink-0">
                       Cadre Designation
                     </span>
-                    <span className="font-medium text-slate-900 text-right">
+                    <span className="font-medium text-slate-900 dark:text-slate-200 text-right">
                       {user.designation || "Not specified"}
                     </span>
                   </div>
 
-                  <div className="flex justify-between items-center gap-3 py-1.5 border-b border-slate-100 hover:bg-slate-50 px-1 rounded transition-colors">
-                    <span className="text-slate-500 shrink-0">
+                  <div className="flex justify-between items-center gap-3 py-1.5 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 px-1 rounded transition-colors">
+                    <span className="text-slate-500 dark:text-slate-400 shrink-0">
                       Department / Division
                     </span>
-                    <span className="font-medium text-slate-900 text-right">
+                    <span className="font-medium text-slate-900 dark:text-slate-200 text-right">
                       {user.department || "Not specified"}
                     </span>
                   </div>
 
-                  <div className="flex justify-between py-1.5 border-b border-slate-100 hover:bg-slate-50 px-1 rounded transition-colors">
-                    <span className="text-slate-500">Official Email</span>
-                    <span className="font-mono text-slate-800">
+                  <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 px-1 rounded transition-colors">
+                    <span className="text-slate-500 dark:text-slate-400">
+                      Official Email
+                    </span>
+                    <span className="font-mono text-slate-800 dark:text-slate-200">
                       {user.email || "Not specified"}
                     </span>
                   </div>
 
-                  <div className="flex justify-between py-1.5 border-b border-slate-100 hover:bg-slate-50 px-1 rounded transition-colors">
-                    <span className="text-slate-500">Registered Phone</span>
-                    <span className="font-mono text-slate-800">
+                  <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 px-1 rounded transition-colors">
+                    <span className="text-slate-500 dark:text-slate-400">
+                      Registered Phone
+                    </span>
+                    <span className="font-mono text-slate-800 dark:text-slate-200">
                       {user.phone}
                     </span>
                   </div>
 
-                  <div className="flex justify-between py-1.5 border-b border-slate-100 hover:bg-slate-50 px-1 rounded transition-colors">
-                    <span className="text-slate-500">Gender</span>
-                    <span className="text-slate-800">
+                  <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 px-1 rounded transition-colors">
+                    <span className="text-slate-500 dark:text-slate-400">
+                      Gender
+                    </span>
+                    <span className="text-slate-800 dark:text-slate-200">
                       {user.gender || "Not specified"}
                     </span>
                   </div>
 
                   {user.dob && (
-                    <div className="flex justify-between py-1.5 hover:bg-slate-50 px-1 rounded transition-colors">
-                      <span className="text-slate-500">Date of Birth</span>
-                      <span className="font-mono text-slate-800">
+                    <div className="flex justify-between py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800/50 px-1 rounded transition-colors">
+                      <span className="text-slate-500 dark:text-slate-400">
+                        Date of Birth
+                      </span>
+                      <span className="font-mono text-slate-800 dark:text-slate-200">
                         {new Date(user.dob).toLocaleDateString()}
                       </span>
                     </div>
@@ -937,12 +958,12 @@ export const Dashboard: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white border border-slate-300 rounded shadow-xs p-5 card-interactive">
-                <div className="flex items-center gap-2.5 border-b border-slate-200 pb-3 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-blue-100/80 text-blue-900 flex items-center justify-center shrink-0 border border-blue-200/60 shadow-2xs">
+              <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs p-5 card-interactive">
+                <div className="flex items-center gap-2.5 border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
+                  <div className="w-8 h-8 rounded-lg bg-blue-100/80 dark:bg-blue-950/80 text-blue-900 dark:text-blue-300 flex items-center justify-center shrink-0 border border-blue-200/60 dark:border-blue-800/60 shadow-2xs">
                     <GraduationCap size={18} className="shrink-0" />
                   </div>
-                  <h2 className="font-serif text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 leading-snug">
+                  <h2 className="font-serif text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white leading-snug">
                     Verified Qualifications
                   </h2>
                 </div>
@@ -952,14 +973,17 @@ export const Dashboard: React.FC = () => {
                     user.qualifications.map((qual, idx) => (
                       <div
                         key={idx}
-                        className="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 px-2.5 py-1 rounded text-xs font-medium transition-all duration-200 hover:scale-[1.02]"
+                        className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 px-2.5 py-1 rounded text-xs font-medium transition-all duration-200 hover:scale-[1.02]"
                       >
-                        <CheckCircle2 size={12} className="text-emerald-700" />
+                        <CheckCircle2
+                          size={12}
+                          className="text-emerald-700 dark:text-emerald-400"
+                        />
                         <span>{qual}</span>
                       </div>
                     ))
                   ) : (
-                    <p className="text-xs text-slate-500 italic">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 italic">
                       No academic qualifications recorded.
                     </p>
                   )}
@@ -968,12 +992,12 @@ export const Dashboard: React.FC = () => {
             </div>
 
             <div className="lg:col-span-7 space-y-6">
-              <div className="bg-white border border-slate-300 rounded shadow-xs p-5 card-interactive">
-                <div className="flex items-center gap-2.5 border-b border-slate-200 pb-3 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-blue-100/80 text-blue-900 flex items-center justify-center shrink-0 border border-blue-200/60 shadow-2xs">
+              <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs p-5 card-interactive">
+                <div className="flex items-center gap-2.5 border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
+                  <div className="w-8 h-8 rounded-lg bg-blue-100/80 dark:bg-blue-950/80 text-blue-900 dark:text-blue-300 flex items-center justify-center shrink-0 border border-blue-200/60 dark:border-blue-800/60 shadow-2xs">
                     <Briefcase size={18} className="shrink-0" />
                   </div>
-                  <h2 className="font-serif text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 leading-snug">
+                  <h2 className="font-serif text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white leading-snug">
                     Service Experience & Specialization History
                   </h2>
                 </div>
@@ -983,30 +1007,33 @@ export const Dashboard: React.FC = () => {
                     user.experience.map((exp, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-3 p-3 bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded transition-all duration-200"
+                        className="flex items-start gap-3 p-3 bg-slate-50 dark:bg-slate-950/50 hover:bg-slate-100/80 dark:hover:bg-slate-800/50 border border-slate-200 dark:border-slate-800 rounded transition-all duration-200"
                       >
-                        <span className="font-mono text-xs font-bold text-blue-900 bg-white border border-slate-300 px-2 py-0.5 rounded shrink-0 shadow-2xs">
+                        <span className="font-mono text-xs font-bold text-blue-900 dark:text-blue-300 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 px-2 py-0.5 rounded shrink-0 shadow-2xs">
                           {String(idx + 1).padStart(2, "0")}
                         </span>
-                        <p className="text-xs text-slate-800 leading-relaxed font-normal">
+                        <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed font-normal">
                           {exp}
                         </p>
                       </div>
                     ))
                   ) : (
-                    <p className="text-xs text-slate-500 italic">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 italic">
                       No service record entries logged.
                     </p>
                   )}
                 </div>
               </div>
 
-              <div className="bg-white border border-slate-300 rounded shadow-xs p-5 space-y-4 card-interactive">
-                <div className="flex items-center gap-2.5 border-b border-slate-200 pb-3">
-                  <div className="w-8 h-8 rounded-lg bg-amber-100/80 text-amber-700 flex items-center justify-center shrink-0 border border-amber-200/60 shadow-2xs">
-                    <Award size={18} className="shrink-0 text-amber-700" />
+              <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs p-5 space-y-4 card-interactive">
+                <div className="flex items-center gap-2.5 border-b border-slate-200 dark:border-slate-800 pb-3">
+                  <div className="w-8 h-8 rounded-lg bg-amber-100/80 dark:bg-amber-950/80 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0 border border-amber-200/60 dark:border-amber-800/60 shadow-2xs">
+                    <Award
+                      size={18}
+                      className="shrink-0 text-amber-700 dark:text-amber-400"
+                    />
                   </div>
-                  <h2 className="font-serif text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 leading-snug">
+                  <h2 className="font-serif text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white leading-snug">
                     Verified Credentials & Micro-Badges
                   </h2>
                 </div>
@@ -1016,22 +1043,22 @@ export const Dashboard: React.FC = () => {
                     {[1, 2].map((i) => (
                       <div
                         key={i}
-                        className="p-3.5 bg-slate-50/80 border border-slate-200 rounded animate-pulse space-y-3"
+                        className="p-3.5 bg-slate-50/80 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded animate-pulse space-y-3"
                       >
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
-                            <div className="h-3.5 bg-slate-200 rounded w-2/3" />
-                            <div className="h-3.5 bg-amber-200/60 rounded w-10" />
+                            <div className="h-3.5 bg-slate-200 dark:bg-slate-800 rounded w-2/3" />
+                            <div className="h-3.5 bg-amber-200/60 dark:bg-amber-900/60 rounded w-10" />
                           </div>
-                          <div className="h-2.5 bg-slate-200 rounded w-4/5" />
+                          <div className="h-2.5 bg-slate-200 dark:bg-slate-800 rounded w-4/5" />
                         </div>
 
-                        <div className="pt-2 border-t border-slate-200 space-y-2">
+                        <div className="pt-2 border-t border-slate-200 dark:border-slate-800 space-y-2">
                           <div className="flex items-center justify-between">
-                            <div className="h-2.5 bg-slate-200 rounded w-28" />
-                            <div className="h-2.5 bg-emerald-200/70 rounded w-12" />
+                            <div className="h-2.5 bg-slate-200 dark:bg-slate-800 rounded w-28" />
+                            <div className="h-2.5 bg-emerald-200/70 dark:bg-emerald-900/60 rounded w-12" />
                           </div>
-                          <div className="h-7 bg-slate-200 rounded w-full" />
+                          <div className="h-7 bg-slate-200 dark:bg-slate-800 rounded w-full" />
                         </div>
                       </div>
                     ))}
@@ -1044,32 +1071,32 @@ export const Dashboard: React.FC = () => {
                       .map((item) => (
                         <div
                           key={item.enrollment_id}
-                          className="p-3.5 bg-radial from-amber-50/70 to-slate-50 border border-amber-300 hover:border-amber-400 hover:shadow-md rounded flex flex-col justify-between transition-all duration-300 hover:-translate-y-0.5"
+                          className="p-3.5 bg-radial from-amber-50/70 to-slate-50 dark:from-amber-950/20 dark:to-slate-900 border border-amber-300 dark:border-amber-700/60 hover:border-amber-400 dark:hover:border-amber-600 hover:shadow-md rounded flex flex-col justify-between transition-all duration-300 hover:-translate-y-0.5"
                         >
                           <div>
                             <div className="flex items-start justify-between gap-2 mb-1.5">
                               <div className="flex items-center gap-1.5">
                                 <Award
                                   size={15}
-                                  className="text-amber-600 shrink-0"
+                                  className="text-amber-600 dark:text-amber-400 shrink-0"
                                 />
-                                <span className="font-bold text-xs text-slate-900 line-clamp-1">
+                                <span className="font-bold text-xs text-slate-900 dark:text-white line-clamp-1">
                                   {item.badge_name ||
                                     `Verified Specialist: ${item.course.name}`}
                                 </span>
                               </div>
                             </div>
-                            <p className="text-[11px] text-slate-600 line-clamp-1 mb-2">
+                            <p className="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-1 mb-2">
                               {item.course.name}
                             </p>
                           </div>
 
-                          <div className="pt-2 border-t border-amber-200/70 space-y-2">
+                          <div className="pt-2 border-t border-amber-200/70 dark:border-amber-800/60 space-y-2">
                             <div className="flex items-center justify-between text-[10px] font-mono">
-                              <span className="text-slate-500 select-all">
+                              <span className="text-slate-500 dark:text-slate-400 select-all">
                                 {item.certificate_id}
                               </span>
-                              <span className="text-emerald-700 font-semibold inline-flex items-center gap-0.5">
+                              <span className="text-emerald-700 dark:text-emerald-400 font-semibold inline-flex items-center gap-0.5">
                                 <CheckCircle2 size={11} /> Verified
                               </span>
                             </div>
@@ -1095,7 +1122,7 @@ export const Dashboard: React.FC = () => {
                                 });
                                 setIsCertModalOpen(true);
                               }}
-                              className="w-full py-1.5 px-2 bg-amber-500/15 hover:bg-amber-500 hover:text-slate-950 border border-amber-400/60 text-amber-950 rounded text-[11px] font-bold inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-200 shadow-2xs btn-press"
+                              className="w-full py-1.5 px-2 bg-amber-500/15 hover:bg-amber-500 hover:text-slate-950 dark:bg-amber-500/20 dark:hover:bg-amber-500 dark:hover:text-slate-950 border border-amber-400/60 dark:border-amber-600/50 text-amber-950 dark:text-amber-200 rounded text-[11px] font-bold inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-200 shadow-2xs btn-press"
                             >
                               <Download size={12} />
                               <span>View & Download Certificate (PDF)</span>
@@ -1105,13 +1132,13 @@ export const Dashboard: React.FC = () => {
                       ))}
                   </div>
                 ) : (
-                  <div className="p-4 bg-slate-50 border border-slate-200 rounded text-xs text-slate-500 text-center">
+                  <div className="p-4 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded text-xs text-slate-500 dark:text-slate-400 text-center">
                     <p className="mb-1">
                       No completed course badges issued yet.
                     </p>
                     <button
                       onClick={() => setActiveTab("pathways")}
-                      className="text-blue-900 font-semibold hover:underline inline-flex items-center gap-1 cursor-pointer transition-all duration-150"
+                      className="text-blue-900 dark:text-amber-400 font-semibold hover:underline inline-flex items-center gap-1 cursor-pointer transition-all duration-150"
                     >
                       <span>
                         Complete an enrolled pathway to earn verified
@@ -1123,17 +1150,17 @@ export const Dashboard: React.FC = () => {
                 )}
               </div>
 
-              <div className="bg-white border border-slate-300 rounded shadow-xs p-5 space-y-4 card-interactive">
-                <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs p-5 space-y-4 card-interactive">
+                <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-8 h-8 rounded-lg bg-blue-100/80 text-blue-900 flex items-center justify-center shrink-0 border border-blue-200/60 shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-blue-100/80 dark:bg-blue-950/80 text-blue-900 dark:text-blue-300 flex items-center justify-center shrink-0 border border-blue-200/60 dark:border-blue-800/60 shadow-2xs">
                       <Network size={18} className="shrink-0" />
                     </div>
                     <div className="min-w-0">
-                      <h2 className="font-serif text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 leading-snug">
+                      <h2 className="font-serif text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white leading-snug">
                         Cadre Competency Visual Intelligence
                       </h2>
-                      <span className="text-[10.5px] text-slate-500 block truncate">
+                      <span className="text-[10.5px] text-slate-500 dark:text-slate-400 block truncate">
                         Interactive Radar Analytics & Division Heatmap
                       </span>
                     </div>
@@ -1144,18 +1171,18 @@ export const Dashboard: React.FC = () => {
                   <div className="md:col-span-6 space-y-3">
                     <div>
                       <div className="flex justify-between items-baseline mb-1">
-                        <span className="text-xs text-slate-600 font-medium">
+                        <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">
                           Cadre Benchmark Alignment
                         </span>
-                        <span className="font-mono text-base font-bold text-slate-900">
+                        <span className="font-mono text-base font-bold text-slate-900 dark:text-white">
                           {matrixData
                             ? `${matrixData.composite_skill_index}%`
                             : "—"}
                         </span>
                       </div>
-                      <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                      <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
                         <div
-                          className="bg-blue-900 h-full rounded-full transition-all duration-1000 ease-out"
+                          className="bg-blue-900 dark:bg-blue-500 h-full rounded-full transition-all duration-1000 ease-out"
                           style={{
                             width: `${matrixData ? Math.min(100, matrixData.composite_skill_index) : 0}%`,
                           }}
@@ -1164,20 +1191,20 @@ export const Dashboard: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                      <div className="bg-emerald-50 border border-emerald-200 p-2.5 rounded transition-transform duration-200 hover:scale-[1.02]">
-                        <span className="text-[10px] uppercase text-emerald-800 font-bold block">
+                      <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 p-2.5 rounded transition-transform duration-200 hover:scale-[1.02]">
+                        <span className="text-[10px] uppercase text-emerald-800 dark:text-emerald-400 font-bold block">
                           Benchmarks Met
                         </span>
-                        <span className="text-sm font-bold text-emerald-950 block mt-0.5">
+                        <span className="text-sm font-bold text-emerald-950 dark:text-emerald-200 block mt-0.5">
                           {matrixData?.achieved_count || 0} /{" "}
                           {matrixData?.total_competencies || 0}
                         </span>
                       </div>
-                      <div className="bg-rose-50 border border-rose-200 p-2.5 rounded transition-transform duration-200 hover:scale-[1.02]">
-                        <span className="text-[10px] uppercase text-rose-800 font-bold block">
+                      <div className="bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/60 p-2.5 rounded transition-transform duration-200 hover:scale-[1.02]">
+                        <span className="text-[10px] uppercase text-rose-800 dark:text-rose-400 font-bold block">
                           Active Gaps
                         </span>
-                        <span className="text-sm font-bold text-rose-950 block mt-0.5">
+                        <span className="text-sm font-bold text-rose-950 dark:text-rose-200 block mt-0.5">
                           {matrixData?.gap_count || 0} Identified
                         </span>
                       </div>
@@ -1211,10 +1238,10 @@ export const Dashboard: React.FC = () => {
                         setMatrixView("heatmap");
                         setActiveTab("matrix");
                       }}
-                      className="w-full p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 rounded-lg text-xs font-semibold inline-flex items-center justify-between cursor-pointer transition-all duration-200 btn-press group"
+                      className="w-full p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-700 rounded-lg text-xs font-semibold inline-flex items-center justify-between cursor-pointer transition-all duration-200 btn-press group"
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="w-7 h-7 rounded-md bg-rose-50 text-rose-700 flex items-center justify-center shrink-0 border border-rose-200 group-hover:scale-110 transition-transform duration-300">
+                        <div className="w-7 h-7 rounded-md bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 flex items-center justify-center shrink-0 border border-rose-200 dark:border-rose-800 group-hover:scale-110 transition-transform duration-300">
                           <Grid3X3 size={15} className="shrink-0" />
                         </div>
                         <span className="truncate">
@@ -1223,7 +1250,7 @@ export const Dashboard: React.FC = () => {
                       </div>
                       <ChevronRight
                         size={14}
-                        className="text-slate-500 group-hover:translate-x-1 transition-transform shrink-0"
+                        className="text-slate-500 dark:text-slate-400 group-hover:translate-x-1 transition-transform shrink-0"
                       />
                     </button>
                   </div>
@@ -1297,34 +1324,34 @@ export const Dashboard: React.FC = () => {
 
         {activeTab === "matrix" && (
           <div key="tab-matrix" className="animate-tab-enter space-y-6">
-            <div className="bg-white border border-slate-300 rounded shadow-xs p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 block mb-0.5">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 block mb-0.5">
                   Framework for Roles, Activities and Competencies (FRAC)
                 </span>
-                <h2 className="font-serif text-xl font-bold text-slate-900">
+                <h2 className="font-serif text-xl font-bold text-slate-900 dark:text-white">
                   Official Cadre Competency Matrix & Analytics
                 </h2>
-                <p className="text-xs text-slate-600 mt-0.5">
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
                   Benchmarks mapped for{" "}
-                  <strong className="text-slate-800 font-semibold">
+                  <strong className="text-slate-800 dark:text-slate-200 font-semibold">
                     {user.designation || "Statistical Officer"}
                   </strong>{" "}
                   in{" "}
-                  <strong className="text-slate-800 font-semibold">
+                  <strong className="text-slate-800 dark:text-slate-200 font-semibold">
                     {user.department || "MoSPI"}
                   </strong>
                 </p>
               </div>
 
               <div className="flex items-center justify-center md:justify-end w-full md:w-auto shrink-0">
-                <div className="inline-flex items-center bg-slate-100 p-1 border border-slate-300 rounded text-xs">
+                <div className="inline-flex items-center bg-slate-100 dark:bg-slate-800 p-1 border border-slate-300 dark:border-slate-700 rounded text-xs">
                   <button
                     onClick={() => setMatrixView("radar")}
                     className={`px-3 py-1.5 font-semibold rounded inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-150 whitespace-nowrap ${
                       matrixView === "radar"
-                        ? "bg-slate-900 text-white shadow-xs"
-                        : "text-slate-700 hover:text-slate-950"
+                        ? "bg-slate-900 dark:bg-slate-700 text-white dark:text-amber-300 shadow-xs"
+                        : "text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white"
                     }`}
                     title="Radar Spider Chart"
                     aria-label="Radar Spider Chart"
@@ -1336,8 +1363,8 @@ export const Dashboard: React.FC = () => {
                     onClick={() => setMatrixView("heatmap")}
                     className={`px-3 py-1.5 font-semibold rounded inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-150 whitespace-nowrap ${
                       matrixView === "heatmap"
-                        ? "bg-slate-900 text-white shadow-xs"
-                        : "text-slate-700 hover:text-slate-950"
+                        ? "bg-slate-900 dark:bg-slate-700 text-white dark:text-amber-300 shadow-xs"
+                        : "text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white"
                     }`}
                     title="Division Heatmap"
                     aria-label="Division Heatmap"
@@ -1349,8 +1376,8 @@ export const Dashboard: React.FC = () => {
                     onClick={() => setMatrixView("table")}
                     className={`px-3 py-1.5 font-semibold rounded inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-150 whitespace-nowrap ${
                       matrixView === "table"
-                        ? "bg-slate-900 text-white shadow-xs"
-                        : "text-slate-700 hover:text-slate-950"
+                        ? "bg-slate-900 dark:bg-slate-700 text-white dark:text-amber-300 shadow-xs"
+                        : "text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white"
                     }`}
                     title="Tabular Matrix"
                     aria-label="Tabular Matrix"
@@ -1363,32 +1390,32 @@ export const Dashboard: React.FC = () => {
             </div>
 
             {matrixLoading && (
-              <div className="bg-white border border-slate-300 rounded p-6 shadow-xs overflow-hidden divide-y divide-slate-200 animate-pulse">
-                <div className="h-10 bg-slate-100 flex items-center px-4 gap-6">
-                  <div className="w-20 h-4 bg-slate-300 rounded" />
-                  <div className="w-48 h-4 bg-slate-300 rounded" />
-                  <div className="w-28 h-4 bg-slate-300 rounded" />
-                  <div className="w-24 h-4 bg-slate-300 rounded" />
+              <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded p-6 shadow-xs overflow-hidden divide-y divide-slate-200 dark:divide-slate-800 animate-pulse">
+                <div className="h-10 bg-slate-100 dark:bg-slate-800 flex items-center px-4 gap-6">
+                  <div className="w-20 h-4 bg-slate-300 dark:bg-slate-700 rounded" />
+                  <div className="w-48 h-4 bg-slate-300 dark:bg-slate-700 rounded" />
+                  <div className="w-28 h-4 bg-slate-300 dark:bg-slate-700 rounded" />
+                  <div className="w-24 h-4 bg-slate-300 dark:bg-slate-700 rounded" />
                 </div>
                 {[1, 2, 3, 4, 5].map((idx) => (
                   <div
                     key={idx}
                     className="p-4 flex items-center justify-between gap-6"
                   >
-                    <div className="w-16 h-4 bg-slate-200 rounded" />
+                    <div className="w-16 h-4 bg-slate-200 dark:bg-slate-800 rounded" />
                     <div className="flex-1 space-y-1.5">
-                      <div className="w-3/5 h-4 bg-slate-200 rounded" />
-                      <div className="w-4/5 h-3 bg-slate-100 rounded" />
+                      <div className="w-3/5 h-4 bg-slate-200 dark:bg-slate-800 rounded" />
+                      <div className="w-4/5 h-3 bg-slate-100 dark:bg-slate-800 rounded" />
                     </div>
-                    <div className="w-24 h-4 bg-slate-200 rounded" />
-                    <div className="w-20 h-6 bg-slate-200 rounded" />
+                    <div className="w-24 h-4 bg-slate-200 dark:bg-slate-800 rounded" />
+                    <div className="w-20 h-6 bg-slate-200 dark:bg-slate-800 rounded" />
                   </div>
                 ))}
               </div>
             )}
 
             {matrixError && !matrixLoading && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded flex items-center gap-3 text-red-800 text-xs">
+              <div className="p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 rounded flex items-center gap-3 text-red-800 dark:text-red-300 text-xs">
                 <AlertCircle size={16} className="shrink-0" />
                 <div className="flex-1">
                   <span className="font-semibold">
@@ -1398,7 +1425,7 @@ export const Dashboard: React.FC = () => {
                 </div>
                 <button
                   onClick={fetchMatrix}
-                  className="px-2.5 py-1 bg-red-800 text-white rounded text-[11px] font-semibold cursor-pointer"
+                  className="px-2.5 py-1 bg-red-800 dark:bg-red-700 text-white rounded text-[11px] font-semibold cursor-pointer"
                 >
                   Retry
                 </button>
@@ -1428,13 +1455,13 @@ export const Dashboard: React.FC = () => {
                 )}
 
                 {matrixView === "table" && (
-                  <div className="bg-white border border-slate-300 rounded shadow-xs p-3 sm:p-6 space-y-4 sm:space-y-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-slate-200 pb-3 sm:pb-4">
+                  <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs p-3 sm:p-6 space-y-4 sm:space-y-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-slate-200 dark:border-slate-800 pb-3 sm:pb-4">
                       <div>
-                        <h3 className="font-serif text-base sm:text-lg font-bold text-slate-900">
+                        <h3 className="font-serif text-base sm:text-lg font-bold text-slate-900 dark:text-white">
                           Complete Competency Roster
                         </h3>
-                        <p className="text-xs text-slate-600">
+                        <p className="text-xs text-slate-600 dark:text-slate-400">
                           Showing {matrixData.items.length} mapped competencies
                         </p>
                       </div>
@@ -1468,7 +1495,7 @@ export const Dashboard: React.FC = () => {
                                 onClick={() =>
                                   setIsRosterDropdownOpen((prev) => !prev)
                                 }
-                                className="w-full bg-white border border-slate-300 hover:border-slate-400 focus:border-blue-900 text-slate-900 rounded-lg px-3 py-2 text-xs font-semibold shadow-2xs flex items-center justify-between gap-2 transition-all duration-200 cursor-pointer btn-press text-left"
+                                className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 focus:border-blue-900 text-slate-900 dark:text-white rounded-lg px-3 py-2 text-xs font-semibold shadow-2xs flex items-center justify-between gap-2 transition-all duration-200 cursor-pointer btn-press text-left"
                                 aria-expanded={isRosterDropdownOpen}
                               >
                                 <span className="truncate">{curOpt.label}</span>
@@ -1476,7 +1503,7 @@ export const Dashboard: React.FC = () => {
                                   size={14}
                                   className={`text-slate-400 shrink-0 transition-transform duration-200 ${
                                     isRosterDropdownOpen
-                                      ? "rotate-180 text-blue-900"
+                                      ? "rotate-180 text-blue-900 dark:text-amber-400"
                                       : ""
                                   }`}
                                 />
@@ -1490,7 +1517,7 @@ export const Dashboard: React.FC = () => {
                                       setIsRosterDropdownOpen(false)
                                     }
                                   />
-                                  <div className="absolute top-full left-0 right-0 mt-1 z-50 bg-white/98 backdrop-blur-md border border-slate-200 rounded-xl shadow-xl ring-1 ring-slate-900/10 p-1 space-y-0.5 animate-scale-in">
+                                  <div className="absolute top-full left-0 right-0 mt-1 z-50 bg-white/98 dark:bg-slate-900/98 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl ring-1 ring-slate-900/10 dark:ring-slate-800 p-1 space-y-0.5 animate-scale-in">
                                     {rosterOptions.map((opt) => {
                                       const isSelected =
                                         categoryFilter === opt.id;
@@ -1504,8 +1531,8 @@ export const Dashboard: React.FC = () => {
                                           }}
                                           className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md text-xs text-left transition-all duration-150 cursor-pointer ${
                                             isSelected
-                                              ? "bg-slate-900 text-white font-semibold shadow-xs"
-                                              : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                              ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 font-semibold shadow-xs"
+                                              : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                                           }`}
                                         >
                                           <span className="truncate">
@@ -1529,7 +1556,7 @@ export const Dashboard: React.FC = () => {
                       </div>
 
                       {/* Desktop / Tablet Category Tabs */}
-                      <div className="hidden sm:flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 border border-slate-300 rounded text-xs">
+                      <div className="hidden sm:flex flex-wrap items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 border border-slate-300 dark:border-slate-700 rounded text-xs">
                         {[
                           "all",
                           "Domain",
@@ -1542,8 +1569,8 @@ export const Dashboard: React.FC = () => {
                             onClick={() => setCategoryFilter(cat)}
                             className={`px-3 py-1 font-semibold rounded transition-all duration-150 cursor-pointer capitalize ${
                               categoryFilter === cat
-                                ? "bg-white text-slate-900 shadow-xs"
-                                : "text-slate-600 hover:text-slate-900"
+                                ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs"
+                                : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                             }`}
                           >
                             {cat === "all"
@@ -1572,10 +1599,10 @@ export const Dashboard: React.FC = () => {
                           return (
                             <div
                               key={comp.id}
-                              className="p-3 bg-slate-50/80 border border-slate-200 rounded space-y-2.5"
+                              className="p-3 bg-slate-50/80 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded space-y-2.5"
                             >
                               <div className="space-y-1.5">
-                                <span className="font-mono font-bold text-blue-900 text-xs block">
+                                <span className="font-mono font-bold text-blue-900 dark:text-blue-400 text-xs block">
                                   {comp.code}
                                 </span>
 
@@ -1583,10 +1610,10 @@ export const Dashboard: React.FC = () => {
                                   <span
                                     className={`px-2 py-0.5 font-mono text-[10px] font-bold rounded border uppercase shrink-0 ${
                                       comp.category === "Domain"
-                                        ? "bg-blue-100 text-blue-800 border-blue-200"
+                                        ? "bg-blue-100 dark:bg-blue-950/80 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800"
                                         : comp.category === "Functional"
-                                          ? "bg-purple-100 text-purple-800 border-purple-200"
-                                          : "bg-amber-100 text-amber-800 border-amber-200"
+                                          ? "bg-purple-100 dark:bg-purple-950/80 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800"
+                                          : "bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800"
                                     }`}
                                   >
                                     {comp.category}
@@ -1595,21 +1622,21 @@ export const Dashboard: React.FC = () => {
                                   <span
                                     className={`px-2 py-0.5 font-mono text-[10px] font-bold rounded border shrink-0 ${
                                       isAchieved
-                                        ? "bg-emerald-50 border-emerald-300 text-emerald-800"
-                                        : "bg-amber-50 border-amber-300 text-amber-800"
+                                        ? "bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300"
+                                        : "bg-amber-50 dark:bg-amber-950/60 border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-300"
                                     }`}
                                   >
                                     {isAchieved ? "Met Benchmark" : "Skill Gap"}
                                   </span>
                                 </div>
 
-                                <h4 className="font-semibold text-slate-900 text-xs leading-snug pt-0.5">
+                                <h4 className="font-semibold text-slate-900 dark:text-white text-xs leading-snug pt-0.5">
                                   {comp.name}
                                 </h4>
                               </div>
 
                               {comp.description && (
-                                <p className="text-slate-600 text-[11px] leading-relaxed break-words">
+                                <p className="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed break-words">
                                   {comp.description}
                                 </p>
                               )}
@@ -1621,7 +1648,7 @@ export const Dashboard: React.FC = () => {
                                       (cName, idx) => (
                                         <span
                                           key={idx}
-                                          className="text-[10px] font-mono bg-white text-slate-700 px-2 py-0.5 rounded border border-slate-200 break-words leading-tight"
+                                          className="text-[10px] font-mono bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 break-words leading-tight"
                                         >
                                           📚 {cName}
                                         </span>
@@ -1630,19 +1657,24 @@ export const Dashboard: React.FC = () => {
                                   </div>
                                 )}
 
-                              <div className="pt-2.5 border-t border-slate-200 space-y-2">
+                              <div className="pt-2.5 border-t border-slate-200 dark:border-slate-800 space-y-2">
                                 <div className="flex items-center gap-2 text-xs font-mono">
-                                  <span className="text-slate-600 text-[11px]">
-                                    Req: <strong>L{comp.target_level}</strong>
+                                  <span className="text-slate-600 dark:text-slate-400 text-[11px]">
+                                    Req:{" "}
+                                    <strong className="text-slate-900 dark:text-white">
+                                      L{comp.target_level}
+                                    </strong>
                                   </span>
-                                  <span className="text-slate-300">•</span>
-                                  <span className="text-slate-600 text-[11px]">
+                                  <span className="text-slate-300 dark:text-slate-600">
+                                    •
+                                  </span>
+                                  <span className="text-slate-600 dark:text-slate-400 text-[11px]">
                                     Score:{" "}
                                     <strong
                                       className={
                                         isAchieved
-                                          ? "text-emerald-700 font-bold"
-                                          : "text-amber-800 font-bold"
+                                          ? "text-emerald-700 dark:text-emerald-400 font-bold"
+                                          : "text-amber-800 dark:text-amber-400 font-bold"
                                       }
                                     >
                                       L{comp.assessed_level}
@@ -1656,11 +1688,11 @@ export const Dashboard: React.FC = () => {
                                       onClick={() =>
                                         handleStartAssessment(comp)
                                       }
-                                      className="w-full py-2 bg-white hover:bg-slate-100 text-slate-800 font-semibold rounded text-xs inline-flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs transition-colors cursor-pointer"
+                                      className="w-full py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold rounded text-xs inline-flex items-center justify-center gap-1.5 border border-slate-300 dark:border-slate-700 shadow-2xs transition-colors cursor-pointer"
                                     >
                                       <FileText
                                         size={13}
-                                        className="text-slate-500 shrink-0"
+                                        className="text-slate-500 dark:text-slate-400 shrink-0"
                                       />
                                       <span>Re-evaluate Competency</span>
                                     </button>
@@ -1670,7 +1702,7 @@ export const Dashboard: React.FC = () => {
                                         onClick={() =>
                                           handleStartAssessment(comp)
                                         }
-                                        className="flex-1 w-1/2 py-2 bg-blue-900 hover:bg-blue-950 text-white font-semibold rounded text-xs inline-flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+                                        className="flex-1 w-1/2 py-2 bg-blue-900 dark:bg-blue-700 hover:bg-blue-950 dark:hover:bg-blue-600 text-white font-semibold rounded text-xs inline-flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
                                       >
                                         <FileText
                                           size={13}
@@ -1699,9 +1731,9 @@ export const Dashboard: React.FC = () => {
                     </div>
 
                     {/* Desktop Table View (>= sm) */}
-                    <div className="hidden sm:block overflow-x-auto border border-slate-300 rounded">
+                    <div className="hidden sm:block overflow-x-auto border border-slate-300 dark:border-slate-800 rounded">
                       <table className="w-full text-left text-xs">
-                        <thead className="bg-slate-100 text-slate-800 font-semibold border-b border-slate-300">
+                        <thead className="bg-slate-100 dark:bg-slate-800/90 text-slate-800 dark:text-slate-200 font-semibold border-b border-slate-300 dark:border-slate-700">
                           <tr>
                             <th className="py-2 sm:py-3 px-2 sm:px-4 whitespace-nowrap">
                               Domain Code
@@ -1720,7 +1752,7 @@ export const Dashboard: React.FC = () => {
                             </th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-200 font-normal">
+                        <tbody className="divide-y divide-slate-200 dark:divide-slate-800 font-normal">
                           {matrixData.items
                             .filter((comp) => {
                               if (categoryFilter === "all") return true;
@@ -1735,30 +1767,30 @@ export const Dashboard: React.FC = () => {
                               return (
                                 <tr
                                   key={comp.id}
-                                  className="hover:bg-slate-50/80 transition-colors"
+                                  className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors"
                                 >
-                                  <td className="py-2.5 sm:py-3.5 px-2 sm:px-4 font-mono font-bold text-blue-900 align-top whitespace-nowrap text-[11px] sm:text-xs">
+                                  <td className="py-2.5 sm:py-3.5 px-2 sm:px-4 font-mono font-bold text-blue-900 dark:text-blue-400 align-top whitespace-nowrap text-[11px] sm:text-xs">
                                     {comp.code}
                                   </td>
                                   <td className="py-2.5 sm:py-3.5 px-2.5 sm:px-4 max-w-sm">
                                     <div className="flex items-center gap-1.5 mb-1 flex-wrap">
-                                      <span className="font-semibold text-slate-900 text-xs">
+                                      <span className="font-semibold text-slate-900 dark:text-white text-xs">
                                         {comp.name}
                                       </span>
                                       <span
                                         className={`px-1.5 py-0.2 font-mono text-[9px] font-bold rounded uppercase shrink-0 ${
                                           comp.category === "Domain"
-                                            ? "bg-blue-100 text-blue-800 border border-blue-200"
+                                            ? "bg-blue-100 dark:bg-blue-950/80 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
                                             : comp.category === "Functional"
-                                              ? "bg-purple-100 text-purple-800 border border-purple-200"
-                                              : "bg-amber-100 text-amber-800 border border-amber-200"
+                                              ? "bg-purple-100 dark:bg-purple-950/80 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800"
+                                              : "bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800"
                                         }`}
                                       >
                                         {comp.category}
                                       </span>
                                     </div>
                                     {comp.description && (
-                                      <p className="text-slate-600 text-[11px] leading-relaxed break-words">
+                                      <p className="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed break-words">
                                         {comp.description}
                                       </p>
                                     )}
@@ -1769,7 +1801,7 @@ export const Dashboard: React.FC = () => {
                                             (cName, idx) => (
                                               <span
                                                 key={idx}
-                                                className="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200 break-words leading-tight"
+                                                className="text-[10px] font-mono bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 break-words leading-tight"
                                               >
                                                 {cName}
                                               </span>
@@ -1778,11 +1810,11 @@ export const Dashboard: React.FC = () => {
                                         </div>
                                       )}
                                   </td>
-                                  <td className="py-2.5 sm:py-3.5 px-2 sm:px-4 font-mono text-slate-700 align-top whitespace-nowrap text-[11px] sm:text-xs">
-                                    <span className="font-semibold text-slate-900">
+                                  <td className="py-2.5 sm:py-3.5 px-2 sm:px-4 font-mono text-slate-700 dark:text-slate-300 align-top whitespace-nowrap text-[11px] sm:text-xs">
+                                    <span className="font-semibold text-slate-900 dark:text-white">
                                       Level {comp.target_level}
                                     </span>{" "}
-                                    <span className="hidden sm:inline">
+                                    <span className="hidden sm:inline text-slate-500 dark:text-slate-400">
                                       •{" "}
                                       {comp.target_level === 1
                                         ? "Beginner"
@@ -1799,8 +1831,8 @@ export const Dashboard: React.FC = () => {
                                     <span
                                       className={`inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-1 font-mono text-[10px] sm:text-[11px] font-bold rounded border ${
                                         comp.assessed_level >= comp.target_level
-                                          ? "bg-emerald-50 border-emerald-300 text-emerald-800"
-                                          : "bg-amber-50 border-amber-300 text-amber-800"
+                                          ? "bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300"
+                                          : "bg-amber-50 dark:bg-amber-950/60 border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-300"
                                       }`}
                                     >
                                       Level {comp.assessed_level}
@@ -1809,10 +1841,10 @@ export const Dashboard: React.FC = () => {
                                   <td className="py-2.5 sm:py-3.5 px-2.5 sm:px-4 align-top whitespace-nowrap">
                                     {isAchieved ? (
                                       <div className="flex flex-col items-start gap-1">
-                                        <span className="text-emerald-700 font-medium flex items-center gap-1 text-[11px] sm:text-xs">
+                                        <span className="text-emerald-700 dark:text-emerald-400 font-medium flex items-center gap-1 text-[11px] sm:text-xs">
                                           <CheckCircle2
                                             size={13}
-                                            className="text-emerald-600 shrink-0"
+                                            className="text-emerald-600 dark:text-emerald-400 shrink-0"
                                           />
                                           <span>Met Benchmark</span>
                                         </span>
@@ -1820,22 +1852,22 @@ export const Dashboard: React.FC = () => {
                                           onClick={() =>
                                             handleStartAssessment(comp)
                                           }
-                                          className="px-2 py-0.5 bg-white hover:bg-slate-100 text-slate-700 font-semibold rounded text-[10px] sm:text-[11px] inline-flex items-center gap-1 border border-slate-300 transition-colors cursor-pointer"
+                                          className="px-2 py-0.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold rounded text-[10px] sm:text-[11px] inline-flex items-center gap-1 border border-slate-300 dark:border-slate-700 transition-colors cursor-pointer"
                                           title="Take evaluation to advance level further"
                                         >
                                           <FileText
                                             size={11}
-                                            className="text-slate-500 shrink-0"
+                                            className="text-slate-500 dark:text-slate-400 shrink-0"
                                           />
                                           <span>Re-evaluate</span>
                                         </button>
                                       </div>
                                     ) : (
                                       <div className="flex flex-col items-start gap-1">
-                                        <span className="text-amber-800 font-semibold text-[10.5px] sm:text-[11px] flex items-center gap-1">
+                                        <span className="text-amber-800 dark:text-amber-400 font-semibold text-[10.5px] sm:text-[11px] flex items-center gap-1">
                                           <AlertCircle
                                             size={12}
-                                            className="text-amber-600 shrink-0"
+                                            className="text-amber-600 dark:text-amber-400 shrink-0"
                                           />
                                           <span>Skill Gap</span>
                                         </span>
@@ -1844,7 +1876,7 @@ export const Dashboard: React.FC = () => {
                                             onClick={() =>
                                               handleStartAssessment(comp)
                                             }
-                                            className="px-2 py-0.5 sm:px-2.5 sm:py-1 bg-blue-900 hover:bg-blue-950 text-white font-semibold rounded text-[10px] sm:text-[11px] inline-flex items-center gap-1 shadow-xs transition-colors cursor-pointer"
+                                            className="px-2 py-0.5 sm:px-2.5 sm:py-1 bg-blue-900 dark:bg-blue-700 hover:bg-blue-950 dark:hover:bg-blue-600 text-white font-semibold rounded text-[10px] sm:text-[11px] inline-flex items-center gap-1 shadow-xs transition-colors cursor-pointer"
                                           >
                                             <FileText
                                               size={11}
@@ -1880,67 +1912,72 @@ export const Dashboard: React.FC = () => {
               </>
             )}
 
-            <div className="border border-slate-200 bg-slate-50/80 rounded p-4">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 block mb-2 font-semibold">
+            <div className="border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-950/60 rounded p-4">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 block mb-2 font-semibold">
                 Capacity Building Commission (CBC) • FRAC 5-Level Competency
                 Scale
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 text-left">
-                <div className="bg-white border border-slate-200 p-2 rounded">
-                  <span className="font-mono text-[11px] font-bold text-slate-700 block">
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2 rounded">
+                  <span className="font-mono text-[11px] font-bold text-slate-700 dark:text-slate-300 block">
                     Level 1 • Beginner
                   </span>
-                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight block mt-0.5">
                     Foundational concepts with direct assistance.
                   </span>
                 </div>
-                <div className="bg-white border border-slate-200 p-2 rounded">
-                  <span className="font-mono text-[11px] font-bold text-amber-700 block">
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2 rounded">
+                  <span className="font-mono text-[11px] font-bold text-amber-700 dark:text-amber-400 block">
                     Level 2 • Intermediate
                   </span>
-                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight block mt-0.5">
                     Executes routine procedures with periodic review.
                   </span>
                 </div>
-                <div className="bg-white border border-slate-200 p-2 rounded">
-                  <span className="font-mono text-[11px] font-bold text-blue-700 block">
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2 rounded">
+                  <span className="font-mono text-[11px] font-bold text-blue-700 dark:text-blue-400 block">
                     Level 3 • Proficient
                   </span>
-                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight block mt-0.5">
                     Independent execution of standard official tasks.
                   </span>
                 </div>
-                <div className="bg-white border border-slate-200 p-2 rounded">
-                  <span className="font-mono text-[11px] font-bold text-indigo-700 block">
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2 rounded">
+                  <span className="font-mono text-[11px] font-bold text-indigo-700 dark:text-indigo-400 block">
                     Level 4 • Advanced
                   </span>
-                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight block mt-0.5">
                     Complex analysis, supervisory auditing & design.
                   </span>
                 </div>
-                <div className="bg-white border border-slate-200 p-2 rounded">
-                  <span className="font-mono text-[11px] font-bold text-emerald-700 block">
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2 rounded">
+                  <span className="font-mono text-[11px] font-bold text-emerald-700 dark:text-emerald-400 block">
                     Level 5 • Expert
                   </span>
-                  <span className="text-[10px] text-slate-500 leading-tight block mt-0.5">
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight block mt-0.5">
                     Strategic policy leadership & national methodology.
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-slate-50 border border-slate-200 p-4 rounded text-xs text-slate-600 flex items-start gap-2.5">
-              <Layers size={16} className="text-slate-500 shrink-0 mt-0.5" />
+            <div className="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 p-4 rounded text-xs text-slate-600 dark:text-slate-300 flex items-start gap-2.5">
+              <Layers
+                size={16}
+                className="text-slate-500 dark:text-slate-400 shrink-0 mt-0.5"
+              />
               <div>
-                <strong className="text-slate-800 font-semibold block">
+                <strong className="text-slate-800 dark:text-slate-200 font-semibold block">
                   Cadre Competency Guidance:
                 </strong>
                 Officers in the{" "}
-                <span className="font-medium text-slate-900">
+                <span className="font-medium text-slate-900 dark:text-white">
                   {user.designation || "Statistical Officer"}
                 </span>{" "}
                 cadre are required to achieve{" "}
-                <strong className="text-slate-900">Level 3 (Proficient)</strong>{" "}
+                <strong className="text-slate-900 dark:text-white">
+                  Level 3 (Proficient)
+                </strong>{" "}
                 or higher across all foundational statistical domains to qualify
                 for regular cadre progression, deputation postings, and
                 specialized UN/World Bank statistical mission nominations.
@@ -1951,21 +1988,21 @@ export const Dashboard: React.FC = () => {
 
         {activeTab === "pathways" && (
           <div key="tab-pathways" className="animate-tab-enter space-y-6">
-            <div className="p-4 sm:p-5 rounded border border-slate-300 bg-white shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 card-interactive">
+            <div className="p-4 sm:p-5 rounded border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 card-interactive">
               <div className="flex items-start sm:items-center gap-3.5">
-                <div className="p-2.5 bg-blue-50 border border-blue-200 rounded text-blue-900 shrink-0">
+                <div className="p-2.5 bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 rounded text-blue-900 dark:text-blue-300 shrink-0">
                   <FileText size={20} className="animate-pulse-subtle" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 font-semibold">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 font-semibold">
                       Self-Paced Assessment Module
                     </span>
                   </div>
-                  <h3 className="font-serif text-sm sm:text-base font-bold text-slate-900 mt-0.5">
+                  <h3 className="font-serif text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-0.5">
                     Generate Quizzes Directly From Learning Materials
                   </h3>
-                  <p className="text-xs text-slate-600 mt-0.5 max-w-2xl">
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 max-w-2xl">
                     Upload statistical manuals, survey guidelines, or policy
                     PDFs to generate 5, 10, or 15 calibrated MCQs with
                     source-based explanations and competency scoring.
@@ -1974,22 +2011,22 @@ export const Dashboard: React.FC = () => {
               </div>
               <button
                 onClick={() => setActiveTab("quiz-studio")}
-                className="px-4 py-2 bg-blue-900 hover:bg-blue-950 text-white rounded text-xs font-semibold shrink-0 flex items-center gap-1.5 shadow-xs cursor-pointer transition-all duration-200 btn-press"
+                className="px-4 py-2 bg-blue-900 dark:bg-blue-800 hover:bg-blue-950 dark:hover:bg-blue-700 text-white rounded text-xs font-semibold shrink-0 flex items-center gap-1.5 shadow-xs cursor-pointer transition-all duration-200 btn-press"
               >
                 <Upload size={14} />
                 <span>Open Quiz Generator</span>
               </button>
             </div>
 
-            <div className="bg-white border border-slate-300 rounded shadow-xs p-3 sm:p-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4 sm:pb-5 mb-4 sm:mb-6">
+            <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs p-3 sm:p-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4 sm:pb-5 mb-4 sm:mb-6">
                 <div>
                   <div className="flex items-center gap-2 mb-0.5">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400">
                       Mission Karmayogi Curriculum
                     </span>
                   </div>
-                  <h2 className="font-serif text-xl font-bold text-slate-900">
+                  <h2 className="font-serif text-xl font-bold text-slate-900 dark:text-white">
                     Official Statistical Learning Pathways
                   </h2>
                 </div>
@@ -1998,24 +2035,24 @@ export const Dashboard: React.FC = () => {
                   <div className="relative">
                     <Search
                       size={14}
-                      className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+                      className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500"
                     />
                     <input
                       type="text"
                       placeholder="Search courses, tags, institutions..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-900 focus:border-blue-900 transition-all duration-200 w-56 sm:w-64"
+                      className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-900 dark:focus:ring-blue-500 focus:border-blue-900 dark:focus:border-blue-500 transition-all duration-200 w-56 sm:w-64"
                     />
                   </div>
 
-                  <div className="flex items-center border border-slate-300 rounded overflow-hidden p-0.5 bg-slate-100 text-xs">
+                  <div className="flex items-center border border-slate-300 dark:border-slate-700 rounded overflow-hidden p-0.5 bg-slate-100 dark:bg-slate-800 text-xs">
                     <button
                       onClick={() => setCourseFilter("all")}
                       className={`px-3 py-1 font-semibold rounded transition-all duration-200 cursor-pointer btn-press ${
                         courseFilter === "all"
-                          ? "bg-white text-slate-900 shadow-xs"
-                          : "text-slate-600 hover:text-slate-900"
+                          ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs"
+                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
                       All ({courses.length})
@@ -2024,8 +2061,8 @@ export const Dashboard: React.FC = () => {
                       onClick={() => setCourseFilter("enrolled")}
                       className={`px-3 py-1 font-semibold rounded transition-all duration-200 cursor-pointer btn-press ${
                         courseFilter === "enrolled"
-                          ? "bg-white text-blue-900 shadow-xs"
-                          : "text-slate-600 hover:text-slate-900"
+                          ? "bg-white dark:bg-slate-700 text-blue-900 dark:text-blue-300 shadow-xs"
+                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
                       Enrolled ({enrolledIds.length})
@@ -2039,7 +2076,7 @@ export const Dashboard: React.FC = () => {
                     }}
                     disabled={coursesLoading || recommendationsLoading}
                     title="Refresh course list and recommendations"
-                    className="p-1.5 text-slate-600 hover:text-slate-900 border border-slate-300 rounded bg-white hover:bg-slate-50 cursor-pointer disabled:opacity-50 transition-all duration-200 btn-press"
+                    className="p-1.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer disabled:opacity-50 transition-all duration-200 btn-press"
                   >
                     <RotateCw
                       size={14}
@@ -2059,17 +2096,17 @@ export const Dashboard: React.FC = () => {
                     {[1, 2, 3, 4, 5, 6].map((i) => (
                       <div
                         key={i}
-                        className="rounded border border-slate-200 overflow-hidden bg-white"
+                        className="rounded border border-slate-200 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-900"
                       >
-                        <div className="h-36 bg-slate-200" />
+                        <div className="h-36 bg-slate-200 dark:bg-slate-800" />
                         <div className="p-4 space-y-3">
-                          <div className="h-3 w-1/3 bg-slate-200 rounded" />
-                          <div className="h-4 w-3/4 bg-slate-300 rounded" />
-                          <div className="h-3 w-full bg-slate-100 rounded" />
-                          <div className="h-3 w-5/6 bg-slate-100 rounded" />
-                          <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                            <div className="h-3 w-16 bg-slate-200 rounded" />
-                            <div className="h-7 w-24 bg-slate-300 rounded" />
+                          <div className="h-3 w-1/3 bg-slate-200 dark:bg-slate-800 rounded" />
+                          <div className="h-4 w-3/4 bg-slate-300 dark:bg-slate-700 rounded" />
+                          <div className="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded" />
+                          <div className="h-3 w-5/6 bg-slate-100 dark:bg-slate-800 rounded" />
+                          <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            <div className="h-3 w-16 bg-slate-200 dark:bg-slate-800 rounded" />
+                            <div className="h-7 w-24 bg-slate-300 dark:bg-slate-700 rounded" />
                           </div>
                         </div>
                       </div>
@@ -2078,7 +2115,7 @@ export const Dashboard: React.FC = () => {
                 )}
 
               {(coursesError || recommendationsError) && !coursesLoading && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded flex items-center gap-3 text-red-800 text-xs mb-6">
+                <div className="p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 rounded flex items-center gap-3 text-red-800 dark:text-red-300 text-xs mb-6">
                   <AlertCircle size={16} className="shrink-0" />
                   <div className="flex-1">
                     <span className="font-semibold">
@@ -2091,7 +2128,7 @@ export const Dashboard: React.FC = () => {
                       fetchCourses();
                       fetchRecommendations();
                     }}
-                    className="px-2.5 py-1 bg-red-800 text-white rounded text-[11px] font-semibold cursor-pointer btn-press"
+                    className="px-2.5 py-1 bg-red-800 dark:bg-red-700 text-white rounded text-[11px] font-semibold cursor-pointer btn-press"
                   >
                     Retry
                   </button>
@@ -2101,33 +2138,33 @@ export const Dashboard: React.FC = () => {
               {!coursesLoading &&
                 courseFilter === "all" &&
                 filteredRecommendations.length > 0 && (
-                  <div className="mb-6 sm:mb-10 pb-5 sm:pb-8 border-b border-slate-200">
-                    <div className="bg-slate-50 border border-slate-300 border-l-4 border-l-amber-600 p-3 sm:p-4 rounded-r mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs card-interactive">
+                  <div className="mb-6 sm:mb-10 pb-5 sm:pb-8 border-b border-slate-200 dark:border-slate-800">
+                    <div className="bg-slate-50 dark:bg-slate-950/60 border border-slate-300 dark:border-slate-800 border-l-4 border-l-amber-600 p-3 sm:p-4 rounded-r mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs card-interactive">
                       <div>
                         <div className="flex flex-col sm:flex-row sm:items-center items-start gap-1.5 sm:gap-2 mb-1.5">
-                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-slate-900 text-white font-mono text-[10px] font-semibold rounded uppercase tracking-wider w-fit">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-slate-900 dark:bg-slate-800 text-white font-mono text-[10px] font-semibold rounded uppercase tracking-wider w-fit">
                             <Compass
                               size={11}
                               className="text-amber-400 shrink-0"
                             />
                             Targeted Cadre Recommendations
                           </span>
-                          <span className="text-[11px] font-mono text-amber-900 font-semibold pl-0.5 sm:pl-0">
+                          <span className="text-[11px] font-mono text-amber-900 dark:text-amber-300 font-semibold pl-0.5 sm:pl-0">
                             {recommendationsData?.identified_gaps_count ||
                               filteredRecommendations.length}{" "}
                             Skill Gaps Identified
                           </span>
                         </div>
-                        <h3 className="font-serif text-base sm:text-lg font-bold text-slate-900">
+                        <h3 className="font-serif text-base sm:text-lg font-bold text-slate-900 dark:text-white">
                           Role-Aligned Competency Pathways
                         </h3>
-                        <p className="text-xs text-slate-600 mt-0.5">
+                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
                           Directly calibrated for{" "}
-                          <strong className="text-slate-800">
+                          <strong className="text-slate-800 dark:text-slate-200">
                             {user.designation || "Statistical Officer"}
                           </strong>{" "}
                           in{" "}
-                          <strong className="text-slate-800">
+                          <strong className="text-slate-800 dark:text-slate-200">
                             {user.department || "MoSPI"}
                           </strong>{" "}
                           to achieve mandatory benchmark proficiency.
@@ -2135,7 +2172,7 @@ export const Dashboard: React.FC = () => {
                       </div>
 
                       <div className="shrink-0 flex items-center gap-2">
-                        <span className="px-2.5 sm:px-3 py-1 bg-white border border-slate-300 text-slate-800 font-mono text-xs font-semibold rounded">
+                        <span className="px-2.5 sm:px-3 py-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-mono text-xs font-semibold rounded">
                           {filteredRecommendations.length} Targeted Courses
                         </span>
                       </div>
@@ -2152,9 +2189,9 @@ export const Dashboard: React.FC = () => {
                         return (
                           <div
                             key={`rec-${course.id}`}
-                            className="flex flex-col justify-between h-full rounded border border-slate-300 bg-white hover:border-slate-400 hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group card-interactive"
+                            className="flex flex-col justify-between h-full rounded border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-400 dark:hover:border-slate-700 hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden group card-interactive"
                           >
-                            <div className="relative h-32 sm:h-36 bg-slate-900 overflow-hidden border-b border-slate-200 flex items-center justify-center">
+                            <div className="relative h-32 sm:h-36 bg-slate-900 overflow-hidden border-b border-slate-200 dark:border-slate-800 flex items-center justify-center">
                               {course.image ? (
                                 <img
                                   src={course.image}
@@ -2192,36 +2229,36 @@ export const Dashboard: React.FC = () => {
 
                             <div className="p-2.5 sm:p-4 flex-1 flex flex-col justify-between">
                               <div>
-                                <div className="bg-slate-50 border border-slate-200 rounded p-2 sm:p-2.5 mb-2 sm:mb-3 text-xs text-slate-800 transition-colors group-hover:bg-slate-100/70 min-w-0">
-                                  <div className="flex items-start gap-1.5 font-bold text-[11px] text-blue-900 mb-0.5 min-w-0">
+                                <div className="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded p-2 sm:p-2.5 mb-2 sm:mb-3 text-xs text-slate-800 dark:text-slate-200 transition-colors group-hover:bg-slate-100/70 dark:group-hover:bg-slate-800/70 min-w-0">
+                                  <div className="flex items-start gap-1.5 font-bold text-[11px] text-blue-900 dark:text-blue-400 mb-0.5 min-w-0">
                                     <Target
                                       size={13}
-                                      className="text-amber-600 shrink-0 mt-0.5"
+                                      className="text-amber-600 dark:text-amber-400 shrink-0 mt-0.5"
                                     />
                                     <span className="break-words leading-tight">
                                       Target: {rec.targeted_competency}
                                     </span>
                                   </div>
-                                  <p className="text-[11px] text-slate-600 leading-relaxed font-sans break-words">
+                                  <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed font-sans break-words">
                                     {rec.reason}
                                   </p>
                                 </div>
 
                                 {course.by && (
-                                  <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block mb-0.5 break-words">
+                                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-0.5 break-words">
                                     {course.by}
                                   </span>
                                 )}
 
                                 <h4
-                                  className="font-serif text-sm font-bold text-slate-900 mb-1 leading-snug group-hover:text-blue-900 transition-colors break-words"
+                                  className="font-serif text-sm font-bold text-slate-900 dark:text-white mb-1 leading-snug group-hover:text-blue-900 dark:group-hover:text-amber-300 transition-colors break-words"
                                   title={course.name}
                                 >
                                   {course.name}
                                 </h4>
 
                                 {course.course_description && (
-                                  <p className="text-xs text-slate-600 leading-relaxed mb-2 sm:mb-3 break-words">
+                                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-2 sm:mb-3 break-words">
                                     {course.course_description}
                                   </p>
                                 )}
@@ -2231,7 +2268,7 @@ export const Dashboard: React.FC = () => {
                                     {course.tags.slice(0, 3).map((t, idx) => (
                                       <span
                                         key={idx}
-                                        className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200 transition-colors break-words"
+                                        className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors break-words"
                                       >
                                         {t}
                                       </span>
@@ -2240,8 +2277,8 @@ export const Dashboard: React.FC = () => {
                                 )}
                               </div>
 
-                              <div className="pt-2.5 sm:pt-3 border-t border-slate-200 flex flex-col xs:flex-row xs:items-center justify-between gap-2.5 mt-2">
-                                <div className="flex items-center gap-3 text-[11px] font-mono text-slate-500">
+                              <div className="pt-2.5 sm:pt-3 border-t border-slate-200 dark:border-slate-800 flex flex-col xs:flex-row xs:items-center justify-between gap-2.5 mt-2">
+                                <div className="flex items-center gap-3 text-[11px] font-mono text-slate-500 dark:text-slate-400">
                                   {course.duration != null && (
                                     <span className="inline-flex items-center gap-1">
                                       <Clock size={12} />
@@ -2257,7 +2294,7 @@ export const Dashboard: React.FC = () => {
                                 <button
                                   onClick={() => handleEnroll(course)}
                                   disabled={isActing}
-                                  className="w-full xs:w-auto px-3.5 py-2 xs:py-1.5 bg-blue-900 hover:bg-blue-950 text-white text-xs font-semibold rounded cursor-pointer transition-all duration-200 inline-flex items-center justify-center gap-1 disabled:opacity-50 shadow-xs btn-press"
+                                  className="w-full xs:w-auto px-3.5 py-2 xs:py-1.5 bg-blue-900 dark:bg-blue-700 hover:bg-blue-950 dark:hover:bg-blue-600 text-white text-xs font-semibold rounded cursor-pointer transition-all duration-200 inline-flex items-center justify-center gap-1 disabled:opacity-50 shadow-xs btn-press"
                                 >
                                   {isActing ? (
                                     "Enrolling..."
@@ -2281,12 +2318,12 @@ export const Dashboard: React.FC = () => {
                 {courseFilter === "all" && (
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <div>
-                      <h3 className="font-serif text-base font-bold text-slate-900">
+                      <h3 className="font-serif text-base font-bold text-slate-900 dark:text-white">
                         {filteredRecommendations.length > 0
                           ? "All Statistical Curriculum Modules"
                           : "Curriculum Pathways"}
                       </h3>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-slate-500 dark:text-slate-400">
                         {filteredCourses.length} official courses registered in
                         the iGOT national repository.
                       </p>
@@ -2297,15 +2334,15 @@ export const Dashboard: React.FC = () => {
                 {!coursesLoading &&
                   !coursesError &&
                   filteredCourses.length === 0 && (
-                    <div className="py-16 text-center border border-dashed border-slate-300 rounded p-6">
+                    <div className="py-16 text-center border border-dashed border-slate-300 dark:border-slate-700 rounded p-6">
                       <BookOpen
                         size={28}
-                        className="mx-auto text-slate-400 mb-2"
+                        className="mx-auto text-slate-400 dark:text-slate-500 mb-2"
                       />
-                      <h3 className="font-serif text-sm font-bold text-slate-800">
+                      <h3 className="font-serif text-sm font-bold text-slate-800 dark:text-slate-200">
                         No Courses Found
                       </h3>
-                      <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
                         {courseFilter === "enrolled"
                           ? "You haven't enrolled in any courses yet. Browse the 'All' tab to enroll in official pathways."
                           : "No courses matched your current search filters. Try adjusting your query."}
@@ -2313,7 +2350,7 @@ export const Dashboard: React.FC = () => {
                       {courseFilter === "enrolled" && (
                         <button
                           onClick={() => setCourseFilter("all")}
-                          className="mt-3 px-3 py-1.5 bg-blue-900 hover:bg-blue-950 text-white text-xs font-semibold rounded cursor-pointer transition-all duration-200 btn-press"
+                          className="mt-3 px-3 py-1.5 bg-blue-900 dark:bg-blue-700 hover:bg-blue-950 dark:hover:bg-blue-600 text-white text-xs font-semibold rounded cursor-pointer transition-all duration-200 btn-press"
                         >
                           Browse All Courses
                         </button>
@@ -2337,11 +2374,11 @@ export const Dashboard: React.FC = () => {
                             key={course.id}
                             className={`flex flex-col justify-between h-full rounded border transition-all duration-300 hover:-translate-y-1 hover:shadow-md overflow-hidden group card-interactive ${
                               isEnrolled
-                                ? "bg-white border-slate-300 border-t-4 border-t-emerald-700 shadow-xs"
-                                : "bg-white border-slate-200 hover:border-slate-300 shadow-2xs"
+                                ? "bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-800 border-t-4 border-t-emerald-700 dark:border-t-emerald-500 shadow-xs"
+                                : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 shadow-2xs"
                             }`}
                           >
-                            <div className="relative h-32 sm:h-36 bg-slate-900 overflow-hidden border-b border-slate-200 flex items-center justify-center">
+                            <div className="relative h-32 sm:h-36 bg-slate-900 overflow-hidden border-b border-slate-200 dark:border-slate-800 flex items-center justify-center">
                               {course.image ? (
                                 <img
                                   src={course.image}
@@ -2392,16 +2429,16 @@ export const Dashboard: React.FC = () => {
                                     const isComp = enr?.status === "completed";
 
                                     return (
-                                      <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-300 rounded text-xs space-y-2 mb-2.5 sm:mb-3 transition-colors">
+                                      <div className="p-2.5 sm:p-3 bg-slate-50 dark:bg-slate-950/50 border border-slate-300 dark:border-slate-800 rounded text-xs space-y-2 mb-2.5 sm:mb-3 transition-colors">
                                         <div className="flex items-center justify-between">
-                                          <span className="font-mono text-[10px] uppercase font-bold text-slate-700">
+                                          <span className="font-mono text-[10px] uppercase font-bold text-slate-700 dark:text-slate-300">
                                             Learning Progress
                                           </span>
                                           <span
                                             className={`font-mono text-[10px] font-bold px-2 py-0.5 rounded uppercase transition-colors ${
                                               isComp
-                                                ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
-                                                : "bg-blue-100 text-blue-900 border border-blue-200"
+                                                ? "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
+                                                : "bg-blue-100 dark:bg-blue-950/80 text-blue-900 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
                                             }`}
                                           >
                                             {isComp
@@ -2410,21 +2447,21 @@ export const Dashboard: React.FC = () => {
                                           </span>
                                         </div>
 
-                                        <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                                        <div className="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
                                           <div
                                             className={`h-full rounded-full transition-all duration-700 ease-out ${
                                               isComp
-                                                ? "bg-emerald-600"
-                                                : "bg-blue-900"
+                                                ? "bg-emerald-600 dark:bg-emerald-500"
+                                                : "bg-blue-900 dark:bg-blue-500"
                                             }`}
                                             style={{ width: `${prog}%` }}
                                           />
                                         </div>
 
                                         {!isComp ? (
-                                          <div className="space-y-2 pt-1 border-t border-slate-200">
+                                          <div className="space-y-2 pt-1 border-t border-slate-200 dark:border-slate-800">
                                             <div className="flex flex-wrap items-center justify-between gap-1.5 text-[10px] font-mono">
-                                              <span className="text-slate-600 font-medium">
+                                              <span className="text-slate-600 dark:text-slate-400 font-medium">
                                                 Track Progress:
                                               </span>
                                               <div className="flex items-center gap-1 shrink-0">
@@ -2443,8 +2480,8 @@ export const Dashboard: React.FC = () => {
                                                     }
                                                     className={`px-2 py-0.5 rounded border transition-all duration-150 cursor-pointer btn-press ${
                                                       prog === pVal
-                                                        ? "bg-blue-900 text-white border-blue-950 font-bold"
-                                                        : "bg-white text-slate-700 border-slate-300 hover:bg-slate-100"
+                                                        ? "bg-blue-900 dark:bg-blue-700 text-white border-blue-950 font-bold"
+                                                        : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700"
                                                     }`}
                                                   >
                                                     {pVal}%
@@ -2475,15 +2512,15 @@ export const Dashboard: React.FC = () => {
                                             </button>
                                           </div>
                                         ) : (
-                                          <div className="pt-1.5 border-t border-slate-200 flex flex-wrap items-center justify-between gap-1 text-[10px] font-mono">
-                                            <span className="text-emerald-800 font-bold inline-flex items-center gap-1">
+                                          <div className="pt-1.5 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-1 text-[10px] font-mono">
+                                            <span className="text-emerald-800 dark:text-emerald-300 font-bold inline-flex items-center gap-1">
                                               <CheckCircle2
                                                 size={12}
-                                                className="text-emerald-600 shrink-0"
+                                                className="text-emerald-600 dark:text-emerald-400 shrink-0"
                                               />
                                               Verified Credential Issued
                                             </span>
-                                            <span className="text-slate-500 select-all font-semibold">
+                                            <span className="text-slate-500 dark:text-slate-400 select-all font-semibold">
                                               {enr?.certificate_id}
                                             </span>
                                           </div>
@@ -2493,20 +2530,20 @@ export const Dashboard: React.FC = () => {
                                   })()}
 
                                 {course.by && (
-                                  <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block mb-1 break-words">
+                                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1 break-words">
                                     {course.by}
                                   </span>
                                 )}
 
                                 <h3
-                                  className="font-serif text-sm font-bold text-slate-900 mb-1.5 leading-snug group-hover:text-blue-900 transition-colors break-words"
+                                  className="font-serif text-sm font-bold text-slate-900 dark:text-white mb-1.5 leading-snug group-hover:text-blue-900 dark:group-hover:text-amber-300 transition-colors break-words"
                                   title={course.name}
                                 >
                                   {course.name}
                                 </h3>
 
                                 {course.course_description && (
-                                  <p className="text-xs text-slate-600 leading-relaxed mb-3 break-words">
+                                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-3 break-words">
                                     {course.course_description}
                                   </p>
                                 )}
@@ -2516,13 +2553,13 @@ export const Dashboard: React.FC = () => {
                                     {course.tags.slice(0, 3).map((tag, idx) => (
                                       <span
                                         key={idx}
-                                        className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200 transition-colors"
+                                        className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                                       >
                                         {tag}
                                       </span>
                                     ))}
                                     {course.tags.length > 3 && (
-                                      <span className="px-1.5 py-0.5 bg-slate-50 text-slate-400 text-[10px] font-mono rounded">
+                                      <span className="px-1.5 py-0.5 bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-[10px] font-mono rounded">
                                         +{course.tags.length - 3} more
                                       </span>
                                     )}
@@ -2530,8 +2567,8 @@ export const Dashboard: React.FC = () => {
                                 )}
                               </div>
 
-                              <div className="pt-2.5 sm:pt-3 border-t border-slate-200 flex flex-col xs:flex-row xs:items-center justify-between gap-2.5 mt-2">
-                                <div className="flex items-center gap-3 text-[11px] font-mono text-slate-500">
+                              <div className="pt-2.5 sm:pt-3 border-t border-slate-200 dark:border-slate-800 flex flex-col xs:flex-row xs:items-center justify-between gap-2.5 mt-2">
+                                <div className="flex items-center gap-3 text-[11px] font-mono text-slate-500 dark:text-slate-400">
                                   {course.duration != null && (
                                     <span className="inline-flex items-center gap-1">
                                       <Clock size={12} />
@@ -2549,7 +2586,7 @@ export const Dashboard: React.FC = () => {
                                     <button
                                       onClick={() => handleUnenroll(course.id)}
                                       disabled={isActing}
-                                      className="flex-1 xs:flex-initial px-2.5 py-1.5 border border-slate-300 hover:border-red-300 hover:bg-red-50 text-slate-600 hover:text-red-700 text-xs font-semibold rounded cursor-pointer transition-all duration-200 disabled:opacity-50 btn-press text-center"
+                                      className="flex-1 xs:flex-initial px-2.5 py-1.5 border border-slate-300 dark:border-slate-700 hover:border-red-300 dark:hover:border-red-800 hover:bg-red-50 dark:hover:bg-red-950/40 text-slate-600 dark:text-slate-300 hover:text-red-700 dark:hover:text-red-400 text-xs font-semibold rounded cursor-pointer transition-all duration-200 disabled:opacity-50 btn-press text-center"
                                     >
                                       {isActing ? "Updating..." : "Unenroll"}
                                     </button>
@@ -2557,7 +2594,7 @@ export const Dashboard: React.FC = () => {
                                       href="https://portal.igotkarmayogi.gov.in"
                                       target="_blank"
                                       rel="noreferrer"
-                                      className="flex-1 xs:flex-initial px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded inline-flex items-center justify-center gap-1 shadow-xs transition-all duration-200 btn-press"
+                                      className="flex-1 xs:flex-initial px-3 py-1.5 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white text-xs font-semibold rounded inline-flex items-center justify-center gap-1 shadow-xs transition-all duration-200 btn-press"
                                     >
                                       <span>Launch</span>
                                       <ExternalLink size={12} />
@@ -2567,7 +2604,7 @@ export const Dashboard: React.FC = () => {
                                   <button
                                     onClick={() => handleEnroll(course)}
                                     disabled={isActing}
-                                    className="w-full xs:w-auto px-3.5 py-2 xs:py-1.5 bg-blue-900 hover:bg-blue-950 text-white text-xs font-semibold rounded cursor-pointer transition-all duration-200 inline-flex items-center justify-center gap-1 disabled:opacity-50 shadow-xs btn-press"
+                                    className="w-full xs:w-auto px-3.5 py-2 xs:py-1.5 bg-blue-900 dark:bg-blue-700 hover:bg-blue-950 dark:hover:bg-blue-600 text-white text-xs font-semibold rounded cursor-pointer transition-all duration-200 inline-flex items-center justify-center gap-1 disabled:opacity-50 shadow-xs btn-press"
                                   >
                                     {isActing ? (
                                       "Enrolling..."

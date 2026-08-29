@@ -146,23 +146,23 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
       : selectedItem || (filteredItems.length > 0 ? filteredItems[0] : null);
 
   return (
-    <div className="bg-white border border-slate-300 rounded shadow-xs overflow-hidden">
-      <div className="p-5 border-b border-slate-200 bg-slate-50/70 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+    <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs overflow-hidden">
+      <div className="p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/60 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2 py-0.5 bg-blue-900 text-white font-mono text-[10px] font-bold uppercase rounded">
+            <span className="px-2 py-0.5 bg-blue-900 dark:bg-blue-600 text-white font-mono text-[10px] font-bold uppercase rounded">
               Interactive Radar Chart
             </span>
-            <span className="text-xs text-slate-500 font-medium">
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
               Cadre Target vs Assessed Proficiency
             </span>
           </div>
-          <h3 className="font-serif text-lg font-bold text-slate-900">
+          <h3 className="font-serif text-lg font-bold text-slate-900 dark:text-white">
             FRAC Competency Spider Graph
           </h3>
-          <p className="text-xs text-slate-600">
+          <p className="text-xs text-slate-600 dark:text-slate-400">
             Cadre Benchmark standard mapped for{" "}
-            <strong className="text-slate-800 font-semibold">
+            <strong className="text-slate-800 dark:text-slate-200 font-semibold">
               {userDesignation}
             </strong>
           </p>
@@ -217,19 +217,19 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsCategoryDropdownOpen((prev) => !prev)}
-                    className="w-full bg-white border border-slate-300 hover:border-slate-400 focus:border-blue-900 text-slate-900 rounded-lg px-3 py-2 shadow-2xs flex items-center justify-between gap-2.5 transition-all duration-200 cursor-pointer btn-press text-left"
+                    className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 focus:border-blue-900 dark:focus:border-blue-400 text-slate-900 dark:text-white rounded-lg px-3 py-2 shadow-2xs flex items-center justify-between gap-2.5 transition-all duration-200 cursor-pointer btn-press text-left"
                     aria-expanded={isCategoryDropdownOpen}
                     aria-haspopup="true"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-7 h-7 rounded-md bg-blue-50 text-blue-900 flex items-center justify-center shrink-0 border border-blue-100 font-mono text-xs font-bold">
+                      <div className="w-7 h-7 rounded-md bg-blue-50 dark:bg-blue-950/80 text-blue-900 dark:text-blue-300 flex items-center justify-center shrink-0 border border-blue-100 dark:border-blue-800 font-mono text-xs font-bold">
                         {currentOpt.count}
                       </div>
                       <div className="min-w-0">
-                        <span className="font-bold text-xs text-slate-900 block truncate">
+                        <span className="font-bold text-xs text-slate-900 dark:text-white block truncate">
                           {currentOpt.label}
                         </span>
-                        <span className="text-[10px] text-slate-500 block truncate">
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate">
                           {currentOpt.sublabel}
                         </span>
                       </div>
@@ -237,8 +237,10 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
 
                     <ChevronDown
                       size={15}
-                      className={`text-slate-400 shrink-0 transition-transform duration-200 ${
-                        isCategoryDropdownOpen ? "rotate-180 text-blue-900" : ""
+                      className={`text-slate-400 dark:text-slate-500 shrink-0 transition-transform duration-200 ${
+                        isCategoryDropdownOpen
+                          ? "rotate-180 text-blue-900 dark:text-blue-400"
+                          : ""
                       }`}
                     />
                   </button>
@@ -249,8 +251,8 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                         className="fixed inset-0 z-40"
                         onClick={() => setIsCategoryDropdownOpen(false)}
                       />
-                      <div className="absolute top-full left-0 right-0 mt-1.5 z-50 bg-white/98 backdrop-blur-md border border-slate-200 rounded-xl shadow-xl ring-1 ring-slate-900/10 p-1.5 space-y-1 animate-scale-in">
-                        <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold border-b border-slate-100">
+                      <div className="absolute top-full left-0 right-0 mt-1.5 z-50 bg-white/98 dark:bg-slate-900/98 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl ring-1 ring-slate-900/10 dark:ring-white/10 p-1.5 space-y-1 animate-scale-in">
+                        <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold border-b border-slate-100 dark:border-slate-800">
                           Filter Spider Graph Axes
                         </div>
                         {categoryOptions.map((opt) => {
@@ -266,16 +268,16 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                               }}
                               className={`w-full flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg text-left transition-all duration-150 cursor-pointer ${
                                 isSelected
-                                  ? "bg-slate-900 text-white shadow-xs font-semibold"
-                                  : "text-slate-700 hover:bg-slate-100/80 hover:text-slate-900"
+                                  ? "bg-slate-900 dark:bg-blue-600 text-white shadow-xs font-semibold"
+                                  : "text-slate-700 dark:text-slate-200 hover:bg-slate-100/80 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                               }`}
                             >
                               <div className="flex items-center gap-2.5 min-w-0">
                                 <div
                                   className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 font-mono text-xs font-bold ${
                                     isSelected
-                                      ? "bg-slate-800 text-amber-400"
-                                      : "bg-slate-100 text-slate-700"
+                                      ? "bg-slate-800 dark:bg-blue-700 text-amber-400 dark:text-amber-300"
+                                      : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
                                   }`}
                                 >
                                   {opt.count}
@@ -287,8 +289,8 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                                   <span
                                     className={`text-[10px] block truncate ${
                                       isSelected
-                                        ? "text-slate-300"
-                                        : "text-slate-500"
+                                        ? "text-slate-300 dark:text-blue-100"
+                                        : "text-slate-500 dark:text-slate-400"
                                     }`}
                                   >
                                     {opt.sublabel}
@@ -299,7 +301,7 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                               {isSelected && (
                                 <Check
                                   size={14}
-                                  className="text-amber-400 shrink-0"
+                                  className="text-amber-400 dark:text-amber-300 shrink-0"
                                 />
                               )}
                             </button>
@@ -314,7 +316,7 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
           </div>
 
           {/* Desktop/Tablet Category Tabs */}
-          <div className="hidden sm:flex items-center bg-white border border-slate-300 rounded p-0.5 text-xs">
+          <div className="hidden sm:flex items-center bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded p-0.5 text-xs">
             {["all", "Domain", "Functional", "Behavioral", "gaps"].map(
               (cat) => (
                 <button
@@ -325,8 +327,8 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                   }}
                   className={`px-2.5 py-1 font-semibold rounded cursor-pointer transition-all duration-200 capitalize btn-press ${
                     selectedCategory === cat
-                      ? "bg-slate-900 text-white shadow-xs"
-                      : "text-slate-600 hover:text-slate-900"
+                      ? "bg-slate-900 dark:bg-blue-600 text-white shadow-xs"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
                   {cat === "all" ? "All" : cat === "gaps" ? "Gaps Only" : cat}
@@ -335,7 +337,7 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
             )}
           </div>
 
-          <div className="flex items-center gap-2 bg-white border border-slate-300 rounded px-2.5 py-1 text-xs">
+          <div className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded px-2.5 py-1 text-xs">
             <label className="flex items-center gap-1.5 cursor-pointer select-none">
               <input
                 type="checkbox"
@@ -343,13 +345,13 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                 onChange={(e) => setShowTargetLayer(e.target.checked)}
                 className="rounded text-amber-600 focus:ring-amber-500 w-3.5 h-3.5 cursor-pointer"
               />
-              <span className="flex items-center gap-1 text-amber-900 font-semibold text-[11px]">
-                <span className="w-2.5 h-0.5 bg-amber-500 inline-block border-t border-dashed border-amber-700" />
+              <span className="flex items-center gap-1 text-amber-900 dark:text-amber-400 font-semibold text-[11px]">
+                <span className="w-2.5 h-0.5 bg-amber-500 inline-block border-t border-dashed border-amber-700 dark:border-amber-400" />
                 Cadre Target
               </span>
             </label>
 
-            <span className="text-slate-300">|</span>
+            <span className="text-slate-300 dark:text-slate-700">|</span>
 
             <label className="flex items-center gap-1.5 cursor-pointer select-none">
               <input
@@ -358,8 +360,8 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                 onChange={(e) => setShowAssessedLayer(e.target.checked)}
                 className="rounded text-blue-700 focus:ring-blue-500 w-3.5 h-3.5 cursor-pointer"
               />
-              <span className="flex items-center gap-1 text-blue-950 font-semibold text-[11px]">
-                <span className="w-2.5 h-1 bg-blue-600 inline-block rounded-xs" />
+              <span className="flex items-center gap-1 text-blue-950 dark:text-blue-300 font-semibold text-[11px]">
+                <span className="w-2.5 h-1 bg-blue-600 dark:bg-blue-400 inline-block rounded-xs" />
                 Assessed Level
               </span>
             </label>
@@ -370,8 +372,11 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 p-6 items-center">
         <div className="xl:col-span-8 flex flex-col items-center justify-center relative">
           {filteredItems.length === 0 ? (
-            <div className="h-80 flex flex-col items-center justify-center text-slate-500 gap-2">
-              <CheckCircle2 size={32} className="text-emerald-600" />
+            <div className="h-80 flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 gap-2">
+              <CheckCircle2
+                size={32}
+                className="text-emerald-600 dark:text-emerald-400"
+              />
               <p className="text-sm font-semibold">
                 No competencies found for this filter.
               </p>
@@ -439,12 +444,7 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                     <g key={`grid-${level}`}>
                       <polygon
                         points={points}
-                        fill={
-                          level % 2 === 0
-                            ? "rgba(241, 245, 249, 0.6)"
-                            : "rgba(248, 250, 252, 0.3)"
-                        }
-                        stroke="#cbd5e1"
+                        className="fill-slate-100/60 dark:fill-slate-800/40 stroke-slate-300 dark:stroke-slate-700"
                         strokeWidth={level === totalLevels ? "1.5" : "1"}
                         strokeDasharray={level === totalLevels ? "none" : "2 2"}
                       />
@@ -454,7 +454,7 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                         fontSize="9"
                         fontFamily="monospace"
                         fontWeight="bold"
-                        fill="#94a3b8"
+                        className="fill-slate-400 dark:fill-slate-500"
                       >
                         L{level}
                       </text>
@@ -468,7 +468,7 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                       y1={center}
                       x2={x2}
                       y2={y2}
-                      stroke="#cbd5e1"
+                      className="stroke-slate-300 dark:stroke-slate-700"
                       strokeWidth="1"
                     />
                   ))}
@@ -551,8 +551,11 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                           textAnchor={textAnchor}
                           fontSize={isHovered ? "11" : "10"}
                           fontWeight={isHovered ? "bold" : "600"}
-                          fill={isHovered ? "#0f172a" : "#475569"}
-                          className="transition-colors duration-150 select-none"
+                          className={`transition-colors duration-150 select-none ${
+                            isHovered
+                              ? "fill-slate-900 dark:fill-white font-bold"
+                              : "fill-slate-600 dark:fill-slate-400"
+                          }`}
                         >
                           {item.code.replace("FRAC-", "")}
                         </text>
@@ -571,22 +574,22 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
               </div>
 
               {/* Legend placed below the chart without covering nodes */}
-              <div className="mt-3.5 bg-white border border-slate-300 rounded-md px-3 py-1.5 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-[10px] sm:text-[11px] font-mono shadow-2xs select-none">
+              <div className="mt-3.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-md px-3 py-1.5 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-[10px] sm:text-[11px] font-mono shadow-2xs select-none">
                 <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="w-3 h-0.5 bg-amber-500 border-t border-dashed border-amber-700 shrink-0" />
-                  <span className="text-amber-900 font-semibold">
+                  <span className="w-3 h-0.5 bg-amber-500 border-t border-dashed border-amber-700 dark:border-amber-400 shrink-0" />
+                  <span className="text-amber-900 dark:text-amber-300 font-semibold">
                     Cadre Benchmark
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="w-2.5 h-2.5 bg-emerald-600 rounded-full inline-block shrink-0" />
-                  <span className="text-emerald-900 font-semibold">
+                  <span className="w-2.5 h-2.5 bg-emerald-600 dark:bg-emerald-500 rounded-full inline-block shrink-0" />
+                  <span className="text-emerald-900 dark:text-emerald-300 font-semibold">
                     Benchmark Met
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="w-2.5 h-2.5 bg-rose-600 rounded-full inline-block shrink-0" />
-                  <span className="text-rose-900 font-semibold">
+                  <span className="w-2.5 h-2.5 bg-rose-600 dark:bg-rose-500 rounded-full inline-block shrink-0" />
+                  <span className="text-rose-900 dark:text-rose-300 font-semibold">
                     Gap Identified
                   </span>
                 </div>
@@ -597,10 +600,10 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
 
         <div className="xl:col-span-4 space-y-4">
           {activeHoverItem ? (
-            <div className="bg-slate-900 text-white rounded border border-slate-800 p-5 shadow-sm">
+            <div className="bg-slate-900 dark:bg-slate-950 text-white rounded border border-slate-800 dark:border-slate-800 p-5 shadow-sm">
               <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-3 mb-3">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-blue-800 text-blue-100 rounded">
+                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-blue-800 dark:bg-blue-900 text-blue-100 rounded">
                     {activeHoverItem.code}
                   </span>
                 </div>
@@ -702,41 +705,41 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
             </div>
           ) : null}
 
-          <div className="bg-slate-50 border border-slate-200 rounded p-4 card-interactive">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block mb-1">
+          <div className="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded p-4 card-interactive">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1">
               Overall Cadre Alignment
             </span>
             <div className="flex items-baseline gap-2 mb-2">
-              <span className="font-mono text-2xl font-bold text-slate-900">
+              <span className="font-mono text-2xl font-bold text-slate-900 dark:text-white">
                 {summary.alignmentPct}%
               </span>
-              <span className="text-xs font-mono text-slate-600">
+              <span className="text-xs font-mono text-slate-600 dark:text-slate-400">
                 ({summary.achievedCount} of {items.length} Benchmarks Met)
               </span>
             </div>
-            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-3">
+            <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden mb-3">
               <div
-                className="bg-blue-900 h-full rounded-full transition-all duration-700 ease-out"
+                className="bg-blue-900 dark:bg-blue-500 h-full rounded-full transition-all duration-700 ease-out"
                 style={{ width: `${summary.alignmentPct}%` }}
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-2 text-[11px] pt-2 border-t border-slate-200">
-              <div className="bg-emerald-50 border border-emerald-200 p-2 rounded card-interactive">
-                <span className="text-emerald-800 font-semibold block text-[10px] uppercase">
+            <div className="grid grid-cols-2 gap-2 text-[11px] pt-2 border-t border-slate-200 dark:border-slate-800">
+              <div className="bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 p-2 rounded card-interactive">
+                <span className="text-emerald-800 dark:text-emerald-300 font-semibold block text-[10px] uppercase">
                   Top Proficiency
                 </span>
-                <span className="font-medium text-emerald-950 truncate block mt-0.5">
+                <span className="font-medium text-emerald-950 dark:text-emerald-200 truncate block mt-0.5">
                   {summary.topItem?.code.replace("FRAC-", "") || "None"} (L
                   {summary.topItem?.assessed_level || 0})
                 </span>
               </div>
 
-              <div className="bg-amber-50 border border-amber-200 p-2 rounded card-interactive">
-                <span className="text-amber-800 font-semibold block text-[10px] uppercase">
+              <div className="bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 p-2 rounded card-interactive">
+                <span className="text-amber-800 dark:text-amber-300 font-semibold block text-[10px] uppercase">
                   Priority Upskill
                 </span>
-                <span className="font-medium text-amber-950 truncate block mt-0.5">
+                <span className="font-medium text-amber-950 dark:text-amber-200 truncate block mt-0.5">
                   {summary.urgentItem?.code.replace("FRAC-", "") || "None"} (-
                   {summary.urgentItem?.gap || 0} Lvl)
                 </span>

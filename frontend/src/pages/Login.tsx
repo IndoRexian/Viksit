@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { ThemeToggle } from "../components/ThemeToggle";
 import {
   Eye,
   EyeOff,
@@ -122,7 +123,7 @@ export const Login: React.FC = () => {
   const identifierError = getIdentifierError();
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col justify-between font-sans text-slate-900">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 flex flex-col justify-between font-sans text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <header className="bg-slate-900 text-white border-b-2 border-amber-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -140,17 +141,18 @@ export const Login: React.FC = () => {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-2 text-xs font-mono text-slate-300">
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span className="hidden sm:inline">
-              iGOT Karmayogi Federated Portal
-            </span>
+          <div className="flex items-center gap-3 text-xs font-mono text-slate-300">
+            <div className="hidden sm:flex items-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>iGOT Karmayogi Federated Portal</span>
+            </div>
+            <ThemeToggle />
           </div>
         </div>
       </header>
 
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6 my-6 animate-scale-in">
-        <div className="w-full max-w-4xl bg-white border border-slate-300 shadow-sm rounded-none sm:rounded-md grid grid-cols-1 md:grid-cols-12 overflow-hidden card-interactive">
+        <div className="w-full max-w-4xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 shadow-sm rounded-none sm:rounded-md grid grid-cols-1 md:grid-cols-12 overflow-hidden card-interactive">
           <div className="md:col-span-5 bg-slate-900 text-white p-6 sm:p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-800">
             <div>
               <div className="inline-block px-2 py-0.5 bg-blue-950 border border-blue-800 text-[11px] font-mono text-blue-300 uppercase tracking-wide mb-4">
@@ -220,23 +222,23 @@ export const Login: React.FC = () => {
             </div>
           </div>
 
-          <div className="md:col-span-7 p-6 sm:p-8 bg-white flex flex-col justify-between">
+          <div className="md:col-span-7 p-6 sm:p-8 bg-white dark:bg-slate-900 flex flex-col justify-between">
             <div>
               <div className="mb-6">
-                <h2 className="font-serif text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-1">
+                <h2 className="font-serif text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight mb-1">
                   Official Sign In
                 </h2>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs text-slate-600 dark:text-slate-400">
                   Authenticate using your registered government credentials or
                   cadre identifier.
                 </p>
               </div>
 
               {error && (
-                <div className="flex items-start gap-2 bg-red-50 border border-red-200 text-red-800 p-3 rounded text-xs font-medium mb-5 animate-slide-down">
+                <div className="flex items-start gap-2 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 p-3 rounded text-xs font-medium mb-5 animate-slide-down">
                   <AlertCircle
                     size={16}
-                    className="text-red-600 shrink-0 mt-0.5"
+                    className="text-red-600 dark:text-red-400 shrink-0 mt-0.5"
                   />
                   <span>{error}</span>
                 </div>
@@ -244,16 +246,16 @@ export const Login: React.FC = () => {
 
               <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                 <div>
-                  <label className="text-[11px] font-semibold uppercase tracking-wider text-slate-600 block mb-1.5">
+                  <label className="text-[11px] font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 block mb-1.5">
                     Authentication Identifier
                   </label>
-                  <div className="grid grid-cols-3 gap-1 bg-slate-100 p-1 border border-slate-200 rounded">
+                  <div className="grid grid-cols-3 gap-1 bg-slate-100 dark:bg-slate-800/80 p-1 border border-slate-200 dark:border-slate-700 rounded">
                     <button
                       type="button"
                       className={`py-1.5 text-xs font-medium rounded transition-all duration-200 cursor-pointer btn-press ${
                         loginMethod === "username"
-                          ? "bg-white text-blue-900 font-semibold shadow-xs border border-slate-300"
-                          : "text-slate-600 hover:text-slate-900"
+                          ? "bg-white dark:bg-slate-700 text-blue-900 dark:text-amber-400 font-semibold shadow-xs border border-slate-300 dark:border-slate-600"
+                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                       }`}
                       onClick={() => {
                         setLoginMethod("username");
@@ -267,8 +269,8 @@ export const Login: React.FC = () => {
                       type="button"
                       className={`py-1.5 text-xs font-medium rounded transition-all duration-200 cursor-pointer btn-press ${
                         loginMethod === "email"
-                          ? "bg-white text-blue-900 font-semibold shadow-xs border border-slate-300"
-                          : "text-slate-600 hover:text-slate-900"
+                          ? "bg-white dark:bg-slate-700 text-blue-900 dark:text-amber-400 font-semibold shadow-xs border border-slate-300 dark:border-slate-600"
+                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                       }`}
                       onClick={() => {
                         setLoginMethod("email");
@@ -282,8 +284,8 @@ export const Login: React.FC = () => {
                       type="button"
                       className={`py-1.5 text-xs font-medium rounded transition-all duration-200 cursor-pointer btn-press ${
                         loginMethod === "phone"
-                          ? "bg-white text-blue-900 font-semibold shadow-xs border border-slate-300"
-                          : "text-slate-600 hover:text-slate-900"
+                          ? "bg-white dark:bg-slate-700 text-blue-900 dark:text-amber-400 font-semibold shadow-xs border border-slate-300 dark:border-slate-600"
+                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                       }`}
                       onClick={() => {
                         setLoginMethod("phone");
@@ -297,7 +299,7 @@ export const Login: React.FC = () => {
                 </div>
 
                 <div className="space-y-1 text-left">
-                  <label className="text-xs font-semibold text-slate-800">
+                  <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     {loginMethod === "username" &&
                       "Official Username / Cadre ID"}
                     {loginMethod === "email" &&
@@ -314,10 +316,10 @@ export const Login: React.FC = () => {
                           ? "email"
                           : "text"
                     }
-                    className={`w-full h-10 px-3 rounded border text-xs text-slate-900 shadow-xs transition-all duration-200 placeholder:text-slate-400 focus:outline-none ${
+                    className={`w-full h-10 px-3 rounded border text-xs text-slate-900 dark:text-slate-100 shadow-xs transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none ${
                       isEmailInvalid || isPhoneInvalid || isUsernameInvalid
-                        ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
-                        : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                        ? "border-red-500 dark:border-red-500 bg-red-50/20 dark:bg-red-950/30 ring-1 ring-red-500"
+                        : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500"
                     }`}
                     placeholder={
                       loginMethod === "username"
@@ -331,7 +333,7 @@ export const Login: React.FC = () => {
                     autoComplete="username"
                   />
                   {identifierError && (
-                    <span className="block text-[11px] text-red-600 font-medium mt-0.5 animate-slide-down">
+                    <span className="block text-[11px] text-red-600 dark:text-red-400 font-medium mt-0.5 animate-slide-down">
                       {identifierError}
                     </span>
                   )}
@@ -339,20 +341,20 @@ export const Login: React.FC = () => {
 
                 <div className="space-y-1 text-left">
                   <div className="flex justify-between items-baseline">
-                    <label className="text-xs font-semibold text-slate-800">
+                    <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                       Password <span className="text-red-600">*</span>
                     </label>
-                    <span className="text-[11px] text-slate-500">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400">
                       Minimum 6 characters
                     </span>
                   </div>
                   <div className="relative flex items-center">
                     <input
                       type={showPassword ? "text" : "password"}
-                      className={`w-full h-10 pl-3 pr-9 rounded border text-xs text-slate-900 shadow-xs transition-all duration-200 placeholder:text-slate-400 focus:outline-none ${
+                      className={`w-full h-10 pl-3 pr-9 rounded border text-xs text-slate-900 dark:text-slate-100 shadow-xs transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none ${
                         isPasswordInvalid
-                          ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
-                          : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                          ? "border-red-500 dark:border-red-500 bg-red-50/20 dark:bg-red-950/30 ring-1 ring-red-500"
+                          : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500"
                       }`}
                       placeholder="Enter your official account password"
                       value={password}
@@ -361,7 +363,7 @@ export const Login: React.FC = () => {
                     />
                     <button
                       type="button"
-                      className="absolute right-2.5 text-slate-400 hover:text-slate-700 cursor-pointer p-1 transition-colors btn-press"
+                      className="absolute right-2.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer p-1 transition-colors btn-press"
                       onClick={() => setShowPassword(!showPassword)}
                       tabIndex={-1}
                       aria-label={
@@ -372,7 +374,7 @@ export const Login: React.FC = () => {
                     </button>
                   </div>
                   {isPasswordInvalid && (
-                    <span className="block text-[11px] text-red-600 font-medium mt-0.5 animate-slide-down">
+                    <span className="block text-[11px] text-red-600 dark:text-red-400 font-medium mt-0.5 animate-slide-down">
                       Password is required (minimum 6 characters).
                     </span>
                   )}
@@ -381,7 +383,7 @@ export const Login: React.FC = () => {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full h-10 bg-blue-900 hover:bg-blue-950 text-white rounded text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 shadow-xs btn-press disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full h-10 bg-blue-900 hover:bg-blue-950 dark:bg-blue-800 dark:hover:bg-blue-700 text-white rounded text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 shadow-xs btn-press disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={loading}
                   >
                     {loading ? (
@@ -399,18 +401,18 @@ export const Login: React.FC = () => {
                 </div>
               </form>
 
-              <div className="mt-5 pt-4 border-t border-slate-200 text-center text-xs text-slate-600">
+              <div className="mt-5 pt-4 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-600 dark:text-slate-400">
                 New official in India's Statistical System?{" "}
                 <Link
                   to="/register"
-                  className="font-semibold text-blue-900 hover:underline"
+                  className="font-semibold text-blue-900 dark:text-amber-400 hover:underline"
                 >
                   Register official profile
                 </Link>
               </div>
             </div>
 
-            <div className="mt-6 pt-3 border-t border-slate-100 flex items-start gap-2 text-[10px] text-slate-500">
+            <div className="mt-6 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-start gap-2 text-[10px] text-slate-500 dark:text-slate-400">
               <Lock size={13} className="shrink-0 mt-0.5 text-slate-400" />
               <span>
                 Authorized Government of India portal. Unauthorized access is

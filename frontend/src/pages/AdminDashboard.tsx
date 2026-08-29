@@ -17,6 +17,7 @@ import {
   CertificateModal,
   type CertificateDetails,
 } from "../components/CertificateModal";
+import { ThemeToggle } from "../components/ThemeToggle";
 import {
   ShieldCheck,
   Building2,
@@ -311,7 +312,7 @@ export const AdminDashboard: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col justify-between font-sans text-slate-900">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 flex flex-col justify-between font-sans text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <header className="bg-slate-950 text-white border-b-2 border-amber-600 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1 mr-3">
@@ -338,73 +339,77 @@ export const AdminDashboard: React.FC = () => {
           </div>
 
           {/* Mobile Navigation Dropdown Menu (< sm) */}
-          <div className="sm:hidden relative">
-            <button
-              type="button"
-              onClick={() => setIsUserMenuOpen((prev) => !prev)}
-              className="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 flex items-center justify-center cursor-pointer transition-colors shadow-2xs btn-press"
-              aria-expanded={isUserMenuOpen}
-              aria-haspopup="true"
-              aria-label="Account and Navigation Menu"
-            >
-              <Menu size={16} />
-            </button>
+          <div className="sm:hidden flex items-center gap-2">
+            <ThemeToggle />
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                className="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 flex items-center justify-center cursor-pointer transition-colors shadow-2xs btn-press"
+                aria-expanded={isUserMenuOpen}
+                aria-haspopup="true"
+                aria-label="Account and Navigation Menu"
+              >
+                <Menu size={16} />
+              </button>
 
-            {isUserMenuOpen && (
-              <>
-                <div
-                  className="fixed inset-0 z-40"
-                  onClick={() => setIsUserMenuOpen(false)}
-                />
-                <div className="absolute right-0 top-full mt-2 z-50 w-56 bg-slate-950/98 backdrop-blur-md border border-slate-800 text-white rounded-xl shadow-2xl ring-1 ring-slate-800 p-1.5 space-y-1 animate-scale-in">
-                  {/* Admin User Header */}
-                  <div className="px-2.5 py-2 border-b border-slate-800">
-                    <p className="text-xs font-bold text-white truncate">
-                      {user?.name || "Administrator"}
-                    </p>
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="font-mono text-[10px] text-slate-400 truncate">
-                        @{user?.username || "admin"}
-                      </span>
-                      <span className="px-1.5 py-0.2 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-mono font-bold rounded uppercase">
-                        Admin
-                      </span>
+              {isUserMenuOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setIsUserMenuOpen(false)}
+                  />
+                  <div className="absolute right-0 top-full mt-2 z-50 w-56 bg-slate-950/98 backdrop-blur-md border border-slate-800 text-white rounded-xl shadow-2xl ring-1 ring-slate-800 p-1.5 space-y-1 animate-scale-in">
+                    {/* Admin User Header */}
+                    <div className="px-2.5 py-2 border-b border-slate-800">
+                      <p className="text-xs font-bold text-white truncate">
+                        {user?.name || "Administrator"}
+                      </p>
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <span className="font-mono text-[10px] text-slate-400 truncate">
+                          @{user?.username || "admin"}
+                        </span>
+                        <span className="px-1.5 py-0.2 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-mono font-bold rounded uppercase">
+                          Admin
+                        </span>
+                      </div>
                     </div>
+
+                    {/* Switch to Officer Portal */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsUserMenuOpen(false);
+                        navigate("/dashboard");
+                      }}
+                      className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs font-semibold text-blue-300 hover:bg-slate-900 transition-colors cursor-pointer text-left"
+                    >
+                      <User size={14} className="text-blue-400 shrink-0" />
+                      <span>Officer Portal</span>
+                    </button>
+
+                    {/* Sign Out */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsUserMenuOpen(false);
+                        logout();
+                        navigate("/login");
+                      }}
+                      className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs font-semibold text-rose-300 hover:bg-rose-950/40 hover:text-rose-200 transition-colors cursor-pointer text-left"
+                    >
+                      <LogOut size={14} className="shrink-0" />
+                      <span>Sign Out</span>
+                    </button>
                   </div>
-
-                  {/* Switch to Officer Portal */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsUserMenuOpen(false);
-                      navigate("/dashboard");
-                    }}
-                    className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs font-semibold text-blue-300 hover:bg-slate-900 transition-colors cursor-pointer text-left"
-                  >
-                    <User size={14} className="text-blue-400 shrink-0" />
-                    <span>Officer Portal</span>
-                  </button>
-
-                  {/* Sign Out */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsUserMenuOpen(false);
-                      logout();
-                      navigate("/login");
-                    }}
-                    className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs font-semibold text-rose-300 hover:bg-rose-950/40 hover:text-rose-200 transition-colors cursor-pointer text-left"
-                  >
-                    <LogOut size={14} className="shrink-0" />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
-              </>
-            )}
+                </>
+              )}
+            </div>
           </div>
 
           {/* Desktop Action Buttons (>= sm) */}
           <div className="hidden sm:flex items-center gap-3">
+            <ThemeToggle />
             <button
               onClick={() => navigate("/dashboard")}
               className="px-3 py-1.5 bg-blue-900 hover:bg-blue-800 border border-blue-700 text-white rounded text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-colors shadow-2xs"
@@ -428,18 +433,18 @@ export const AdminDashboard: React.FC = () => {
       </header>
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        <section className="bg-white border border-slate-300 rounded shadow-xs mb-6 overflow-hidden">
+        <section className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs mb-6 overflow-hidden">
           <div className="p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700 font-medium ml-1">
+                <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700 dark:text-emerald-400 font-medium ml-1">
                   <ShieldCheck size={14} /> NSSTA / DoPT Synchronized
                 </span>
               </div>
-              <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+              <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
                 MoSPI Human Resource & Training Governance
               </h1>
-              <p className="text-xs text-slate-600 mt-0.5">
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
                 Macro-level competency analytics, divisional skill readiness
                 heatmaps, cadre directory, and iGOT Karmayogi learning loop
                 enforcement.
@@ -453,12 +458,12 @@ export const AdminDashboard: React.FC = () => {
                   fetchOfficers();
                   fetchCertifications();
                 }}
-                className="w-full sm:w-auto px-3.5 py-2 sm:py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 rounded-lg text-xs font-semibold inline-flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-2xs btn-press"
+                className="w-full sm:w-auto px-3.5 py-2 sm:py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-semibold inline-flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-2xs btn-press"
                 title="Refresh Analytics"
               >
                 <RotateCw
                   size={14}
-                  className={`shrink-0 ${summaryLoading ? "animate-spin text-blue-900" : ""}`}
+                  className={`shrink-0 ${summaryLoading ? "animate-spin text-blue-900 dark:text-blue-400" : ""}`}
                 />
                 <span>Sync Data</span>
               </button>
@@ -479,7 +484,7 @@ export const AdminDashboard: React.FC = () => {
           </div>
 
           {/* Mobile Navigation Dropdown (< sm) - Custom shadcn-styled Dropdown */}
-          <div className="sm:hidden px-3.5 py-2.5 bg-slate-50 border-t border-b border-slate-200 relative">
+          <div className="sm:hidden px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border-t border-b border-slate-200 dark:border-slate-800 relative">
             {(() => {
               const adminTabs = [
                 {
@@ -511,19 +516,19 @@ export const AdminDashboard: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setIsNavDropdownOpen((prev) => !prev)}
-                    className="w-full bg-white border border-slate-300 hover:border-slate-400 focus:border-blue-900 text-slate-900 rounded-lg px-3 py-2.5 shadow-2xs flex items-center justify-between gap-2.5 transition-all duration-200 cursor-pointer btn-press text-left"
+                    className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 focus:border-blue-900 text-slate-900 dark:text-white rounded-lg px-3 py-2.5 shadow-2xs flex items-center justify-between gap-2.5 transition-all duration-200 cursor-pointer btn-press text-left"
                     aria-expanded={isNavDropdownOpen}
                     aria-haspopup="true"
                   >
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                      <div className="w-8 h-8 rounded-lg bg-amber-100/80 text-amber-900 flex items-center justify-center shrink-0 border border-amber-200">
+                      <div className="w-8 h-8 rounded-lg bg-amber-100/80 dark:bg-amber-950/80 text-amber-900 dark:text-amber-300 flex items-center justify-center shrink-0 border border-amber-200 dark:border-amber-800">
                         <CurrentIcon size={16} />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <span className="font-bold text-xs text-slate-900 block leading-tight">
+                        <span className="font-bold text-xs text-slate-900 dark:text-white block leading-tight">
                           {currentTab.label}
                         </span>
-                        <span className="text-[10.5px] text-slate-500 block leading-tight mt-0.5">
+                        <span className="text-[10.5px] text-slate-500 dark:text-slate-400 block leading-tight mt-0.5">
                           {currentTab.sublabel}
                         </span>
                       </div>
@@ -532,7 +537,9 @@ export const AdminDashboard: React.FC = () => {
                     <ChevronDown
                       size={16}
                       className={`text-slate-400 shrink-0 transition-transform duration-200 ${
-                        isNavDropdownOpen ? "rotate-180 text-amber-900" : ""
+                        isNavDropdownOpen
+                          ? "rotate-180 text-amber-900 dark:text-amber-400"
+                          : ""
                       }`}
                     />
                   </button>
@@ -543,8 +550,8 @@ export const AdminDashboard: React.FC = () => {
                         className="fixed inset-0 z-40"
                         onClick={() => setIsNavDropdownOpen(false)}
                       />
-                      <div className="absolute top-full left-0 right-0 mt-1.5 z-50 bg-white/98 backdrop-blur-md border border-slate-200 rounded-xl shadow-xl ring-1 ring-slate-900/10 p-1.5 space-y-1 animate-scale-in">
-                        <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold border-b border-slate-100">
+                      <div className="absolute top-full left-0 right-0 mt-1.5 z-50 bg-white/98 dark:bg-slate-900/98 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl ring-1 ring-slate-900/10 dark:ring-slate-800 p-1.5 space-y-1 animate-scale-in">
+                        <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold border-b border-slate-100 dark:border-slate-800">
                           Select Admin View
                         </div>
                         {adminTabs.map((tab) => {
@@ -560,16 +567,16 @@ export const AdminDashboard: React.FC = () => {
                               }}
                               className={`w-full flex items-center justify-between gap-2.5 px-2.5 py-2 rounded-lg text-left transition-all duration-150 cursor-pointer ${
                                 isSelected
-                                  ? "bg-slate-900 text-white shadow-xs font-semibold"
-                                  : "text-slate-700 hover:bg-slate-100/80 hover:text-slate-900"
+                                  ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 shadow-xs font-semibold"
+                                  : "text-slate-700 dark:text-slate-300 hover:bg-slate-100/80 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                               }`}
                             >
                               <div className="flex items-center gap-2.5 min-w-0 flex-1">
                                 <div
                                   className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
                                     isSelected
-                                      ? "bg-slate-800 text-amber-400 border border-slate-700"
-                                      : "bg-slate-100 text-slate-600 border border-slate-200"
+                                      ? "bg-slate-800 dark:bg-slate-700 text-amber-400 border border-slate-700"
+                                      : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700"
                                   }`}
                                 >
                                   <TabIcon size={15} />
@@ -581,8 +588,8 @@ export const AdminDashboard: React.FC = () => {
                                   <span
                                     className={`text-[10.5px] block leading-snug mt-0.5 ${
                                       isSelected
-                                        ? "text-slate-300"
-                                        : "text-slate-500"
+                                        ? "text-slate-300 dark:text-slate-400"
+                                        : "text-slate-500 dark:text-slate-400"
                                     }`}
                                   >
                                     {tab.sublabel}
@@ -608,14 +615,14 @@ export const AdminDashboard: React.FC = () => {
           </div>
 
           {/* Desktop Navigation Tabs (>= sm) */}
-          <div className="hidden sm:flex px-5 sm:px-6 py-2.5 bg-slate-50 border-t border-b border-slate-200 items-center justify-between gap-3">
+          <div className="hidden sm:flex px-5 sm:px-6 py-2.5 bg-slate-50 dark:bg-slate-900/60 border-t border-b border-slate-200 dark:border-slate-800 items-center justify-between gap-3">
             <div className="flex items-center gap-2 overflow-x-auto">
               <button
                 onClick={() => setActiveTab("overview")}
                 className={`px-3.5 py-1.5 text-xs font-semibold rounded border cursor-pointer transition-all duration-200 shrink-0 inline-flex items-center gap-1.5 btn-press ${
                   activeTab === "overview"
-                    ? "bg-slate-900 text-white border-slate-900 shadow-xs"
-                    : "bg-white text-slate-700 border-slate-300 hover:bg-slate-100"
+                    ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 border-slate-900 dark:border-slate-700 shadow-xs"
+                    : "bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
                 }`}
               >
                 <BarChart3 size={13} />
@@ -626,8 +633,8 @@ export const AdminDashboard: React.FC = () => {
                 onClick={() => setActiveTab("roster")}
                 className={`px-3.5 py-1.5 text-xs font-semibold rounded border cursor-pointer transition-all duration-200 shrink-0 inline-flex items-center gap-1.5 btn-press ${
                   activeTab === "roster"
-                    ? "bg-slate-900 text-white border-slate-900 shadow-xs"
-                    : "bg-white text-slate-700 border-slate-300 hover:bg-slate-100"
+                    ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 border-slate-900 dark:border-slate-700 shadow-xs"
+                    : "bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
                 }`}
               >
                 <Users size={13} />
@@ -638,8 +645,8 @@ export const AdminDashboard: React.FC = () => {
                 onClick={() => setActiveTab("certifications")}
                 className={`px-3.5 py-1.5 text-xs font-semibold rounded border cursor-pointer transition-all duration-200 shrink-0 inline-flex items-center gap-1.5 btn-press ${
                   activeTab === "certifications"
-                    ? "bg-slate-900 text-white border-slate-900 shadow-xs"
-                    : "bg-white text-slate-700 border-slate-300 hover:bg-slate-100"
+                    ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 border-slate-900 dark:border-slate-700 shadow-xs"
+                    : "bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
                 }`}
               >
                 <Award size={13} />
@@ -647,19 +654,19 @@ export const AdminDashboard: React.FC = () => {
               </button>
             </div>
 
-            <span className="hidden lg:inline-block text-[11px] font-mono text-slate-500">
+            <span className="hidden lg:inline-block text-[11px] font-mono text-slate-500 dark:text-slate-400">
               National Statistical Systems Training Academy (NSSTA)
             </span>
           </div>
 
-          <div className="p-3 sm:p-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3.5 bg-slate-50/40">
+          <div className="p-3 sm:p-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3.5 bg-slate-50/40 dark:bg-slate-950/40">
             {/* 1. Ministry Skill Index */}
-            <div className="border border-slate-200 bg-white p-2.5 sm:p-3.5 rounded-lg shadow-2xs card-interactive min-w-0 flex flex-col justify-between">
-              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 block mb-1 leading-snug">
+            <div className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 sm:p-3.5 rounded-lg shadow-2xs card-interactive min-w-0 flex flex-col justify-between">
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 leading-snug">
                 Ministry Skill Index
               </span>
               <div className="flex items-baseline justify-between gap-1 flex-wrap pt-0.5">
-                <span className="font-mono text-xl sm:text-2xl font-bold text-slate-900 leading-none">
+                <span className="font-mono text-xl sm:text-2xl font-bold text-slate-900 dark:text-white leading-none">
                   {summaryData ? (
                     `${summaryData.ministry_skill_index}%`
                   ) : summaryLoading ? (
@@ -672,12 +679,12 @@ export const AdminDashboard: React.FC = () => {
             </div>
 
             {/* 2. Total Officers */}
-            <div className="border border-slate-200 bg-white p-2.5 sm:p-3.5 rounded-lg shadow-2xs card-interactive min-w-0 flex flex-col justify-between">
-              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 block mb-1 leading-snug">
+            <div className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 sm:p-3.5 rounded-lg shadow-2xs card-interactive min-w-0 flex flex-col justify-between">
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 leading-snug">
                 Total Officers
               </span>
               <div className="flex items-baseline justify-between gap-1 flex-wrap pt-0.5">
-                <span className="font-mono text-xl sm:text-2xl font-bold text-slate-900 leading-none">
+                <span className="font-mono text-xl sm:text-2xl font-bold text-slate-900 dark:text-white leading-none">
                   {summaryData ? (
                     summaryData.total_officers
                   ) : summaryLoading ? (
@@ -690,12 +697,12 @@ export const AdminDashboard: React.FC = () => {
             </div>
 
             {/* 3. Training Velocity */}
-            <div className="border border-slate-200 bg-white p-2.5 sm:p-3.5 rounded-lg shadow-2xs card-interactive min-w-0 flex flex-col justify-between">
-              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 block mb-1 leading-snug">
+            <div className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 sm:p-3.5 rounded-lg shadow-2xs card-interactive min-w-0 flex flex-col justify-between">
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 leading-snug">
                 Training Velocity
               </span>
               <div className="flex items-baseline justify-between gap-1 flex-wrap pt-0.5">
-                <span className="font-mono text-xl sm:text-2xl font-bold text-emerald-700 leading-none">
+                <span className="font-mono text-xl sm:text-2xl font-bold text-emerald-700 dark:text-emerald-400 leading-none">
                   {summaryData ? (
                     `${summaryData.completion_rate}%`
                   ) : summaryLoading ? (
@@ -708,12 +715,12 @@ export const AdminDashboard: React.FC = () => {
             </div>
 
             {/* 4. Verified Badges Issued */}
-            <div className="border border-slate-200 bg-white p-2.5 sm:p-3.5 rounded-lg shadow-2xs card-interactive min-w-0 flex flex-col justify-between">
-              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 block mb-1 leading-snug">
+            <div className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 sm:p-3.5 rounded-lg shadow-2xs card-interactive min-w-0 flex flex-col justify-between">
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 leading-snug">
                 Verified Badges
               </span>
               <div className="flex items-baseline justify-between gap-1 flex-wrap pt-0.5">
-                <span className="font-mono text-xl sm:text-2xl font-bold text-blue-900 leading-none">
+                <span className="font-mono text-xl sm:text-2xl font-bold text-blue-900 dark:text-blue-400 leading-none">
                   {summaryData ? (
                     summaryData.total_certifications_issued
                   ) : summaryLoading ? (
@@ -726,12 +733,12 @@ export const AdminDashboard: React.FC = () => {
             </div>
 
             {/* 5. Urgent Deficits */}
-            <div className="border border-slate-200 bg-white p-2.5 sm:p-3.5 rounded-lg shadow-2xs card-interactive min-w-0 col-span-2 sm:col-span-1 flex flex-col justify-between">
-              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 block mb-1 leading-snug">
+            <div className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 sm:p-3.5 rounded-lg shadow-2xs card-interactive min-w-0 col-span-2 sm:col-span-1 flex flex-col justify-between">
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 leading-snug">
                 Urgent Deficits
               </span>
               <div className="flex items-baseline justify-between gap-1 flex-wrap pt-0.5">
-                <span className="font-mono text-xl sm:text-2xl font-bold text-amber-700 leading-none">
+                <span className="font-mono text-xl sm:text-2xl font-bold text-amber-700 dark:text-amber-400 leading-none">
                   {summaryData ? (
                     summaryData.urgent_gaps_count
                   ) : summaryLoading ? (
@@ -753,40 +760,40 @@ export const AdminDashboard: React.FC = () => {
                   {[1, 2, 3, 4].map((i) => (
                     <div
                       key={i}
-                      className="bg-white border border-slate-200 p-4 rounded shadow-2xs space-y-3"
+                      className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded shadow-2xs space-y-3"
                     >
                       <div className="flex items-center justify-between">
-                        <div className="h-3.5 bg-slate-200 rounded w-28" />
-                        <div className="h-4 bg-slate-100 rounded w-16" />
+                        <div className="h-3.5 bg-slate-200 dark:bg-slate-800 rounded w-28" />
+                        <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-16" />
                       </div>
                       <div className="space-y-1.5 pt-2">
                         <div className="flex justify-between">
-                          <div className="h-3 bg-slate-200 rounded w-24" />
-                          <div className="h-3 bg-slate-200 rounded w-8" />
+                          <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-24" />
+                          <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-8" />
                         </div>
-                        <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                          <div className="h-full bg-slate-200 rounded-full w-2/3" />
+                        <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                          <div className="h-full bg-slate-200 dark:bg-slate-700 rounded-full w-2/3" />
                         </div>
                       </div>
-                      <div className="flex justify-between pt-2 border-t border-slate-100">
-                        <div className="h-3 bg-slate-200 rounded w-16" />
-                        <div className="h-3 bg-slate-200 rounded w-6" />
+                      <div className="flex justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-16" />
+                        <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-6" />
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="bg-white border border-slate-300 rounded shadow-xs overflow-hidden">
-                  <div className="p-4 sm:p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50">
+                <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs overflow-hidden">
+                  <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50 dark:bg-slate-900/80">
                     <div className="space-y-1.5">
-                      <div className="h-4 bg-slate-300 rounded w-64" />
-                      <div className="h-3 bg-slate-200 rounded w-80" />
+                      <div className="h-4 bg-slate-300 dark:bg-slate-700 rounded w-64" />
+                      <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-80" />
                     </div>
-                    <div className="h-4 bg-slate-200 rounded w-48 hidden sm:block" />
+                    <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-48 hidden sm:block" />
                   </div>
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs text-slate-800">
-                      <thead className="bg-slate-100 border-b border-slate-300 font-mono text-[11px] text-slate-600 uppercase">
+                    <table className="w-full text-left text-xs text-slate-800 dark:text-slate-200">
+                      <thead className="bg-slate-100 dark:bg-slate-800/90 border-b border-slate-300 dark:border-slate-700 font-mono text-[11px] text-slate-600 dark:text-slate-400 uppercase">
                         <tr>
                           <th className="p-3.5">Division / Department</th>
                           <th className="p-3.5 text-center">Officers</th>
@@ -801,32 +808,32 @@ export const AdminDashboard: React.FC = () => {
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-200">
+                      <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                         {[1, 2, 3, 4, 5].map((row) => (
                           <tr key={row}>
                             <td className="p-3.5">
-                              <div className="h-3.5 bg-slate-200 rounded w-44" />
+                              <div className="h-3.5 bg-slate-200 dark:bg-slate-800 rounded w-44" />
                             </td>
                             <td className="p-3.5 text-center">
-                              <div className="h-3.5 bg-slate-200 rounded w-6 mx-auto" />
+                              <div className="h-3.5 bg-slate-200 dark:bg-slate-800 rounded w-6 mx-auto" />
                             </td>
                             <td className="p-3.5">
                               <div className="flex items-center gap-2">
-                                <div className="h-4 bg-slate-200 rounded w-10" />
-                                <div className="w-24 h-2 bg-slate-100 rounded-full" />
+                                <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-10" />
+                                <div className="w-24 h-2 bg-slate-100 dark:bg-slate-800 rounded-full" />
                               </div>
                             </td>
                             <td className="p-3.5 text-center">
-                              <div className="h-3.5 bg-slate-200 rounded w-6 mx-auto" />
+                              <div className="h-3.5 bg-slate-200 dark:bg-slate-800 rounded w-6 mx-auto" />
                             </td>
                             <td className="p-3.5 text-center">
-                              <div className="h-3.5 bg-slate-200 rounded w-6 mx-auto" />
+                              <div className="h-3.5 bg-slate-200 dark:bg-slate-800 rounded w-6 mx-auto" />
                             </td>
                             <td className="p-3.5 text-center">
-                              <div className="h-4 bg-slate-100 rounded w-6 mx-auto" />
+                              <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-6 mx-auto" />
                             </td>
                             <td className="p-3.5 text-center">
-                              <div className="h-3.5 bg-slate-200 rounded w-10 mx-auto" />
+                              <div className="h-3.5 bg-slate-200 dark:bg-slate-800 rounded w-10 mx-auto" />
                             </td>
                           </tr>
                         ))}
@@ -841,30 +848,30 @@ export const AdminDashboard: React.FC = () => {
                   {summaryData?.cadre_distribution.map((cadre, idx) => (
                     <div
                       key={idx}
-                      className="bg-white border border-slate-300 p-4 rounded shadow-2xs flex flex-col justify-between card-interactive"
+                      className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 p-4 rounded shadow-2xs flex flex-col justify-between card-interactive"
                     >
                       <div>
                         <div className="flex items-center justify-between mb-2">
-                          <span className="font-mono text-xs font-bold text-slate-900 uppercase">
+                          <span className="font-mono text-xs font-bold text-slate-900 dark:text-white uppercase">
                             {cadre.cadre_group}
                           </span>
-                          <span className="px-2 py-0.5 bg-slate-100 text-slate-700 font-mono text-[10px] rounded font-semibold">
+                          <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono text-[10px] rounded font-semibold">
                             {cadre.officer_count} Officers
                           </span>
                         </div>
                         <div className="space-y-2 mt-3">
                           <div>
                             <div className="flex items-center justify-between text-xs mb-1">
-                              <span className="text-slate-600">
+                              <span className="text-slate-600 dark:text-slate-400">
                                 Average Readiness:
                               </span>
-                              <span className="font-mono font-bold text-slate-900">
+                              <span className="font-mono font-bold text-slate-900 dark:text-white">
                                 {cadre.average_skill_index}%
                               </span>
                             </div>
-                            <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                            <div className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-blue-900 rounded-full transition-all duration-700 ease-out"
+                                className="h-full bg-blue-900 dark:bg-blue-500 rounded-full transition-all duration-700 ease-out"
                                 style={{
                                   width: `${cadre.average_skill_index}%`,
                                 }}
@@ -872,13 +879,15 @@ export const AdminDashboard: React.FC = () => {
                             </div>
                           </div>
 
-                          <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
-                            <span className="text-slate-500">Urgent Gaps:</span>
+                          <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-100 dark:border-slate-800">
+                            <span className="text-slate-500 dark:text-slate-400">
+                              Urgent Gaps:
+                            </span>
                             <span
                               className={`font-mono font-bold ${
                                 cadre.urgent_gaps_count > 0
-                                  ? "text-amber-700"
-                                  : "text-emerald-700"
+                                  ? "text-amber-700 dark:text-amber-400"
+                                  : "text-emerald-700 dark:text-emerald-400"
                               }`}
                             >
                               {cadre.urgent_gaps_count}
@@ -890,33 +899,33 @@ export const AdminDashboard: React.FC = () => {
                   ))}
                 </div>
 
-                <div className="bg-white border border-slate-300 rounded shadow-xs overflow-hidden card-interactive">
-                  <div className="p-4 sm:p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50">
+                <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs overflow-hidden card-interactive">
+                  <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50 dark:bg-slate-900/80">
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-8 h-8 rounded-lg bg-blue-100/80 text-blue-900 flex items-center justify-center shrink-0 border border-blue-200/60 shadow-2xs">
+                      <div className="w-8 h-8 rounded-lg bg-blue-100/80 dark:bg-blue-950/80 text-blue-900 dark:text-blue-300 flex items-center justify-center shrink-0 border border-blue-200/60 dark:border-blue-800/60 shadow-2xs">
                         <Building2 size={18} className="shrink-0" />
                       </div>
                       <div className="min-w-0">
-                        <h2 className="font-serif text-sm sm:text-base font-bold text-slate-900 leading-snug">
+                        <h2 className="font-serif text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">
                           Divisional Competency Readiness Matrix
                         </h2>
-                        <p className="text-xs text-slate-600 mt-0.5">
+                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
                           Skill fulfillment indices and training velocity across
                           MoSPI operating divisions.
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[10.5px] sm:text-xs font-mono text-slate-600 flex-wrap">
-                      <div className="flex items-center gap-1.5 bg-white px-2 py-0.5 rounded border border-slate-200">
+                    <div className="flex items-center gap-2 text-[10.5px] sm:text-xs font-mono text-slate-600 dark:text-slate-400 flex-wrap">
+                      <div className="flex items-center gap-1.5 bg-white dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
                         <div className="w-2.5 h-2.5 bg-emerald-600 rounded-xs shrink-0" />
                         <span>&ge; 80% Benchmark</span>
                       </div>
-                      <div className="flex items-center gap-1.5 bg-white px-2 py-0.5 rounded border border-slate-200">
+                      <div className="flex items-center gap-1.5 bg-white dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
                         <div className="w-2.5 h-2.5 bg-amber-500 rounded-xs shrink-0" />
                         <span>60-79% Moderate</span>
                       </div>
-                      <div className="flex items-center gap-1.5 bg-white px-2 py-0.5 rounded border border-slate-200">
+                      <div className="flex items-center gap-1.5 bg-white dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
                         <div className="w-2.5 h-2.5 bg-red-600 rounded-xs shrink-0" />
                         <span>&lt; 60% Critical</span>
                       </div>
@@ -924,35 +933,35 @@ export const AdminDashboard: React.FC = () => {
                   </div>
 
                   {/* Mobile Row Cards View (< md) */}
-                  <div className="md:hidden divide-y divide-slate-200">
+                  <div className="md:hidden divide-y divide-slate-200 dark:divide-slate-800">
                     {summaryData?.divisional_readiness.map((div, idx) => {
                       const isHigh = div.average_skill_index >= 80;
                       const isMedium =
                         div.average_skill_index >= 60 &&
                         div.average_skill_index < 80;
                       const badgeColor = isHigh
-                        ? "bg-emerald-50 text-emerald-800 border-emerald-300"
+                        ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800"
                         : isMedium
-                          ? "bg-amber-50 text-amber-800 border-amber-300"
-                          : "bg-red-50 text-red-800 border-red-300";
+                          ? "bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800"
+                          : "bg-red-50 dark:bg-red-950/60 text-red-800 dark:text-red-300 border-red-300 dark:border-red-800";
                       const barColor = isHigh
-                        ? "bg-emerald-600"
+                        ? "bg-emerald-600 dark:bg-emerald-500"
                         : isMedium
-                          ? "bg-amber-500"
-                          : "bg-red-600";
+                          ? "bg-amber-500 dark:bg-amber-400"
+                          : "bg-red-600 dark:bg-red-500";
 
                       return (
                         <div
                           key={idx}
-                          className="p-4 space-y-3 bg-white hover:bg-slate-50/70 transition-colors"
+                          className="p-4 space-y-3 bg-white dark:bg-slate-900 hover:bg-slate-50/70 dark:hover:bg-slate-850 transition-colors"
                         >
                           {/* Row 1: Division Name & Readiness Index Badge */}
                           <div className="flex items-start justify-between gap-2.5">
                             <div className="min-w-0">
-                              <span className="font-mono text-[10px] text-slate-500 uppercase tracking-wider block">
+                              <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                                 Division
                               </span>
-                              <h4 className="font-serif text-sm font-bold text-slate-900 leading-snug break-words">
+                              <h4 className="font-serif text-sm font-bold text-slate-900 dark:text-white leading-snug break-words">
                                 {div.division}
                               </h4>
                             </div>
@@ -962,14 +971,14 @@ export const AdminDashboard: React.FC = () => {
                               >
                                 {div.average_skill_index}%
                               </span>
-                              <span className="text-[10px] text-slate-500 font-mono mt-0.5">
+                              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono mt-0.5">
                                 Readiness
                               </span>
                             </div>
                           </div>
 
                           {/* Progress Bar */}
-                          <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                          <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
                             <div
                               className={`h-full rounded-full transition-all duration-700 ease-out ${barColor}`}
                               style={{ width: `${div.average_skill_index}%` }}
@@ -978,29 +987,29 @@ export const AdminDashboard: React.FC = () => {
 
                           {/* Stats Grid Rows */}
                           <div className="grid grid-cols-2 gap-2 pt-1 font-mono text-xs">
-                            <div className="bg-slate-50 p-2 rounded border border-slate-200/80 flex items-center justify-between">
-                              <span className="text-slate-500 text-[11px]">
+                            <div className="bg-slate-50 dark:bg-slate-950/60 p-2 rounded border border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
+                              <span className="text-slate-500 dark:text-slate-400 text-[11px]">
                                 Officers:
                               </span>
-                              <span className="font-bold text-slate-900">
+                              <span className="font-bold text-slate-900 dark:text-white">
                                 {div.total_officers}
                               </span>
                             </div>
 
-                            <div className="bg-emerald-50/60 p-2 rounded border border-emerald-200/60 flex items-center justify-between">
-                              <span className="text-emerald-800 text-[11px]">
+                            <div className="bg-emerald-50/60 dark:bg-emerald-950/40 p-2 rounded border border-emerald-200/60 dark:border-emerald-800/60 flex items-center justify-between">
+                              <span className="text-emerald-800 dark:text-emerald-300 text-[11px]">
                                 Achieved:
                               </span>
-                              <span className="font-bold text-emerald-900">
+                              <span className="font-bold text-emerald-900 dark:text-emerald-200">
                                 {div.achieved_benchmarks}
                               </span>
                             </div>
 
-                            <div className="bg-slate-50 p-2 rounded border border-slate-200/80 flex items-center justify-between">
-                              <span className="text-slate-500 text-[11px]">
+                            <div className="bg-slate-50 dark:bg-slate-950/60 p-2 rounded border border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
+                              <span className="text-slate-500 dark:text-slate-400 text-[11px]">
                                 Active Gaps:
                               </span>
-                              <span className="font-bold text-slate-800">
+                              <span className="font-bold text-slate-800 dark:text-slate-200">
                                 {div.active_gaps}
                               </span>
                             </div>
@@ -1008,8 +1017,8 @@ export const AdminDashboard: React.FC = () => {
                             <div
                               className={`p-2 rounded border flex items-center justify-between ${
                                 div.urgent_gaps > 0
-                                  ? "bg-rose-50 border-rose-200 text-rose-900"
-                                  : "bg-slate-50 border-slate-200/80 text-slate-600"
+                                  ? "bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-300"
+                                  : "bg-slate-50 dark:bg-slate-950/60 border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400"
                               }`}
                             >
                               <span className="text-[11px]">
@@ -1022,11 +1031,11 @@ export const AdminDashboard: React.FC = () => {
                           </div>
 
                           {/* Row 4: Course Completion */}
-                          <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs font-mono">
-                            <span className="text-slate-500 text-[11px]">
+                          <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800 text-xs font-mono">
+                            <span className="text-slate-500 dark:text-slate-400 text-[11px]">
                               iGOT Course Completion:
                             </span>
-                            <span className="font-bold text-blue-900">
+                            <span className="font-bold text-blue-900 dark:text-blue-400">
                               {div.completion_rate}%
                             </span>
                           </div>
@@ -1037,8 +1046,8 @@ export const AdminDashboard: React.FC = () => {
 
                   {/* Desktop Table View (>= md) */}
                   <div className="hidden md:block overflow-x-auto">
-                    <table className="w-full text-left text-xs text-slate-800">
-                      <thead className="bg-slate-100 border-b border-slate-300 font-mono text-[11px] text-slate-600 uppercase">
+                    <table className="w-full text-left text-xs text-slate-800 dark:text-slate-200">
+                      <thead className="bg-slate-100 dark:bg-slate-800/90 border-b border-slate-300 dark:border-slate-700 font-mono text-[11px] text-slate-600 dark:text-slate-400 uppercase">
                         <tr>
                           <th className="p-3.5">Division / Department</th>
                           <th className="p-3.5 text-center">Officers</th>
@@ -1053,21 +1062,21 @@ export const AdminDashboard: React.FC = () => {
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-200">
+                      <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                         {summaryData?.divisional_readiness.map((div, idx) => {
                           const badgeColor =
                             div.average_skill_index >= 80
-                              ? "bg-emerald-50 text-emerald-800 border-emerald-300"
+                              ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800"
                               : div.average_skill_index >= 60
-                                ? "bg-amber-50 text-amber-800 border-amber-300"
-                                : "bg-red-50 text-red-800 border-red-300";
+                                ? "bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800"
+                                : "bg-red-50 dark:bg-red-950/60 text-red-800 dark:text-red-300 border-red-300 dark:border-red-800";
 
                           return (
                             <tr
                               key={idx}
-                              className="hover:bg-slate-50 transition-colors duration-150"
+                              className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors duration-150"
                             >
-                              <td className="p-3.5 font-semibold text-slate-900">
+                              <td className="p-3.5 font-semibold text-slate-900 dark:text-white">
                                 {div.division}
                               </td>
                               <td className="p-3.5 text-center font-mono font-medium">
@@ -1080,14 +1089,14 @@ export const AdminDashboard: React.FC = () => {
                                   >
                                     {div.average_skill_index}%
                                   </span>
-                                  <div className="w-28 h-2 bg-slate-200 rounded-full overflow-hidden shrink-0">
+                                  <div className="w-28 h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden shrink-0">
                                     <div
                                       className={`h-full rounded-full transition-all duration-700 ease-out ${
                                         div.average_skill_index >= 80
-                                          ? "bg-emerald-600"
+                                          ? "bg-emerald-600 dark:bg-emerald-500"
                                           : div.average_skill_index >= 60
-                                            ? "bg-amber-500"
-                                            : "bg-red-600"
+                                            ? "bg-amber-500 dark:bg-amber-400"
+                                            : "bg-red-600 dark:bg-red-500"
                                       }`}
                                       style={{
                                         width: `${div.average_skill_index}%`,
@@ -1096,22 +1105,24 @@ export const AdminDashboard: React.FC = () => {
                                   </div>
                                 </div>
                               </td>
-                              <td className="p-3.5 text-center font-mono text-emerald-800 font-bold">
+                              <td className="p-3.5 text-center font-mono text-emerald-800 dark:text-emerald-400 font-bold">
                                 {div.achieved_benchmarks}
                               </td>
-                              <td className="p-3.5 text-center font-mono text-slate-700">
+                              <td className="p-3.5 text-center font-mono text-slate-700 dark:text-slate-300">
                                 {div.active_gaps}
                               </td>
                               <td className="p-3.5 text-center font-mono">
                                 {div.urgent_gaps > 0 ? (
-                                  <span className="px-2 py-0.5 bg-red-100 text-red-800 font-bold rounded animate-pulse-subtle">
+                                  <span className="px-2 py-0.5 bg-red-100 dark:bg-red-950/80 text-red-800 dark:text-red-300 font-bold rounded animate-pulse-subtle">
                                     {div.urgent_gaps}
                                   </span>
                                 ) : (
-                                  <span className="text-slate-400">0</span>
+                                  <span className="text-slate-400 dark:text-slate-500">
+                                    0
+                                  </span>
                                 )}
                               </td>
-                              <td className="p-3.5 text-center font-mono font-semibold text-blue-900">
+                              <td className="p-3.5 text-center font-mono font-semibold text-blue-900 dark:text-blue-400">
                                 {div.completion_rate}%
                               </td>
                             </tr>
@@ -1129,13 +1140,13 @@ export const AdminDashboard: React.FC = () => {
         {activeTab === "roster" && (
           <div
             key="admin-tab-roster"
-            className="animate-tab-enter bg-white border border-slate-300 rounded shadow-xs overflow-hidden"
+            className="animate-tab-enter bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs overflow-hidden"
           >
-            <div className="p-4 border-b border-slate-200 bg-slate-50 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+            <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
               <div className="flex-1 relative">
                 <Search
                   size={15}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500"
                 />
                 <input
                   type="text"
@@ -1143,7 +1154,7 @@ export const AdminDashboard: React.FC = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && fetchOfficers()}
-                  className="w-full pl-9 pr-3 py-2 sm:py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-900 focus:border-blue-900 transition-all duration-200"
+                  className="w-full pl-9 pr-3 py-2 sm:py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-900 dark:focus:ring-blue-500 focus:border-blue-900 dark:focus:border-blue-500 transition-all duration-200"
                 />
               </div>
 
@@ -1180,7 +1191,7 @@ export const AdminDashboard: React.FC = () => {
                               prev === "cadre" ? null : "cadre",
                             )
                           }
-                          className="w-full sm:w-auto bg-white border border-slate-300 hover:border-slate-400 focus:border-blue-900 text-slate-800 rounded-lg px-3 py-2 sm:py-1.5 text-xs font-semibold shadow-2xs flex items-center justify-between gap-2 transition-all cursor-pointer btn-press text-left"
+                          className="w-full sm:w-auto bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 focus:border-blue-900 text-slate-800 dark:text-slate-200 rounded-lg px-3 py-2 sm:py-1.5 text-xs font-semibold shadow-2xs flex items-center justify-between gap-2 transition-all cursor-pointer btn-press text-left"
                           aria-expanded={openRosterDropdown === "cadre"}
                         >
                           <span className="truncate">{cur.label}</span>
@@ -1188,7 +1199,7 @@ export const AdminDashboard: React.FC = () => {
                             size={14}
                             className={`text-slate-400 shrink-0 transition-transform duration-200 ${
                               openRosterDropdown === "cadre"
-                                ? "rotate-180 text-blue-900"
+                                ? "rotate-180 text-blue-900 dark:text-blue-400"
                                 : ""
                             }`}
                           />
@@ -1200,7 +1211,7 @@ export const AdminDashboard: React.FC = () => {
                               className="fixed inset-0 z-40"
                               onClick={() => setOpenRosterDropdown(null)}
                             />
-                            <div className="absolute top-full left-0 right-0 sm:right-auto sm:min-w-[190px] mt-1 z-50 bg-white/98 backdrop-blur-md border border-slate-200 rounded-xl shadow-xl ring-1 ring-slate-900/10 p-1 space-y-0.5 animate-scale-in">
+                            <div className="absolute top-full left-0 right-0 sm:right-auto sm:min-w-[190px] mt-1 z-50 bg-white/98 dark:bg-slate-900/98 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl ring-1 ring-slate-900/10 dark:ring-slate-800 p-1 space-y-0.5 animate-scale-in">
                               {cadreOptions.map((opt) => {
                                 const isSelected = selectedCadre === opt.id;
                                 return (
@@ -1213,8 +1224,8 @@ export const AdminDashboard: React.FC = () => {
                                     }}
                                     className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md text-xs text-left cursor-pointer transition-colors ${
                                       isSelected
-                                        ? "bg-slate-900 text-white font-semibold shadow-xs"
-                                        : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                        ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 font-semibold shadow-xs"
+                                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                                     }`}
                                   >
                                     <span className="truncate">
@@ -1276,7 +1287,7 @@ export const AdminDashboard: React.FC = () => {
                               prev === "dept" ? null : "dept",
                             )
                           }
-                          className="w-full sm:w-auto bg-white border border-slate-300 hover:border-slate-400 focus:border-blue-900 text-slate-800 rounded-lg px-3 py-2 sm:py-1.5 text-xs font-semibold shadow-2xs flex items-center justify-between gap-2 transition-all cursor-pointer btn-press text-left"
+                          className="w-full sm:w-auto bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 focus:border-blue-900 text-slate-800 dark:text-slate-200 rounded-lg px-3 py-2 sm:py-1.5 text-xs font-semibold shadow-2xs flex items-center justify-between gap-2 transition-all cursor-pointer btn-press text-left"
                           aria-expanded={openRosterDropdown === "dept"}
                         >
                           <span className="truncate">{cur.label}</span>
@@ -1284,7 +1295,7 @@ export const AdminDashboard: React.FC = () => {
                             size={14}
                             className={`text-slate-400 shrink-0 transition-transform duration-200 ${
                               openRosterDropdown === "dept"
-                                ? "rotate-180 text-blue-900"
+                                ? "rotate-180 text-blue-900 dark:text-blue-400"
                                 : ""
                             }`}
                           />
@@ -1296,7 +1307,7 @@ export const AdminDashboard: React.FC = () => {
                               className="fixed inset-0 z-40"
                               onClick={() => setOpenRosterDropdown(null)}
                             />
-                            <div className="absolute top-full left-0 right-0 sm:right-auto sm:min-w-[210px] mt-1 z-50 bg-white/98 backdrop-blur-md border border-slate-200 rounded-xl shadow-xl ring-1 ring-slate-900/10 p-1 space-y-0.5 animate-scale-in">
+                            <div className="absolute top-full left-0 right-0 sm:right-auto sm:min-w-[210px] mt-1 z-50 bg-white/98 dark:bg-slate-900/98 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl ring-1 ring-slate-900/10 dark:ring-slate-800 p-1 space-y-0.5 animate-scale-in">
                               {deptOptions.map((opt) => {
                                 const isSelected = selectedDept === opt.id;
                                 return (
@@ -1309,8 +1320,8 @@ export const AdminDashboard: React.FC = () => {
                                     }}
                                     className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md text-xs text-left cursor-pointer transition-colors ${
                                       isSelected
-                                        ? "bg-slate-900 text-white font-semibold shadow-xs"
-                                        : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                        ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 font-semibold shadow-xs"
+                                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                                     }`}
                                   >
                                     <span className="truncate">
@@ -1355,7 +1366,7 @@ export const AdminDashboard: React.FC = () => {
                               prev === "gap" ? null : "gap",
                             )
                           }
-                          className="w-full sm:w-auto bg-white border border-slate-300 hover:border-slate-400 focus:border-blue-900 text-slate-800 rounded-lg px-3 py-2 sm:py-1.5 text-xs font-semibold shadow-2xs flex items-center justify-between gap-2 transition-all cursor-pointer btn-press text-left"
+                          className="w-full sm:w-auto bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 focus:border-blue-900 text-slate-800 dark:text-slate-200 rounded-lg px-3 py-2 sm:py-1.5 text-xs font-semibold shadow-2xs flex items-center justify-between gap-2 transition-all cursor-pointer btn-press text-left"
                           aria-expanded={openRosterDropdown === "gap"}
                         >
                           <span className="truncate">{cur.label}</span>
@@ -1363,7 +1374,7 @@ export const AdminDashboard: React.FC = () => {
                             size={14}
                             className={`text-slate-400 shrink-0 transition-transform duration-200 ${
                               openRosterDropdown === "gap"
-                                ? "rotate-180 text-blue-900"
+                                ? "rotate-180 text-blue-900 dark:text-blue-400"
                                 : ""
                             }`}
                           />
@@ -1375,7 +1386,7 @@ export const AdminDashboard: React.FC = () => {
                               className="fixed inset-0 z-40"
                               onClick={() => setOpenRosterDropdown(null)}
                             />
-                            <div className="absolute top-full left-0 right-0 sm:right-auto sm:min-w-[190px] mt-1 z-50 bg-white/98 backdrop-blur-md border border-slate-200 rounded-xl shadow-xl ring-1 ring-slate-900/10 p-1 space-y-0.5 animate-scale-in">
+                            <div className="absolute top-full left-0 right-0 sm:right-auto sm:min-w-[190px] mt-1 z-50 bg-white/98 dark:bg-slate-900/98 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl ring-1 ring-slate-900/10 dark:ring-slate-800 p-1 space-y-0.5 animate-scale-in">
                               {gapOptions.map((opt) => {
                                 const isSelected = gapFilter === opt.id;
                                 return (
@@ -1388,8 +1399,8 @@ export const AdminDashboard: React.FC = () => {
                                     }}
                                     className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md text-xs text-left cursor-pointer transition-colors ${
                                       isSelected
-                                        ? "bg-slate-900 text-white font-semibold shadow-xs"
-                                        : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                        ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 font-semibold shadow-xs"
+                                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                                     }`}
                                   >
                                     <span className="truncate">
@@ -1415,50 +1426,50 @@ export const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Mobile Row Cards View (< md) */}
-            <div className="md:hidden p-2.5 space-y-2.5 bg-slate-100/50">
+            <div className="md:hidden p-2.5 space-y-2.5 bg-slate-100/50 dark:bg-slate-950/50">
               {officersLoading ? (
                 [1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className="p-3 space-y-2 animate-pulse bg-white border border-slate-200 rounded-lg shadow-2xs"
+                    className="p-3 space-y-2 animate-pulse bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-2xs"
                   >
                     <div className="flex justify-between">
-                      <div className="h-4 bg-slate-200 rounded w-1/3" />
-                      <div className="h-4 bg-blue-100 rounded w-12" />
+                      <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-1/3" />
+                      <div className="h-4 bg-blue-100 dark:bg-blue-950 rounded w-12" />
                     </div>
-                    <div className="h-3 bg-slate-100 rounded w-2/3" />
+                    <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-2/3" />
                     <div className="space-y-1.5 pt-1">
-                      <div className="h-7 bg-slate-100 rounded" />
-                      <div className="h-7 bg-slate-100 rounded" />
+                      <div className="h-7 bg-slate-100 dark:bg-slate-800 rounded" />
+                      <div className="h-7 bg-slate-100 dark:bg-slate-800 rounded" />
                     </div>
-                    <div className="h-8 bg-slate-200 rounded w-full" />
+                    <div className="h-8 bg-slate-200 dark:bg-slate-800 rounded w-full" />
                   </div>
                 ))
               ) : filteredOfficers.length === 0 ? (
-                <div className="p-6 text-center text-slate-500 font-mono text-xs bg-white border border-slate-200 rounded-lg">
+                <div className="p-6 text-center text-slate-500 dark:text-slate-400 font-mono text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg">
                   No officers matching current search/filter criteria.
                 </div>
               ) : (
                 filteredOfficers.map((officer) => (
                   <div
                     key={officer.id}
-                    className="p-3 space-y-2 bg-white border border-slate-300 rounded-lg shadow-2xs hover:border-slate-400 transition-all"
+                    className="p-3 space-y-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-lg shadow-2xs hover:border-slate-400 dark:hover:border-slate-700 transition-all"
                   >
                     {/* Row 1: Officer Name, Username & Skill Index Badge */}
-                    <div className="flex items-start justify-between gap-2.5 min-w-0 border-b border-slate-100 pb-2">
+                    <div className="flex items-start justify-between gap-2.5 min-w-0 border-b border-slate-100 dark:border-slate-800 pb-2">
                       <div className="min-w-0 flex-1">
-                        <h4 className="font-bold text-xs sm:text-sm text-slate-900 leading-snug break-words">
+                        <h4 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white leading-snug break-words">
                           {officer.name}
                         </h4>
-                        <span className="font-mono text-[10.5px] text-slate-500 block truncate">
+                        <span className="font-mono text-[10.5px] text-slate-500 dark:text-slate-400 block truncate">
                           @{officer.username}
                         </span>
                       </div>
                       <div className="flex flex-col items-end shrink-0">
-                        <span className="px-2 py-0.5 bg-blue-50 border border-blue-200 text-blue-900 font-mono font-bold text-xs rounded shadow-2xs">
+                        <span className="px-2 py-0.5 bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 text-blue-900 dark:text-blue-300 font-mono font-bold text-xs rounded shadow-2xs">
                           {officer.composite_skill_index}%
                         </span>
-                        <span className="text-[9px] font-mono text-slate-500 mt-0.5">
+                        <span className="text-[9px] font-mono text-slate-500 dark:text-slate-400 mt-0.5">
                           Skill Index
                         </span>
                       </div>
@@ -1467,15 +1478,17 @@ export const AdminDashboard: React.FC = () => {
                     {/* Row 2: Cadre, Designation & Department (Clean Text) */}
                     <div className="text-xs space-y-0.5">
                       <div className="flex items-baseline gap-1.5 flex-wrap">
-                        <span className="font-bold text-slate-900 text-xs">
+                        <span className="font-bold text-slate-900 dark:text-white text-xs">
                           {officer.designation || "Statistical Officer"}
                         </span>
-                        <span className="text-slate-300">•</span>
-                        <span className="font-mono text-[11px] text-blue-900 font-semibold">
+                        <span className="text-slate-300 dark:text-slate-600">
+                          •
+                        </span>
+                        <span className="font-mono text-[11px] text-blue-900 dark:text-blue-400 font-semibold">
                           {officer.cadre_type}
                         </span>
                       </div>
-                      <div className="text-slate-600 text-[11.5px] break-words">
+                      <div className="text-slate-600 dark:text-slate-400 text-[11.5px] break-words">
                         {officer.department}
                       </div>
                     </div>
@@ -1485,13 +1498,13 @@ export const AdminDashboard: React.FC = () => {
                       <div
                         className={`px-2.5 py-1.5 rounded border flex items-center justify-between shadow-2xs ${
                           officer.urgent_gap_count > 0
-                            ? "bg-amber-50/90 border-amber-300 text-amber-950"
+                            ? "bg-amber-50/90 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800 text-amber-950 dark:text-amber-300"
                             : officer.gap_count > 0
-                              ? "bg-slate-50 border-slate-200 text-slate-800"
-                              : "bg-emerald-50/90 border-emerald-300 text-emerald-950"
+                              ? "bg-slate-50 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200"
+                              : "bg-emerald-50/90 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-950 dark:text-emerald-300"
                         }`}
                       >
-                        <span className="text-[10.5px] text-slate-600 font-medium">
+                        <span className="text-[10.5px] text-slate-600 dark:text-slate-400 font-medium">
                           Skill Gaps:
                         </span>
                         <span className="font-bold text-[11px]">
@@ -1503,11 +1516,11 @@ export const AdminDashboard: React.FC = () => {
                         </span>
                       </div>
 
-                      <div className="bg-slate-50 border border-slate-200 px-2.5 py-1.5 rounded flex items-center justify-between shadow-2xs">
-                        <span className="text-[10.5px] text-slate-600 font-medium">
+                      <div className="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 px-2.5 py-1.5 rounded flex items-center justify-between shadow-2xs">
+                        <span className="text-[10.5px] text-slate-600 dark:text-slate-400 font-medium">
                           iGOT Courses:
                         </span>
-                        <span className="font-bold text-[11px] text-slate-900">
+                        <span className="font-bold text-[11px] text-slate-900 dark:text-white">
                           {officer.completed_count} Done /{" "}
                           {officer.enrolled_count} Enrolled
                         </span>
@@ -1517,7 +1530,7 @@ export const AdminDashboard: React.FC = () => {
                     {/* Row 4: Action Button */}
                     <button
                       onClick={() => handleOpenOfficerDrilldown(officer.id)}
-                      className="w-full py-1.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded text-xs inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-200 shadow-2xs btn-press"
+                      className="w-full py-1.5 px-3 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-semibold rounded text-xs inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-200 shadow-2xs btn-press"
                     >
                       <span>Inspect & Audit Officer Dossier</span>
                       <ChevronRight size={13} className="shrink-0" />
@@ -1529,8 +1542,8 @@ export const AdminDashboard: React.FC = () => {
 
             {/* Desktop Table View (>= md) */}
             <div className="hidden md:block overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-800">
-                <thead className="bg-slate-100 border-b border-slate-300 font-mono text-[11px] text-slate-600 uppercase">
+              <table className="w-full text-left text-xs text-slate-800 dark:text-slate-200">
+                <thead className="bg-slate-100 dark:bg-slate-800/90 border-b border-slate-300 dark:border-slate-700 font-mono text-[11px] text-slate-600 dark:text-slate-400 uppercase">
                   <tr>
                     <th className="p-3.5">Officer Name & Cadre ID</th>
                     <th className="p-3.5">Cadre & Designation</th>
@@ -1541,35 +1554,35 @@ export const AdminDashboard: React.FC = () => {
                     <th className="p-3.5 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200">
+                <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                   {officersLoading ? (
                     [1, 2, 3, 4, 5, 6].map((i) => (
                       <tr key={i} className="animate-pulse">
                         <td className="p-3.5 space-y-1.5">
-                          <div className="h-3.5 bg-slate-300 rounded w-36" />
-                          <div className="h-2.5 bg-slate-200 rounded w-20" />
+                          <div className="h-3.5 bg-slate-300 dark:bg-slate-700 rounded w-36" />
+                          <div className="h-2.5 bg-slate-200 dark:bg-slate-800 rounded w-20" />
                         </td>
                         <td className="p-3.5 space-y-1.5">
-                          <div className="h-3 bg-slate-300 rounded w-32" />
-                          <div className="h-2.5 bg-slate-200 rounded w-24" />
+                          <div className="h-3 bg-slate-300 dark:bg-slate-700 rounded w-32" />
+                          <div className="h-2.5 bg-slate-200 dark:bg-slate-800 rounded w-24" />
                         </td>
                         <td className="p-3.5 space-y-1">
-                          <div className="h-3 bg-slate-200 rounded w-40" />
+                          <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-40" />
                         </td>
                         <td className="p-3.5">
                           <div className="flex items-center justify-center gap-2">
-                            <div className="h-4 bg-slate-200 rounded w-12" />
-                            <div className="w-16 h-2 bg-slate-100 rounded-full hidden sm:block" />
+                            <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-12" />
+                            <div className="w-16 h-2 bg-slate-100 dark:bg-slate-800 rounded-full hidden sm:block" />
                           </div>
                         </td>
                         <td className="p-3.5 text-center">
-                          <div className="h-4 bg-slate-200 rounded w-16 mx-auto" />
+                          <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-16 mx-auto" />
                         </td>
                         <td className="p-3.5 text-center">
-                          <div className="h-3 bg-slate-200 rounded w-12 mx-auto" />
+                          <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-12 mx-auto" />
                         </td>
                         <td className="p-3.5 text-right">
-                          <div className="h-6 bg-slate-200 rounded w-16 ml-auto" />
+                          <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded w-16 ml-auto" />
                         </td>
                       </tr>
                     ))
@@ -1577,7 +1590,7 @@ export const AdminDashboard: React.FC = () => {
                     <tr>
                       <td
                         colSpan={7}
-                        className="p-8 text-center text-slate-500 font-mono"
+                        className="p-8 text-center text-slate-500 dark:text-slate-400 font-mono"
                       >
                         No officers matching current search/filter criteria.
                       </td>
@@ -1586,50 +1599,50 @@ export const AdminDashboard: React.FC = () => {
                     filteredOfficers.map((officer) => (
                       <tr
                         key={officer.id}
-                        className="hover:bg-slate-50 transition-colors duration-150"
+                        className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors duration-150"
                       >
                         <td className="p-3.5">
-                          <div className="font-bold text-slate-900">
+                          <div className="font-bold text-slate-900 dark:text-white">
                             {officer.name}
                           </div>
-                          <div className="font-mono text-[10px] text-slate-500">
+                          <div className="font-mono text-[10px] text-slate-500 dark:text-slate-400">
                             @{officer.username}
                           </div>
                         </td>
                         <td className="p-3.5">
-                          <span className="font-medium text-slate-800 block">
+                          <span className="font-medium text-slate-800 dark:text-slate-200 block">
                             {officer.designation}
                           </span>
-                          <span className="font-mono text-[10px] text-blue-900 font-semibold">
+                          <span className="font-mono text-[10px] text-blue-900 dark:text-blue-400 font-semibold">
                             {officer.cadre_type}
                           </span>
                         </td>
-                        <td className="p-3.5 text-slate-700">
+                        <td className="p-3.5 text-slate-700 dark:text-slate-300">
                           {officer.department}
                         </td>
                         <td className="p-3.5 text-center">
-                          <span className="inline-flex items-center justify-center px-2.5 py-0.5 bg-blue-50 border border-blue-200 text-blue-900 font-mono font-bold text-xs rounded shadow-2xs whitespace-nowrap">
+                          <span className="inline-flex items-center justify-center px-2.5 py-0.5 bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 text-blue-900 dark:text-blue-300 font-mono font-bold text-xs rounded shadow-2xs whitespace-nowrap">
                             {officer.composite_skill_index}%
                           </span>
                         </td>
                         <td className="p-3.5 text-center font-mono">
                           {officer.urgent_gap_count > 0 ? (
-                            <span className="inline-flex items-center justify-center px-2.5 py-0.5 bg-rose-50 border border-rose-200 text-rose-800 font-bold rounded text-xs whitespace-nowrap shadow-2xs">
+                            <span className="inline-flex items-center justify-center px-2.5 py-0.5 bg-rose-50 dark:bg-rose-950/80 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-300 font-bold rounded text-xs whitespace-nowrap shadow-2xs">
                               {officer.gap_count} ({officer.urgent_gap_count}{" "}
                               urgent)
                             </span>
                           ) : officer.gap_count > 0 ? (
-                            <span className="inline-flex items-center justify-center px-2.5 py-0.5 bg-amber-50 border border-amber-200 text-amber-800 font-semibold rounded text-xs whitespace-nowrap shadow-2xs">
+                            <span className="inline-flex items-center justify-center px-2.5 py-0.5 bg-amber-50 dark:bg-amber-950/80 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 font-semibold rounded text-xs whitespace-nowrap shadow-2xs">
                               {officer.gap_count} gaps
                             </span>
                           ) : (
-                            <span className="inline-flex items-center justify-center px-2.5 py-0.5 bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold rounded text-xs whitespace-nowrap shadow-2xs">
+                            <span className="inline-flex items-center justify-center px-2.5 py-0.5 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 font-semibold rounded text-xs whitespace-nowrap shadow-2xs">
                               All Met
                             </span>
                           )}
                         </td>
                         <td className="p-3.5 text-center font-mono">
-                          <span className="inline-flex items-center justify-center px-2.5 py-0.5 bg-slate-50 border border-slate-200 text-slate-800 font-medium rounded text-xs whitespace-nowrap shadow-2xs">
+                          <span className="inline-flex items-center justify-center px-2.5 py-0.5 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-300 font-medium rounded text-xs whitespace-nowrap shadow-2xs">
                             {officer.enrolled_count} ({officer.completed_count}{" "}
                             done)
                           </span>
@@ -1639,7 +1652,7 @@ export const AdminDashboard: React.FC = () => {
                             onClick={() =>
                               handleOpenOfficerDrilldown(officer.id)
                             }
-                            className="px-3 py-1 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded text-[11px] inline-flex items-center gap-1 cursor-pointer transition-all duration-200 shadow-xs btn-press whitespace-nowrap"
+                            className="px-3 py-1 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-semibold rounded text-[11px] inline-flex items-center gap-1 cursor-pointer transition-all duration-200 shadow-xs btn-press whitespace-nowrap"
                           >
                             <span>Inspect & Audit</span>
                             <ChevronRight size={12} className="shrink-0" />
@@ -1657,18 +1670,18 @@ export const AdminDashboard: React.FC = () => {
         {activeTab === "certifications" && (
           <div
             key="admin-tab-certifications"
-            className="animate-tab-enter bg-white border border-slate-300 rounded shadow-xs overflow-hidden"
+            className="animate-tab-enter bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs overflow-hidden"
           >
-            <div className="p-4 sm:p-5 border-b border-slate-200 bg-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-8 h-8 rounded-lg bg-amber-100/80 text-amber-900 flex items-center justify-center shrink-0 border border-amber-200">
+                <div className="w-8 h-8 rounded-lg bg-amber-100/80 dark:bg-amber-950/80 text-amber-900 dark:text-amber-300 flex items-center justify-center shrink-0 border border-amber-200 dark:border-amber-800">
                   <Award size={16} />
                 </div>
                 <div className="min-w-0">
-                  <h2 className="font-serif text-base sm:text-lg font-bold text-slate-900 leading-tight">
+                  <h2 className="font-serif text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-tight">
                     iGOT Karmayogi • MoSPI Certification Registry
                   </h2>
-                  <p className="text-xs text-slate-600 mt-0.5">
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
                     Immutable register of verified digital badges and
                     cryptographic completion credentials issued to officers.
                   </p>
@@ -1678,85 +1691,85 @@ export const AdminDashboard: React.FC = () => {
               <div className="w-full md:w-72 relative">
                 <Search
                   size={14}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500"
                 />
                 <input
                   type="text"
                   placeholder="Verify Certificate ID or Officer..."
                   value={certSearch}
                   onChange={(e) => setCertSearch(e.target.value)}
-                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-900 focus:border-blue-900 transition-all duration-200"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-900 dark:focus:ring-blue-500 focus:border-blue-900 dark:focus:border-blue-500 transition-all duration-200"
                 />
               </div>
             </div>
 
             {/* Mobile Row Cards View (< md) */}
-            <div className="md:hidden p-2.5 space-y-2.5 bg-slate-100/50">
+            <div className="md:hidden p-2.5 space-y-2.5 bg-slate-100/50 dark:bg-slate-950/50">
               {certsLoading ? (
                 [1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className="p-3 space-y-2 animate-pulse bg-white border border-slate-200 rounded-lg shadow-2xs"
+                    className="p-3 space-y-2 animate-pulse bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-2xs"
                   >
                     <div className="flex justify-between">
-                      <div className="h-3.5 bg-slate-200 rounded w-1/3" />
-                      <div className="h-4 bg-emerald-100 rounded w-16" />
+                      <div className="h-3.5 bg-slate-200 dark:bg-slate-800 rounded w-1/3" />
+                      <div className="h-4 bg-emerald-100 dark:bg-emerald-950 rounded w-16" />
                     </div>
-                    <div className="h-3 bg-slate-100 rounded w-2/3" />
-                    <div className="h-7 bg-slate-100 rounded w-full" />
-                    <div className="h-8 bg-slate-200 rounded w-full" />
+                    <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-2/3" />
+                    <div className="h-7 bg-slate-100 dark:bg-slate-800 rounded w-full" />
+                    <div className="h-8 bg-slate-200 dark:bg-slate-800 rounded w-full" />
                   </div>
                 ))
               ) : filteredCerts.length === 0 ? (
-                <div className="p-6 text-center text-slate-500 font-mono text-xs bg-white border border-slate-200 rounded-lg">
+                <div className="p-6 text-center text-slate-500 dark:text-slate-400 font-mono text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg">
                   No certificates match your search.
                 </div>
               ) : (
                 filteredCerts.map((cert, idx) => (
                   <div
                     key={idx}
-                    className="p-3 space-y-2 bg-white border border-slate-300 rounded-lg shadow-2xs hover:border-slate-400 transition-all"
+                    className="p-3 space-y-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-lg shadow-2xs hover:border-slate-400 dark:hover:border-slate-700 transition-all"
                   >
                     {/* Row 1: Certificate ID & Verified Badge */}
-                    <div className="flex items-start justify-between gap-2 border-b border-slate-100 pb-2">
+                    <div className="flex items-start justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-2">
                       <div className="min-w-0">
-                        <span className="text-[9.5px] font-mono text-slate-500 uppercase tracking-wider block">
+                        <span className="text-[9.5px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                           Certificate ID
                         </span>
-                        <span className="font-mono text-xs font-bold text-slate-900 select-all break-all">
+                        <span className="font-mono text-xs font-bold text-slate-900 dark:text-white select-all break-all">
                           {cert.certificate_id}
                         </span>
                       </div>
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 border border-emerald-300 text-emerald-800 font-mono text-[10px] font-semibold rounded shrink-0">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-semibold rounded shrink-0">
                         <CheckCircle2 size={11} /> Verified
                       </span>
                     </div>
 
                     {/* Row 2: Officer & Cadre Details */}
                     <div className="text-xs space-y-0.5">
-                      <span className="font-bold text-slate-900 text-xs block">
+                      <span className="font-bold text-slate-900 dark:text-white text-xs block">
                         {cert.user_name}
                       </span>
-                      <div className="text-slate-600 text-[11px] break-words">
+                      <div className="text-slate-600 dark:text-slate-400 text-[11px] break-words">
                         {cert.user_designation} • {cert.user_department}
                       </div>
                     </div>
 
                     {/* Row 3: Course & Badge Info */}
-                    <div className="bg-slate-50 border border-slate-200 rounded p-2 text-xs space-y-1 shadow-2xs">
+                    <div className="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded p-2 text-xs space-y-1 shadow-2xs">
                       <div>
-                        <span className="text-[9.5px] font-mono text-slate-500 uppercase tracking-wider block">
+                        <span className="text-[9.5px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                           Accredited Course & Badge
                         </span>
-                        <span className="font-semibold text-slate-900 text-xs block mt-0.5 break-words">
+                        <span className="font-semibold text-slate-900 dark:text-white text-xs block mt-0.5 break-words">
                           {cert.course_name}
                         </span>
                       </div>
-                      <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-200/70 font-mono text-[11px]">
-                        <span className="text-amber-800 font-semibold truncate">
+                      <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-200/70 dark:border-slate-800 font-mono text-[11px]">
+                        <span className="text-amber-800 dark:text-amber-300 font-semibold truncate">
                           {cert.badge_name}
                         </span>
-                        <span className="text-slate-500 text-[10px] shrink-0">
+                        <span className="text-slate-500 dark:text-slate-400 text-[10px] shrink-0">
                           {new Date(cert.completed_at).toLocaleDateString(
                             "en-IN",
                             {
@@ -1783,7 +1796,7 @@ export const AdminDashboard: React.FC = () => {
                         });
                         setIsCertModalOpen(true);
                       }}
-                      className="w-full py-1.5 px-3 bg-amber-50 hover:bg-amber-500 hover:text-slate-950 border border-amber-300 text-amber-900 rounded text-xs font-bold inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-200 shadow-2xs btn-press"
+                      className="w-full py-1.5 px-3 bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-500 dark:hover:bg-amber-500 hover:text-slate-950 dark:hover:text-slate-950 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-300 rounded text-xs font-bold inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-200 shadow-2xs btn-press"
                       title="View & Download Official Certificate"
                     >
                       <Download size={13} className="shrink-0" />
@@ -1796,8 +1809,8 @@ export const AdminDashboard: React.FC = () => {
 
             {/* Desktop Table View (>= md) */}
             <div className="hidden md:block overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-800">
-                <thead className="bg-slate-100 border-b border-slate-300 font-mono text-[11px] text-slate-600 uppercase">
+              <table className="w-full text-left text-xs text-slate-800 dark:text-slate-200">
+                <thead className="bg-slate-100 dark:bg-slate-800/90 border-b border-slate-300 dark:border-slate-700 font-mono text-[11px] text-slate-600 dark:text-slate-400 uppercase">
                   <tr>
                     <th className="p-3.5">Certificate ID</th>
                     <th className="p-3.5">Officer</th>
@@ -1808,32 +1821,32 @@ export const AdminDashboard: React.FC = () => {
                     <th className="p-3.5 text-right">Certificate</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200">
+                <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                   {certsLoading ? (
                     Array.from({ length: 5 }).map((_, i) => (
                       <tr key={i} className="animate-pulse">
                         <td className="p-3.5">
-                          <div className="h-3.5 bg-slate-200 rounded w-28" />
+                          <div className="h-3.5 bg-slate-200 dark:bg-slate-800 rounded w-28" />
                         </td>
                         <td className="p-3.5">
-                          <div className="h-3.5 bg-slate-200 rounded w-24" />
+                          <div className="h-3.5 bg-slate-200 dark:bg-slate-800 rounded w-24" />
                         </td>
                         <td className="p-3.5 space-y-1">
-                          <div className="h-3.5 bg-slate-200 rounded w-32" />
-                          <div className="h-2.5 bg-slate-100 rounded w-20" />
+                          <div className="h-3.5 bg-slate-200 dark:bg-slate-800 rounded w-32" />
+                          <div className="h-2.5 bg-slate-100 dark:bg-slate-800 rounded w-20" />
                         </td>
                         <td className="p-3.5 space-y-1">
-                          <div className="h-3.5 bg-slate-200 rounded w-44" />
-                          <div className="h-2.5 bg-slate-100 rounded w-24" />
+                          <div className="h-3.5 bg-slate-200 dark:bg-slate-800 rounded w-44" />
+                          <div className="h-2.5 bg-slate-100 dark:bg-slate-800 rounded w-24" />
                         </td>
                         <td className="p-3.5 text-center">
-                          <div className="h-3 bg-slate-200 rounded w-16 mx-auto" />
+                          <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-16 mx-auto" />
                         </td>
                         <td className="p-3.5 text-center">
-                          <div className="h-4 bg-emerald-100/60 rounded w-16 mx-auto" />
+                          <div className="h-4 bg-emerald-100/60 dark:bg-emerald-950/60 rounded w-16 mx-auto" />
                         </td>
                         <td className="p-3.5 text-right">
-                          <div className="h-6 bg-slate-200 rounded w-24 ml-auto" />
+                          <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded w-24 ml-auto" />
                         </td>
                       </tr>
                     ))
@@ -1841,7 +1854,7 @@ export const AdminDashboard: React.FC = () => {
                     <tr>
                       <td
                         colSpan={7}
-                        className="p-8 text-center text-slate-500 font-mono"
+                        className="p-8 text-center text-slate-500 dark:text-slate-400 font-mono"
                       >
                         No certificates match your search.
                       </td>
@@ -1850,31 +1863,31 @@ export const AdminDashboard: React.FC = () => {
                     filteredCerts.map((cert, idx) => (
                       <tr
                         key={idx}
-                        className="hover:bg-slate-50 transition-colors duration-150"
+                        className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors duration-150"
                       >
-                        <td className="p-3.5 font-mono font-bold text-slate-900 select-all">
+                        <td className="p-3.5 font-mono font-bold text-slate-900 dark:text-white select-all">
                           {cert.certificate_id}
                         </td>
-                        <td className="p-3.5 font-semibold text-slate-900">
+                        <td className="p-3.5 font-semibold text-slate-900 dark:text-white">
                           {cert.user_name}
                         </td>
                         <td className="p-3.5">
-                          <span className="text-slate-800 block">
+                          <span className="text-slate-800 dark:text-slate-200 block">
                             {cert.user_designation}
                           </span>
-                          <span className="text-[11px] text-slate-500">
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400">
                             {cert.user_department}
                           </span>
                         </td>
                         <td className="p-3.5">
-                          <div className="font-semibold text-slate-900">
+                          <div className="font-semibold text-slate-900 dark:text-white">
                             {cert.course_name}
                           </div>
-                          <div className="text-[10px] font-mono text-amber-800">
+                          <div className="text-[10px] font-mono text-amber-800 dark:text-amber-300">
                             {cert.badge_name}
                           </div>
                         </td>
-                        <td className="p-3.5 text-center font-mono text-slate-600">
+                        <td className="p-3.5 text-center font-mono text-slate-600 dark:text-slate-400">
                           {new Date(cert.completed_at).toLocaleDateString(
                             "en-IN",
                             {
@@ -1885,7 +1898,7 @@ export const AdminDashboard: React.FC = () => {
                           )}
                         </td>
                         <td className="p-3.5 text-center">
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 border border-emerald-300 text-emerald-800 font-mono text-[10px] font-semibold rounded animate-badge-pop">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-semibold rounded animate-badge-pop">
                             <CheckCircle2 size={11} /> Verified
                           </span>
                         </td>
@@ -1903,7 +1916,7 @@ export const AdminDashboard: React.FC = () => {
                               });
                               setIsCertModalOpen(true);
                             }}
-                            className="px-2.5 py-1 bg-amber-50 hover:bg-amber-500 hover:text-slate-950 border border-amber-300 text-amber-900 rounded text-[11px] font-bold inline-flex items-center gap-1 cursor-pointer transition-all duration-200 shadow-2xs btn-press"
+                            className="px-2.5 py-1 bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-500 dark:hover:bg-amber-500 hover:text-slate-950 dark:hover:text-slate-950 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-300 rounded text-[11px] font-bold inline-flex items-center gap-1 cursor-pointer transition-all duration-200 shadow-2xs btn-press"
                             title="View & Download Official Certificate"
                           >
                             <Download size={12} />
@@ -1922,7 +1935,7 @@ export const AdminDashboard: React.FC = () => {
 
       {selectedOfficerId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-xs animate-backdrop-enter">
-          <div className="bg-white border border-slate-300 rounded-xl shadow-2xl max-w-4xl w-full overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[90vh] animate-modal-enter">
+          <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl shadow-2xl max-w-4xl w-full overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[90vh] animate-modal-enter">
             <div className="p-4 sm:p-5 bg-slate-900 text-white flex items-center justify-between gap-3 shrink-0">
               <div className="min-w-0 flex-1">
                 <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-semibold block truncate">
@@ -1958,12 +1971,12 @@ export const AdminDashboard: React.FC = () => {
                     {[1, 2, 3, 4].map((i) => (
                       <div
                         key={i}
-                        className="p-3.5 bg-slate-50 border border-slate-200 rounded-lg space-y-2.5"
+                        className="p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg space-y-2.5"
                       >
-                        <div className="h-3 bg-slate-200 rounded w-2/3" />
+                        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-2/3" />
                         <div className="flex justify-between items-baseline pt-1">
-                          <div className="h-6 bg-slate-300 rounded w-16" />
-                          <div className="h-3 bg-slate-200 rounded w-12" />
+                          <div className="h-6 bg-slate-300 dark:bg-slate-600 rounded w-16" />
+                          <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-12" />
                         </div>
                       </div>
                     ))}
@@ -1971,45 +1984,45 @@ export const AdminDashboard: React.FC = () => {
 
                   {/* Competencies Table Skeleton */}
                   <div className="space-y-2">
-                    <div className="h-4 bg-slate-200 rounded w-52 mb-2" />
+                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-52 mb-2" />
                     {/* Mobile Skeletons */}
                     <div className="md:hidden space-y-2.5">
                       {[1, 2, 3].map((i) => (
                         <div
                           key={i}
-                          className="p-3 bg-white border border-slate-200 rounded-lg space-y-2"
+                          className="p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg space-y-2"
                         >
                           <div className="flex justify-between items-start gap-2">
-                            <div className="h-4 bg-slate-200 rounded w-2/3" />
-                            <div className="h-4 bg-slate-200 rounded w-16" />
+                            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-2/3" />
+                            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16" />
                           </div>
-                          <div className="h-3 bg-slate-100 rounded w-1/2" />
+                          <div className="h-3 bg-slate-100 dark:bg-slate-700 rounded w-1/2" />
                           <div className="space-y-1.5">
-                            <div className="h-7 bg-slate-100 rounded" />
-                            <div className="h-7 bg-slate-100 rounded" />
+                            <div className="h-7 bg-slate-100 dark:bg-slate-700 rounded" />
+                            <div className="h-7 bg-slate-100 dark:bg-slate-700 rounded" />
                           </div>
-                          <div className="h-7 bg-slate-200 rounded w-full" />
+                          <div className="h-7 bg-slate-200 dark:bg-slate-600 rounded w-full" />
                         </div>
                       ))}
                     </div>
 
                     {/* Desktop Skeletons */}
-                    <div className="hidden md:block border border-slate-200 rounded-lg overflow-hidden bg-white">
-                      <div className="h-9 bg-slate-100 border-b border-slate-200" />
-                      <div className="divide-y divide-slate-100 p-2 space-y-3">
+                    <div className="hidden md:block border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden bg-white dark:bg-slate-800">
+                      <div className="h-9 bg-slate-100 dark:bg-slate-700 border-b border-slate-200 dark:border-slate-600" />
+                      <div className="divide-y divide-slate-100 dark:divide-slate-700 p-2 space-y-3">
                         {[1, 2, 3, 4].map((i) => (
                           <div
                             key={i}
                             className="flex items-center justify-between py-2 gap-2"
                           >
                             <div className="space-y-1.5 flex-1">
-                              <div className="h-3.5 bg-slate-200 rounded w-3/4" />
-                              <div className="h-2.5 bg-slate-100 rounded w-1/2" />
+                              <div className="h-3.5 bg-slate-200 dark:bg-slate-700 rounded w-3/4" />
+                              <div className="h-2.5 bg-slate-100 dark:bg-slate-700 rounded w-1/2" />
                             </div>
-                            <div className="h-4 bg-slate-200 rounded w-14 shrink-0" />
-                            <div className="h-4 bg-slate-200 rounded w-14 shrink-0" />
-                            <div className="h-5 bg-slate-200 rounded w-16 shrink-0" />
-                            <div className="h-6 bg-slate-200 rounded w-20 shrink-0" />
+                            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-14 shrink-0" />
+                            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-14 shrink-0" />
+                            <div className="h-5 bg-slate-200 dark:bg-slate-700 rounded w-16 shrink-0" />
+                            <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-20 shrink-0" />
                           </div>
                         ))}
                       </div>
@@ -2018,19 +2031,19 @@ export const AdminDashboard: React.FC = () => {
 
                   {/* Courses Grid Skeleton */}
                   <div className="space-y-2">
-                    <div className="h-4 bg-slate-200 rounded w-48 mb-2" />
+                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-48 mb-2" />
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {[1, 2].map((i) => (
                         <div
                           key={i}
-                          className="p-3.5 bg-slate-50 border border-slate-200 rounded-lg space-y-3"
+                          className="p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg space-y-3"
                         >
                           <div className="flex justify-between">
-                            <div className="h-3.5 bg-slate-200 rounded w-1/2" />
-                            <div className="h-3.5 bg-blue-100 rounded w-14" />
+                            <div className="h-3.5 bg-slate-200 dark:bg-slate-700 rounded w-1/2" />
+                            <div className="h-3.5 bg-blue-100 dark:bg-blue-950 rounded w-14" />
                           </div>
-                          <div className="h-2.5 bg-slate-200 rounded w-3/4" />
-                          <div className="h-3 bg-slate-100 rounded w-1/3 pt-2" />
+                          <div className="h-2.5 bg-slate-200 dark:bg-slate-700 rounded w-3/4" />
+                          <div className="h-3 bg-slate-100 dark:bg-slate-700 rounded w-1/3 pt-2" />
                         </div>
                       ))}
                     </div>
@@ -2041,42 +2054,42 @@ export const AdminDashboard: React.FC = () => {
                   {/* 4 Responsive Metric Pills */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
                     {/* 1. Composite Skill Index */}
-                    <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg shadow-2xs min-w-0">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block mb-1 truncate">
+                    <div className="p-3 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-lg shadow-2xs min-w-0">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 truncate">
                         Composite Skill Index
                       </span>
                       <div className="flex items-baseline justify-between gap-1">
-                        <span className="font-mono text-xl sm:text-2xl font-bold text-slate-900 leading-none">
+                        <span className="font-mono text-xl sm:text-2xl font-bold text-slate-900 dark:text-white leading-none">
                           {officerDetail.composite_skill_index}%
                         </span>
-                        <span className="text-[10.5px] font-mono text-emerald-700 font-semibold shrink-0">
+                        <span className="text-[10.5px] font-mono text-emerald-700 dark:text-emerald-400 font-semibold shrink-0">
                           Benchmark Met
                         </span>
                       </div>
                     </div>
 
                     {/* 2. Cadre Classification */}
-                    <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg shadow-2xs min-w-0">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block mb-1 truncate">
+                    <div className="p-3 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-lg shadow-2xs min-w-0">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 truncate">
                         Cadre Classification
                       </span>
                       <div className="flex flex-col">
-                        <span className="font-mono text-xs sm:text-sm font-bold text-blue-900 leading-snug break-words">
+                        <span className="font-mono text-xs sm:text-sm font-bold text-blue-900 dark:text-blue-400 leading-snug break-words">
                           {officerDetail.cadre_type || "Cadre"}
                         </span>
                       </div>
                     </div>
 
                     {/* 3. Active Skill Gaps */}
-                    <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg shadow-2xs min-w-0">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block mb-1 truncate">
+                    <div className="p-3 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-lg shadow-2xs min-w-0">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 truncate">
                         Active Skill Gaps
                       </span>
                       <div className="flex items-baseline justify-between gap-1 flex-wrap">
-                        <span className="font-mono text-xl sm:text-2xl font-bold text-amber-700 leading-none">
+                        <span className="font-mono text-xl sm:text-2xl font-bold text-amber-700 dark:text-amber-400 leading-none">
                           {officerDetail.gap_count}
                         </span>
-                        <span className="text-[10.5px] font-mono text-amber-800 font-semibold shrink-0">
+                        <span className="text-[10.5px] font-mono text-amber-800 dark:text-amber-300 font-semibold shrink-0">
                           {officerDetail.urgent_gap_count > 0
                             ? `${officerDetail.urgent_gap_count} Urgent`
                             : "No Urgent Gaps"}
@@ -2085,15 +2098,15 @@ export const AdminDashboard: React.FC = () => {
                     </div>
 
                     {/* 4. Verified Credentials */}
-                    <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg shadow-2xs min-w-0">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block mb-1 truncate">
+                    <div className="p-3 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-lg shadow-2xs min-w-0">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 truncate">
                         Verified Credentials
                       </span>
                       <div className="flex items-baseline justify-between gap-1">
-                        <span className="font-mono text-xl sm:text-2xl font-bold text-emerald-700 leading-none">
+                        <span className="font-mono text-xl sm:text-2xl font-bold text-emerald-700 dark:text-emerald-400 leading-none">
                           {officerDetail.badges_earned.length}
                         </span>
-                        <span className="text-[10.5px] font-mono text-slate-500 font-medium shrink-0">
+                        <span className="text-[10.5px] font-mono text-slate-500 dark:text-slate-400 font-medium shrink-0">
                           Badges Issued
                         </span>
                       </div>
@@ -2102,7 +2115,7 @@ export const AdminDashboard: React.FC = () => {
 
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-900">
+                      <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-900 dark:text-white">
                         FRAC Competencies & Target Benchmarks
                       </h4>
                     </div>
@@ -2115,23 +2128,23 @@ export const AdminDashboard: React.FC = () => {
                         return (
                           <div
                             key={comp.id}
-                            className="p-3 bg-white border border-slate-300 rounded-lg shadow-2xs space-y-2"
+                            className="p-3 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-lg shadow-2xs space-y-2"
                           >
                             {/* Header: Name & Status */}
                             <div className="flex items-start justify-between gap-2">
                               <div className="min-w-0 flex-1">
-                                <h5 className="font-bold text-xs text-slate-900 break-words">
+                                <h5 className="font-bold text-xs text-slate-900 dark:text-white break-words">
                                   {comp.name}
                                 </h5>
-                                <span className="font-mono text-[10.5px] text-slate-500 block mt-0.5">
+                                <span className="font-mono text-[10.5px] text-slate-500 dark:text-slate-400 block mt-0.5">
                                   {comp.code} • {comp.department}
                                 </span>
                               </div>
                               <span
                                 className={`px-2 py-0.5 font-semibold text-[10.5px] rounded border shrink-0 ${
                                   isAchieved
-                                    ? "bg-emerald-50 text-emerald-800 border-emerald-300"
-                                    : "bg-amber-50 text-amber-800 border-amber-300"
+                                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800"
+                                    : "bg-amber-50 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800"
                                 }`}
                               >
                                 {isAchieved
@@ -2142,20 +2155,20 @@ export const AdminDashboard: React.FC = () => {
 
                             {/* Stacked Levels (Assessed & Target one below another) */}
                             <div className="space-y-1.5 text-xs font-mono">
-                              <div className="p-2 bg-slate-50 border border-slate-200 rounded flex items-center justify-between shadow-2xs">
-                                <span className="text-[11px] text-slate-500 font-medium">
+                              <div className="p-2 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded flex items-center justify-between shadow-2xs">
+                                <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
                                   Assessed Level:
                                 </span>
-                                <span className="font-bold text-blue-900 text-xs">
+                                <span className="font-bold text-blue-900 dark:text-blue-400 text-xs">
                                   Level {comp.assessed_level}
                                 </span>
                               </div>
 
-                              <div className="p-2 bg-slate-50 border border-slate-200 rounded flex items-center justify-between shadow-2xs">
-                                <span className="text-[11px] text-slate-500 font-medium">
+                              <div className="p-2 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded flex items-center justify-between shadow-2xs">
+                                <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
                                   Target Benchmark:
                                 </span>
-                                <span className="font-bold text-slate-800 text-xs">
+                                <span className="font-bold text-slate-800 dark:text-slate-200 text-xs">
                                   Level {comp.target_level}
                                 </span>
                               </div>
@@ -2167,7 +2180,7 @@ export const AdminDashboard: React.FC = () => {
                                 setOverrideCompId(comp.id);
                                 setOverrideLevel(comp.assessed_level);
                               }}
-                              className="w-full py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 font-semibold rounded text-xs inline-flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-2xs btn-press"
+                              className="w-full py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-semibold rounded text-xs inline-flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-2xs btn-press"
                             >
                               <span>Override & Accredit Level</span>
                             </button>
@@ -2177,9 +2190,9 @@ export const AdminDashboard: React.FC = () => {
                     </div>
 
                     {/* Desktop Table View (>= md) */}
-                    <div className="hidden md:block border border-slate-200 rounded-lg overflow-x-auto shadow-2xs">
+                    <div className="hidden md:block border border-slate-200 dark:border-slate-800 rounded-lg overflow-x-auto shadow-2xs">
                       <table className="w-full text-left text-xs min-w-full">
-                        <thead className="bg-slate-100 border-b border-slate-200 font-mono text-[10px] uppercase text-slate-600">
+                        <thead className="bg-slate-100 dark:bg-slate-800/90 border-b border-slate-200 dark:border-slate-700 font-mono text-[10px] uppercase text-slate-600 dark:text-slate-400">
                           <tr>
                             <th className="p-2.5">Competency Code & Name</th>
                             <th className="p-2.5 text-center">
@@ -2192,30 +2205,33 @@ export const AdminDashboard: React.FC = () => {
                             <th className="p-2.5 text-right">Audit Action</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-200 bg-white">
+                        <tbody className="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
                           {officerDetail.competencies.map((comp) => (
-                            <tr key={comp.id} className="hover:bg-slate-50">
+                            <tr
+                              key={comp.id}
+                              className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+                            >
                               <td className="p-2.5">
-                                <div className="font-bold text-slate-900">
+                                <div className="font-bold text-slate-900 dark:text-white">
                                   {comp.name}
                                 </div>
-                                <div className="font-mono text-[10px] text-slate-500">
+                                <div className="font-mono text-[10px] text-slate-500 dark:text-slate-400">
                                   {comp.code} • {comp.department}
                                 </div>
                               </td>
-                              <td className="p-2.5 text-center font-mono font-bold text-blue-900">
+                              <td className="p-2.5 text-center font-mono font-bold text-blue-900 dark:text-blue-400">
                                 Level {comp.assessed_level}
                               </td>
-                              <td className="p-2.5 text-center font-mono text-slate-600">
+                              <td className="p-2.5 text-center font-mono text-slate-600 dark:text-slate-300">
                                 Level {comp.target_level}
                               </td>
                               <td className="p-2.5 text-center font-mono">
                                 {comp.assessed_level >= comp.target_level ? (
-                                  <span className="px-2 py-0.5 bg-emerald-50 text-emerald-800 font-semibold rounded border border-emerald-200">
+                                  <span className="px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 font-semibold rounded border border-emerald-200 dark:border-emerald-800">
                                     Achieved
                                   </span>
                                 ) : (
-                                  <span className="px-2 py-0.5 bg-amber-50 text-amber-800 font-semibold rounded border border-amber-200">
+                                  <span className="px-2 py-0.5 bg-amber-50 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 font-semibold rounded border border-amber-200 dark:border-amber-800">
                                     Gap (L
                                     {comp.target_level - comp.assessed_level})
                                   </span>
@@ -2227,7 +2243,7 @@ export const AdminDashboard: React.FC = () => {
                                     setOverrideCompId(comp.id);
                                     setOverrideLevel(comp.assessed_level);
                                   }}
-                                  className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded font-semibold text-[10px] text-slate-700 cursor-pointer transition-colors"
+                                  className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 rounded font-semibold text-[10px] text-slate-700 dark:text-slate-300 cursor-pointer transition-colors"
                                 >
                                   Override Level
                                 </button>
@@ -2240,14 +2256,14 @@ export const AdminDashboard: React.FC = () => {
                   </div>
 
                   {overrideCompId && (
-                    <div className="p-4 bg-amber-50/70 border-2 border-amber-400 rounded space-y-3">
+                    <div className="p-4 bg-amber-50/70 dark:bg-amber-950/40 border-2 border-amber-400 dark:border-amber-600 rounded space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-xs text-amber-950 font-mono uppercase">
+                        <span className="font-bold text-xs text-amber-950 dark:text-amber-300 font-mono uppercase">
                           Manual Competency Accreditation Override
                         </span>
                         <button
                           onClick={() => setOverrideCompId(null)}
-                          className="text-xs text-slate-500 hover:text-slate-800"
+                          className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"
                         >
                           Cancel
                         </button>
@@ -2255,7 +2271,7 @@ export const AdminDashboard: React.FC = () => {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
-                          <label className="block text-[11px] font-mono text-slate-700 mb-1">
+                          <label className="block text-[11px] font-mono text-slate-700 dark:text-slate-300 mb-1">
                             New Assessed Level (1 - 5)
                           </label>
                           <select
@@ -2263,7 +2279,7 @@ export const AdminDashboard: React.FC = () => {
                             onChange={(e) =>
                               setOverrideLevel(Number(e.target.value))
                             }
-                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded"
+                            className="w-full px-2.5 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded"
                           >
                             <option value={1}>Level 1: Basic Awareness</option>
                             <option value={2}>
@@ -2282,7 +2298,7 @@ export const AdminDashboard: React.FC = () => {
                         </div>
 
                         <div>
-                          <label className="block text-[11px] font-mono text-slate-700 mb-1">
+                          <label className="block text-[11px] font-mono text-slate-700 dark:text-slate-300 mb-1">
                             Audit Remarks / Justification
                           </label>
                           <input
@@ -2290,7 +2306,7 @@ export const AdminDashboard: React.FC = () => {
                             placeholder="e.g. Verified prior field experience or external certification"
                             value={overrideRemarks}
                             onChange={(e) => setOverrideRemarks(e.target.value)}
-                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded"
+                            className="w-full px-2.5 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 rounded"
                           />
                         </div>
                       </div>
@@ -2310,12 +2326,12 @@ export const AdminDashboard: React.FC = () => {
                   )}
 
                   <div>
-                    <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-900 mb-2">
+                    <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-900 dark:text-white mb-2">
                       Enrolled Courses & iGOT Karmayogi Ledger
                     </h4>
 
                     {officerDetail.enrolled_courses.length === 0 ? (
-                      <p className="text-xs text-slate-500 italic p-3 bg-slate-50 border border-slate-200 rounded">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 italic p-3 bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded">
                         Officer has not enrolled in any iGOT courses yet.
                       </p>
                     ) : (
@@ -2323,32 +2339,32 @@ export const AdminDashboard: React.FC = () => {
                         {officerDetail.enrolled_courses.map((item) => (
                           <div
                             key={item.enrollment_id}
-                            className="p-3 bg-slate-50 border border-slate-200 rounded flex flex-col justify-between"
+                            className="p-3 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded flex flex-col justify-between"
                           >
                             <div>
                               <div className="flex items-center justify-between mb-1">
-                                <span className="font-bold text-xs text-slate-900">
+                                <span className="font-bold text-xs text-slate-900 dark:text-white">
                                   {item.course.name}
                                 </span>
                                 <span
                                   className={`px-1.5 py-0.2 font-mono text-[9px] font-bold rounded uppercase ${
                                     item.status === "completed"
-                                      ? "bg-emerald-100 text-emerald-800"
-                                      : "bg-blue-100 text-blue-900"
+                                      ? "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300"
+                                      : "bg-blue-100 dark:bg-blue-950/80 text-blue-900 dark:text-blue-300"
                                   }`}
                                 >
                                   {item.status}
                                 </span>
                               </div>
-                              <p className="text-[11px] text-slate-600 line-clamp-1">
+                              <p className="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-1">
                                 {item.course.by}
                               </p>
                             </div>
 
                             {item.certificate_id && (
-                              <div className="mt-2 pt-2 border-t border-slate-200 font-mono text-[10px] text-slate-600 flex items-center justify-between">
+                              <div className="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 font-mono text-[10px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
                                 <span>Cert ID:</span>
-                                <span className="font-bold text-blue-900">
+                                <span className="font-bold text-blue-900 dark:text-blue-400">
                                   {item.certificate_id}
                                 </span>
                               </div>
@@ -2362,13 +2378,13 @@ export const AdminDashboard: React.FC = () => {
               ) : null}
             </div>
 
-            <div className="p-4 bg-slate-50 border-t border-slate-200 flex justify-end">
+            <div className="p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex justify-end">
               <button
                 onClick={() => {
                   setSelectedOfficerId(null);
                   setOfficerDetail(null);
                 }}
-                className="px-4 py-1.5 bg-slate-900 text-white rounded text-xs font-semibold"
+                className="px-4 py-1.5 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white rounded text-xs font-semibold cursor-pointer"
               >
                 Close Audit View
               </button>
@@ -2379,7 +2395,7 @@ export const AdminDashboard: React.FC = () => {
 
       {isCourseModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-backdrop-enter">
-          <div className="bg-white border border-slate-300 rounded-lg shadow-2xl max-w-2xl w-full overflow-hidden flex flex-col max-h-[90vh] animate-modal-enter">
+          <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-lg shadow-2xl max-w-2xl w-full overflow-hidden flex flex-col max-h-[90vh] animate-modal-enter">
             <div className="p-5 bg-slate-900 text-white flex items-center justify-between">
               <div>
                 <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-semibold block">
@@ -2391,7 +2407,7 @@ export const AdminDashboard: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsCourseModalOpen(false)}
-                className="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800 transition-colors btn-press"
+                className="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800 transition-colors btn-press cursor-pointer"
               >
                 <X size={20} />
               </button>
@@ -2399,16 +2415,16 @@ export const AdminDashboard: React.FC = () => {
 
             <form
               onSubmit={handleCreateCourse}
-              className="p-6 overflow-y-auto space-y-4 flex-1"
+              className="p-6 overflow-y-auto space-y-4 flex-1 text-slate-900 dark:text-slate-100"
             >
               {courseError && (
-                <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded font-medium flex items-center gap-2">
+                <div className="p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-xs rounded font-medium flex items-center gap-2">
                   <span className="font-bold">Error:</span>
                   <span>{courseError}</span>
                 </div>
               )}
               <div>
-                <label className="block text-xs font-mono font-semibold text-slate-800 mb-1">
+                <label className="block text-xs font-mono font-semibold text-slate-800 dark:text-slate-200 mb-1">
                   Course Title / Name *
                 </label>
                 <input
@@ -2422,13 +2438,13 @@ export const AdminDashboard: React.FC = () => {
                       name: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded focus:ring-1 focus:ring-blue-900"
+                  className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-1 focus:ring-blue-900 dark:focus:ring-blue-500"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-mono font-semibold text-slate-800 mb-1">
+                  <label className="block text-xs font-mono font-semibold text-slate-800 dark:text-slate-200 mb-1">
                     Offering Organization
                   </label>
                   <input
@@ -2440,12 +2456,12 @@ export const AdminDashboard: React.FC = () => {
                         by: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded"
+                    className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-900 dark:text-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono font-semibold text-slate-800 mb-1">
+                  <label className="block text-xs font-mono font-semibold text-slate-800 dark:text-slate-200 mb-1">
                     Duration (Hours)
                   </label>
                   <input
@@ -2457,12 +2473,12 @@ export const AdminDashboard: React.FC = () => {
                         duration: Number(e.target.value),
                       })
                     }
-                    className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded"
+                    className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-900 dark:text-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono font-semibold text-slate-800 mb-1">
+                  <label className="block text-xs font-mono font-semibold text-slate-800 dark:text-slate-200 mb-1">
                     Difficulty Level
                   </label>
                   <select
@@ -2473,7 +2489,7 @@ export const AdminDashboard: React.FC = () => {
                         difficulty_level: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded"
+                    className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-900 dark:text-white"
                   >
                     <option value="Beginner">Beginner (L1)</option>
                     <option value="Intermediate">Intermediate (L2-L3)</option>
@@ -2483,7 +2499,7 @@ export const AdminDashboard: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-mono font-semibold text-slate-800 mb-1">
+                <label className="block text-xs font-mono font-semibold text-slate-800 dark:text-slate-200 mb-1">
                   Course Description & Objectives
                 </label>
                 <textarea
@@ -2496,17 +2512,17 @@ export const AdminDashboard: React.FC = () => {
                       course_description: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded"
+                  className="w-full px-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
                 />
               </div>
 
               <div>
                 <div className="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
-                  <label className="block text-xs font-mono font-semibold text-slate-800">
+                  <label className="block text-xs font-mono font-semibold text-slate-800 dark:text-slate-200">
                     Associate with FRAC Competencies (Auto-Upskilling Target)
                   </label>
                   {masterCompetencies.length > 0 && (
-                    <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                    <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
                       {courseFormData.mapped_competency_ids?.length || 0} /{" "}
                       {masterCompetencies.length} Selected
                     </span>
@@ -2517,35 +2533,35 @@ export const AdminDashboard: React.FC = () => {
                 <div className="relative mb-2">
                   <Search
                     size={13}
-                    className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                    className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 pointer-events-none"
                   />
                   <input
                     type="text"
                     placeholder="Search competencies by title, code or division..."
                     value={compSearchQuery}
                     onChange={(e) => setCompSearchQuery(e.target.value)}
-                    className="w-full pl-7 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:ring-1 focus:ring-blue-900 placeholder:text-slate-400"
+                    className="w-full pl-7 pr-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded focus:bg-white dark:focus:bg-slate-800 focus:ring-1 focus:ring-blue-900 placeholder:text-slate-400 dark:placeholder:text-slate-500 text-slate-900 dark:text-white"
                   />
                 </div>
 
-                <div className="max-h-56 overflow-y-auto border border-slate-200 rounded-lg p-1.5 space-y-1.5 bg-slate-50">
+                <div className="max-h-56 overflow-y-auto border border-slate-200 dark:border-slate-700 rounded-lg p-1.5 space-y-1.5 bg-slate-50 dark:bg-slate-950/60">
                   {masterCompetenciesLoading ? (
                     <div className="space-y-1.5 p-0.5 animate-pulse">
                       {[1, 2, 3, 4, 5].map((idx) => (
                         <div
                           key={idx}
-                          className="w-full flex items-start gap-2.5 p-2.5 bg-white rounded-lg border border-slate-200/70 overflow-hidden"
+                          className="w-full flex items-start gap-2.5 p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200/70 dark:border-slate-800 overflow-hidden"
                         >
-                          <div className="w-4 h-4 bg-slate-200 rounded shrink-0 mt-0.5" />
+                          <div className="w-4 h-4 bg-slate-200 dark:bg-slate-800 rounded shrink-0 mt-0.5" />
                           <div className="flex-1 min-w-0 flex flex-col gap-1.5">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 min-w-0">
-                              <div className="h-3.5 bg-slate-200 rounded w-4/5 sm:w-1/2" />
+                              <div className="h-3.5 bg-slate-200 dark:bg-slate-700 rounded w-4/5 sm:w-1/2" />
                               <div className="flex items-center gap-1.5 shrink-0">
-                                <div className="h-4 bg-slate-200/80 rounded w-16" />
-                                <div className="h-4 bg-slate-200/60 rounded w-12" />
+                                <div className="h-4 bg-slate-200/80 dark:bg-slate-700 rounded w-16" />
+                                <div className="h-4 bg-slate-200/60 dark:bg-slate-700 rounded w-12" />
                               </div>
                             </div>
-                            <div className="h-3 bg-slate-200/60 rounded w-2/3 sm:w-1/3" />
+                            <div className="h-3 bg-slate-200/60 dark:bg-slate-700 rounded w-2/3 sm:w-1/3" />
                           </div>
                         </div>
                       ))}
@@ -2567,7 +2583,7 @@ export const AdminDashboard: React.FC = () => {
 
                       if (filteredMasterCompetencies.length === 0) {
                         return (
-                          <div className="py-6 text-center text-xs font-mono text-slate-500">
+                          <div className="py-6 text-center text-xs font-mono text-slate-500 dark:text-slate-400">
                             {compSearchQuery.trim()
                               ? "No matching FRAC competencies found."
                               : "No FRAC competencies available to map."}
@@ -2585,8 +2601,8 @@ export const AdminDashboard: React.FC = () => {
                             key={comp.id}
                             className={`w-full flex items-start gap-2.5 p-2.5 rounded-lg text-xs transition-all duration-150 cursor-pointer border select-none overflow-hidden ${
                               isChecked
-                                ? "bg-blue-50/80 border-blue-300 text-slate-900 shadow-2xs"
-                                : "bg-white hover:bg-slate-100/90 border-slate-200 text-slate-700"
+                                ? "bg-blue-50/80 dark:bg-blue-950/80 border-blue-300 dark:border-blue-700 text-slate-900 dark:text-white shadow-2xs"
+                                : "bg-white dark:bg-slate-900 hover:bg-slate-100/90 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300"
                             }`}
                           >
                             <input
@@ -2612,25 +2628,25 @@ export const AdminDashboard: React.FC = () => {
                                   });
                                 }
                               }}
-                              className="w-4 h-4 mt-0.5 rounded text-blue-900 focus:ring-0 border-slate-300 shrink-0 cursor-pointer"
+                              className="w-4 h-4 mt-0.5 rounded text-blue-900 focus:ring-0 border-slate-300 dark:border-slate-700 shrink-0 cursor-pointer"
                             />
                             <div className="flex-1 min-w-0 flex flex-col gap-1">
                               <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-2 min-w-0">
-                                <span className="font-bold text-slate-900 text-xs leading-snug break-words">
+                                <span className="font-bold text-slate-900 dark:text-white text-xs leading-snug break-words">
                                   {comp.name}
                                 </span>
                                 <div className="flex items-center gap-1.5 shrink-0 flex-wrap self-start sm:self-auto">
-                                  <span className="px-1.5 py-0.5 bg-amber-500/15 text-amber-900 border border-amber-500/30 rounded font-mono text-[9px] font-bold uppercase shrink-0">
+                                  <span className="px-1.5 py-0.5 bg-amber-500/15 text-amber-900 dark:text-amber-300 border border-amber-500/30 rounded font-mono text-[9px] font-bold uppercase shrink-0">
                                     {comp.code}
                                   </span>
                                   {comp.category && (
-                                    <span className="px-1.5 py-0.5 bg-blue-50 text-blue-800 border border-blue-200/80 rounded font-mono text-[9px] font-semibold uppercase shrink-0">
+                                    <span className="px-1.5 py-0.5 bg-blue-50 dark:bg-blue-950/80 text-blue-800 dark:text-blue-300 border border-blue-200/80 dark:border-blue-800 rounded font-mono text-[9px] font-semibold uppercase shrink-0">
                                       {comp.category}
                                     </span>
                                   )}
                                 </div>
                               </div>
-                              <div className="text-[10.5px] text-slate-600 font-medium break-words leading-tight min-w-0">
+                              <div className="text-[10.5px] text-slate-600 dark:text-slate-400 font-medium break-words leading-tight min-w-0">
                                 {comp.department}
                               </div>
                             </div>
@@ -2642,12 +2658,12 @@ export const AdminDashboard: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2.5 pt-3.5 border-t border-slate-200">
+              <div className="flex items-center justify-end gap-2.5 pt-3.5 border-t border-slate-200 dark:border-slate-800">
                 <button
                   type="button"
                   disabled={courseSaving}
                   onClick={() => setIsCourseModalOpen(false)}
-                  className="px-4 py-2 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-xs font-semibold transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -2656,7 +2672,7 @@ export const AdminDashboard: React.FC = () => {
                   disabled={courseSaving}
                   className={`px-4 py-2 text-xs font-bold rounded-lg inline-flex items-center justify-center gap-1.5 transition-all duration-200 ${
                     courseSaving
-                      ? "bg-slate-300 border border-slate-300 text-slate-500 cursor-not-allowed shadow-none"
+                      ? "bg-slate-300 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 cursor-not-allowed shadow-none"
                       : "bg-emerald-700 hover:bg-emerald-800 text-white shadow-xs cursor-pointer active:scale-98"
                   }`}
                 >
@@ -2683,7 +2699,7 @@ export const AdminDashboard: React.FC = () => {
 
       {createdCourseSuccess && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-backdrop-enter">
-          <div className="bg-white border-2 border-emerald-600 rounded-xl shadow-2xl max-w-md w-full overflow-hidden flex flex-col animate-modal-enter">
+          <div className="bg-white dark:bg-slate-900 border-2 border-emerald-600 rounded-xl shadow-2xl max-w-md w-full overflow-hidden flex flex-col animate-modal-enter">
             <div className="bg-radial from-slate-900 via-slate-950 to-emerald-950 text-white p-5 sm:p-6 text-center relative border-b-2 border-emerald-500">
               <button
                 onClick={() => setCreatedCourseSuccess(null)}
@@ -2708,39 +2724,39 @@ export const AdminDashboard: React.FC = () => {
               </p>
             </div>
 
-            <div className="p-5 space-y-3.5 bg-slate-50/50">
-              <div className="bg-white p-3.5 rounded-lg border border-slate-200 shadow-2xs space-y-2.5">
+            <div className="p-5 space-y-3.5 bg-slate-50/50 dark:bg-slate-950/50">
+              <div className="bg-white dark:bg-slate-900 p-3.5 rounded-lg border border-slate-200 dark:border-slate-800 shadow-2xs space-y-2.5">
                 <div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
                     Course Title
                   </span>
-                  <h4 className="font-serif text-sm font-bold text-slate-900 leading-snug">
+                  <h4 className="font-serif text-sm font-bold text-slate-900 dark:text-white leading-snug">
                     {createdCourseSuccess.name}
                   </h4>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 font-mono text-xs">
+                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 font-mono text-xs">
                   <div>
-                    <span className="text-[10px] text-slate-500 block">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 block">
                       Duration
                     </span>
-                    <span className="font-bold text-slate-800">
+                    <span className="font-bold text-slate-800 dark:text-slate-200">
                       {createdCourseSuccess.duration} Hours
                     </span>
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 block">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 block">
                       Difficulty
                     </span>
-                    <span className="font-bold text-slate-800">
+                    <span className="font-bold text-slate-800 dark:text-slate-200">
                       {createdCourseSuccess.difficulty_level}
                     </span>
                   </div>
-                  <div className="col-span-2 pt-1.5 border-t border-slate-100 flex items-center justify-between">
-                    <span className="text-[11px] text-slate-600 font-sans">
+                  <div className="col-span-2 pt-1.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <span className="text-[11px] text-slate-600 dark:text-slate-400 font-sans">
                       FRAC Mappings:
                     </span>
-                    <span className="font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded text-[11px]">
+                    <span className="font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded text-[11px]">
                       {createdCourseSuccess.mapped_count} Competenc
                       {createdCourseSuccess.mapped_count === 1
                         ? "y"
@@ -2751,8 +2767,11 @@ export const AdminDashboard: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-2.5 rounded-lg bg-emerald-50/80 border border-emerald-200/80 flex items-center gap-2 text-xs text-emerald-900 font-medium">
-                <ShieldCheck size={16} className="text-emerald-700 shrink-0" />
+              <div className="p-2.5 rounded-lg bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800 flex items-center gap-2 text-xs text-emerald-900 dark:text-emerald-300 font-medium">
+                <ShieldCheck
+                  size={16}
+                  className="text-emerald-700 dark:text-emerald-400 shrink-0"
+                />
                 <span>Active in officer learning recommendation loops</span>
               </div>
 

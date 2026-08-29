@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { authService } from "../services/auth";
 import { QualificationsInput } from "../components/QualificationsInput";
 import { ExperienceInput } from "../components/ExperienceInput";
+import { ThemeToggle } from "../components/ThemeToggle";
 import {
   Eye,
   EyeOff,
@@ -228,7 +229,7 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col justify-between font-sans text-slate-900">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 flex flex-col justify-between font-sans text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <header className="bg-slate-900 text-white border-b-2 border-amber-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -246,30 +247,31 @@ export const Register: React.FC = () => {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-2 text-xs font-mono text-slate-300">
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span className="hidden sm:inline">
-              Official Cadre Enrollment Portal
-            </span>
+          <div className="flex items-center gap-3 text-xs font-mono text-slate-300">
+            <div className="hidden sm:flex items-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>Official Cadre Enrollment Portal</span>
+            </div>
+            <ThemeToggle />
           </div>
         </div>
       </header>
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 animate-scale-in">
-        <div className="mb-6 pb-4 border-b border-slate-300 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+        <div className="mb-6 pb-4 border-b border-slate-300 dark:border-slate-800 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
           <div>
-            <div className="text-[11px] font-mono uppercase tracking-widest text-slate-500 mb-1">
+            <div className="text-[11px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1">
               National Statistical Cadre Enrolment • Form OSS-REG/01
             </div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
               Official Profile & Competency Registration
             </h1>
           </div>
-          <div className="text-xs text-slate-600">
+          <div className="text-xs text-slate-600 dark:text-slate-400">
             Already registered?{" "}
             <Link
               to="/login"
-              className="font-semibold text-blue-900 hover:underline inline-flex items-center gap-1 btn-press"
+              className="font-semibold text-blue-900 dark:text-amber-400 hover:underline inline-flex items-center gap-1 btn-press"
             >
               <span>Sign in to console</span>
               <ArrowRight size={12} />
@@ -278,8 +280,11 @@ export const Register: React.FC = () => {
         </div>
 
         {error && (
-          <div className="flex items-start gap-2.5 bg-red-50 border border-red-200 text-red-800 p-3.5 rounded text-xs font-medium mb-6 animate-slide-down">
-            <AlertCircle size={17} className="text-red-600 shrink-0 mt-0.5" />
+          <div className="flex items-start gap-2.5 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 p-3.5 rounded text-xs font-medium mb-6 animate-slide-down">
+            <AlertCircle
+              size={17}
+              className="text-red-600 dark:text-red-400 shrink-0 mt-0.5"
+            />
             <span>{error}</span>
           </div>
         )}
@@ -287,31 +292,31 @@ export const Register: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <form
             onSubmit={handleSubmit}
-            className="lg:col-span-8 bg-white border border-slate-300 rounded shadow-xs p-6 sm:p-8 space-y-6 card-interactive"
+            className="lg:col-span-8 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs p-6 sm:p-8 space-y-6 card-interactive"
             noValidate
           >
             <div>
-              <div className="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
-                <span className="text-xs font-bold font-mono text-slate-400">
+              <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 mb-4">
+                <span className="text-xs font-bold font-mono text-slate-400 dark:text-slate-500">
                   01.
                 </span>
-                <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800">
+                <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
                   Official Identification & Credentials
                 </h2>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-800">
+                  <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     Full Name (As per Service Record){" "}
-                    <span className="text-red-600">*</span>
+                    <span className="text-red-600 dark:text-red-400">*</span>
                   </label>
                   <input
                     type="text"
-                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 shadow-xs focus:outline-none transition-all duration-200 ${
+                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none transition-all duration-200 ${
                       isNameInvalid
-                        ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
-                        : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                        ? "border-red-500 dark:border-red-500 bg-red-50/20 dark:bg-red-950/30 ring-1 ring-red-500"
+                        : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500"
                     }`}
                     placeholder="e.g. Dr. Rajesh Kumar Sharma"
                     value={name}
@@ -319,7 +324,7 @@ export const Register: React.FC = () => {
                     required
                   />
                   {isNameInvalid && (
-                    <span className="text-[11px] text-red-600 block animate-slide-down">
+                    <span className="text-[11px] text-red-600 dark:text-red-400 block animate-slide-down">
                       Name is required.
                     </span>
                   )}
@@ -327,24 +332,24 @@ export const Register: React.FC = () => {
 
                 <div className="space-y-1">
                   <div className="flex justify-between items-baseline">
-                    <label className="text-xs font-semibold text-slate-800">
+                    <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                       Cadre / Portal Username{" "}
-                      <span className="text-red-600">*</span>
+                      <span className="text-red-600 dark:text-red-400">*</span>
                     </label>
                     <span className="text-[10px] font-mono">
                       {usernameStatus === "checking" && (
-                        <span className="text-slate-500 flex items-center gap-1">
+                        <span className="text-slate-500 dark:text-slate-400 flex items-center gap-1">
                           <Loader2 size={10} className="animate-spin" />{" "}
                           Verifying
                         </span>
                       )}
                       {usernameStatus === "available" && (
-                        <span className="text-emerald-700 font-semibold flex items-center gap-0.5 animate-badge-pop">
+                        <span className="text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-0.5 animate-badge-pop">
                           <CheckCircle2 size={11} /> Available
                         </span>
                       )}
                       {usernameStatus === "taken" && (
-                        <span className="text-red-600 font-semibold animate-shake">
+                        <span className="text-red-600 dark:text-red-400 font-semibold animate-shake">
                           Unavailable
                         </span>
                       )}
@@ -352,10 +357,10 @@ export const Register: React.FC = () => {
                   </div>
                   <input
                     type="text"
-                    className={`w-full h-9 px-3 rounded border text-xs font-mono text-slate-900 shadow-xs focus:outline-none transition-all duration-200 ${
+                    className={`w-full h-9 px-3 rounded border text-xs font-mono text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none transition-all duration-200 ${
                       isUsernameInvalid
-                        ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
-                        : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                        ? "border-red-500 dark:border-red-500 bg-red-50/20 dark:bg-red-950/30 ring-1 ring-red-500"
+                        : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500"
                     }`}
                     placeholder="e.g. rajesh_k_iss"
                     value={username}
@@ -363,7 +368,7 @@ export const Register: React.FC = () => {
                     required
                   />
                   {isUsernameInvalid && (
-                    <span className="text-[11px] text-red-600 block animate-slide-down">
+                    <span className="text-[11px] text-red-600 dark:text-red-400 block animate-slide-down">
                       {usernameStatus === "taken"
                         ? "Username is taken. Choose another."
                         : "Minimum 3 characters required."}
@@ -372,16 +377,16 @@ export const Register: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-800">
+                  <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     Official Email (NIC / Government Domain){" "}
-                    <span className="text-red-600">*</span>
+                    <span className="text-red-600 dark:text-red-400">*</span>
                   </label>
                   <input
                     type="email"
-                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 shadow-xs focus:outline-none transition-all duration-200 ${
+                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none transition-all duration-200 ${
                       isEmailInvalid
-                        ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
-                        : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                        ? "border-red-500 dark:border-red-500 bg-red-50/20 dark:bg-red-950/30 ring-1 ring-red-500"
+                        : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500"
                     }`}
                     placeholder="e.g. rajesh.sharma@mospi.gov.in"
                     value={email}
@@ -389,22 +394,23 @@ export const Register: React.FC = () => {
                     required
                   />
                   {isEmailInvalid && (
-                    <span className="text-[11px] text-red-600 block animate-slide-down">
+                    <span className="text-[11px] text-red-600 dark:text-red-400 block animate-slide-down">
                       Valid official email address is required.
                     </span>
                   )}
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-800">
-                    Mobile Phone Number <span className="text-red-600">*</span>
+                  <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                    Mobile Phone Number{" "}
+                    <span className="text-red-600 dark:text-red-400">*</span>
                   </label>
                   <input
                     type="tel"
-                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 shadow-xs focus:outline-none transition-all duration-200 ${
+                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none transition-all duration-200 ${
                       isPhoneInvalid
-                        ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
-                        : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                        ? "border-red-500 dark:border-red-500 bg-red-50/20 dark:bg-red-950/30 ring-1 ring-red-500"
+                        : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500"
                     }`}
                     placeholder="e.g. 9876543210"
                     value={phone}
@@ -412,18 +418,18 @@ export const Register: React.FC = () => {
                     required
                   />
                   {isPhoneInvalid && (
-                    <span className="text-[11px] text-red-600 block animate-slide-down">
+                    <span className="text-[11px] text-red-600 dark:text-red-400 block animate-slide-down">
                       10-digit mobile number required.
                     </span>
                   )}
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-800">
+                  <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     Gender
                   </label>
                   <select
-                    className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
+                    className="w-full h-9 px-3 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
                   >
@@ -434,12 +440,12 @@ export const Register: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-800">
+                  <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     Date of Birth
                   </label>
                   <input
                     type="date"
-                    className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
+                    className="w-full h-9 px-3 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
                     value={dob}
                     onChange={(e) => setDob(e.target.value)}
                   />
@@ -448,23 +454,23 @@ export const Register: React.FC = () => {
             </div>
 
             <div>
-              <div className="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
-                <span className="text-xs font-bold font-mono text-slate-400">
+              <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 mb-4">
+                <span className="text-xs font-bold font-mono text-slate-400 dark:text-slate-500">
                   02.
                 </span>
-                <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800">
+                <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
                   Cadre Classification & Departmental Posting
                 </h2>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-800">
+                  <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     Official Designation / Post{" "}
-                    <span className="text-red-600">*</span>
+                    <span className="text-red-600 dark:text-red-400">*</span>
                   </label>
                   <select
-                    className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
+                    className="w-full h-9 px-3 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
                     value={designation}
                     onChange={(e) => setDesignation(e.target.value)}
                   >
@@ -481,12 +487,12 @@ export const Register: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-800">
+                  <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     Division / Wing / Directorate{" "}
-                    <span className="text-red-600">*</span>
+                    <span className="text-red-600 dark:text-red-400">*</span>
                   </label>
                   <select
-                    className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
+                    className="w-full h-9 px-3 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
                   >
@@ -500,13 +506,13 @@ export const Register: React.FC = () => {
 
                 {designation === "Other" && (
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-slate-800">
+                    <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                       Specify Custom Designation{" "}
-                      <span className="text-red-600">*</span>
+                      <span className="text-red-600 dark:text-red-400">*</span>
                     </label>
                     <input
                       type="text"
-                      className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
+                      className="w-full h-9 px-3 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
                       placeholder="e.g. Senior Demographer / Consultant"
                       value={customDesignation}
                       onChange={(e) => setCustomDesignation(e.target.value)}
@@ -516,13 +522,13 @@ export const Register: React.FC = () => {
 
                 {department === "Other" && (
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-slate-800">
+                    <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                       Specify Custom Department / Organization{" "}
-                      <span className="text-red-600">*</span>
+                      <span className="text-red-600 dark:text-red-400">*</span>
                     </label>
                     <input
                       type="text"
-                      className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
+                      className="w-full h-9 px-3 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
                       placeholder="e.g. Planning Commission / State Statistical Bureau"
                       value={customDepartment}
                       onChange={(e) => setCustomDepartment(e.target.value)}
@@ -533,11 +539,11 @@ export const Register: React.FC = () => {
             </div>
 
             <div>
-              <div className="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
-                <span className="text-xs font-bold font-mono text-slate-400">
+              <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 mb-4">
+                <span className="text-xs font-bold font-mono text-slate-400 dark:text-slate-500">
                   03.
                 </span>
-                <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800">
+                <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
                   Statistical Qualifications & Domain Service Record
                 </h2>
               </div>
@@ -554,27 +560,28 @@ export const Register: React.FC = () => {
             </div>
 
             <div>
-              <div className="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
-                <span className="text-xs font-bold font-mono text-slate-400">
+              <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 mb-4">
+                <span className="text-xs font-bold font-mono text-slate-400 dark:text-slate-500">
                   04.
                 </span>
-                <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800">
+                <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
                   Account Security
                 </h2>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-800">
-                    Account Password <span className="text-red-600">*</span>
+                  <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                    Account Password{" "}
+                    <span className="text-red-600 dark:text-red-400">*</span>
                   </label>
                   <div className="relative flex items-center">
                     <input
                       type={showPassword ? "text" : "password"}
-                      className={`w-full h-9 pl-3 pr-9 rounded border text-xs text-slate-900 shadow-xs focus:outline-none transition-all duration-200 ${
+                      className={`w-full h-9 pl-3 pr-9 rounded border text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none transition-all duration-200 ${
                         isPasswordInvalid
-                          ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
-                          : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                          ? "border-red-500 dark:border-red-500 bg-red-50/20 dark:bg-red-950/30 ring-1 ring-red-500"
+                          : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500"
                       }`}
                       placeholder="Minimum 6 characters"
                       value={password}
@@ -582,7 +589,7 @@ export const Register: React.FC = () => {
                     />
                     <button
                       type="button"
-                      className="absolute right-2.5 text-slate-400 hover:text-slate-700 cursor-pointer p-1 transition-colors btn-press"
+                      className="absolute right-2.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer p-1 transition-colors btn-press"
                       onClick={() => setShowPassword(!showPassword)}
                       tabIndex={-1}
                     >
@@ -590,29 +597,30 @@ export const Register: React.FC = () => {
                     </button>
                   </div>
                   {isPasswordInvalid && (
-                    <span className="text-[11px] text-red-600 block animate-slide-down">
+                    <span className="text-[11px] text-red-600 dark:text-red-400 block animate-slide-down">
                       Password must be at least 6 characters.
                     </span>
                   )}
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-800">
-                    Confirm Password <span className="text-red-600">*</span>
+                  <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                    Confirm Password{" "}
+                    <span className="text-red-600 dark:text-red-400">*</span>
                   </label>
                   <input
                     type="password"
-                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 shadow-xs focus:outline-none transition-all duration-200 ${
+                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none transition-all duration-200 ${
                       isConfirmPasswordInvalid
-                        ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
-                        : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                        ? "border-red-500 dark:border-red-500 bg-red-50/20 dark:bg-red-950/30 ring-1 ring-red-500"
+                        : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500"
                     }`}
                     placeholder="Re-enter password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                   {isConfirmPasswordInvalid && (
-                    <span className="text-[11px] text-red-600 block animate-slide-down">
+                    <span className="text-[11px] text-red-600 dark:text-red-400 block animate-slide-down">
                       Passwords do not match.
                     </span>
                   )}
@@ -620,15 +628,15 @@ export const Register: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <span className="text-[11px] text-slate-500 text-left">
+            <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 text-left">
                 By submitting this form, you confirm that the entered service
                 record and qualifications are accurate under the Official
                 Statistics Code of Conduct.
               </span>
               <button
                 type="submit"
-                className="w-full sm:w-auto h-10 px-6 bg-blue-900 hover:bg-blue-950 text-white rounded text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 shadow-xs shrink-0 btn-press disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto h-10 px-6 bg-blue-900 hover:bg-blue-950 dark:bg-blue-800 dark:hover:bg-blue-700 text-white rounded text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 shadow-xs shrink-0 btn-press disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={loading}
               >
                 {loading ? (
@@ -647,7 +655,7 @@ export const Register: React.FC = () => {
           </form>
 
           <div className="lg:col-span-4 space-y-4">
-            <div className="bg-white border border-slate-300 rounded shadow-xs overflow-hidden card-interactive">
+            <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded shadow-xs overflow-hidden card-interactive">
               <div className="bg-slate-900 text-white px-4 py-3 border-b border-slate-800 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <FileSpreadsheet size={16} className="text-amber-400" />
@@ -662,90 +670,90 @@ export const Register: React.FC = () => {
 
               <div className="p-4 space-y-4 text-xs">
                 <div>
-                  <span className="text-[10px] font-mono text-slate-400 uppercase block mb-0.5">
+                  <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500 uppercase block mb-0.5">
                     Official Cadre Designation
                   </span>
-                  <div className="font-semibold text-slate-900">
+                  <div className="font-semibold text-slate-900 dark:text-slate-100">
                     {designation === "Other"
                       ? customDesignation || "Unspecified Cadre"
                       : designation}
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-slate-100">
-                  <span className="text-[10px] font-mono text-slate-400 uppercase block mb-0.5">
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                  <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500 uppercase block mb-0.5">
                     Departmental Division
                   </span>
-                  <div className="font-medium text-slate-800">
+                  <div className="font-medium text-slate-800 dark:text-slate-200">
                     {department === "Other"
                       ? customDepartment || "Unspecified Division"
                       : department}
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-slate-100 grid grid-cols-2 gap-2 text-left">
-                  <div className="bg-slate-50 border border-slate-200 p-2 rounded transition-colors hover:bg-slate-100">
-                    <span className="text-[10px] font-mono text-slate-500 uppercase block">
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 gap-2 text-left">
+                  <div className="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 p-2 rounded transition-colors hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 uppercase block">
                       Qualifications
                     </span>
-                    <span className="font-mono text-base font-bold text-slate-900">
+                    <span className="font-mono text-base font-bold text-slate-900 dark:text-white">
                       {qualifications.length}
                     </span>
                   </div>
-                  <div className="bg-slate-50 border border-slate-200 p-2 rounded transition-colors hover:bg-slate-100">
-                    <span className="text-[10px] font-mono text-slate-500 uppercase block">
+                  <div className="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 p-2 rounded transition-colors hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 uppercase block">
                       Service Records
                     </span>
-                    <span className="font-mono text-base font-bold text-slate-900">
+                    <span className="font-mono text-base font-bold text-slate-900 dark:text-white">
                       {experience.length}
                     </span>
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-slate-100">
-                  <span className="text-[10px] font-mono text-slate-400 uppercase block mb-1.5">
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                  <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500 uppercase block mb-1.5">
                     FRAC Competency Framework Alignment
                   </span>
                   <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded transition-colors hover:bg-blue-50/50">
-                      <span className="text-slate-700">
+                    <div className="flex items-center justify-between text-[11px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 px-2 py-1 rounded transition-colors hover:bg-blue-50/50 dark:hover:bg-slate-800">
+                      <span className="text-slate-700 dark:text-slate-300">
                         Survey Sampling & Estimation
                       </span>
-                      <span className="font-mono text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">
+                      <span className="font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 px-1.5 py-0.5 rounded">
                         Level 3 • Proficient
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded transition-colors hover:bg-blue-50/50">
-                      <span className="text-slate-700">
+                    <div className="flex items-center justify-between text-[11px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 px-2 py-1 rounded transition-colors hover:bg-blue-50/50 dark:hover:bg-slate-800">
+                      <span className="text-slate-700 dark:text-slate-300">
                         National Accounting (SNA 2008)
                       </span>
-                      <span className="font-mono text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">
+                      <span className="font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 px-1.5 py-0.5 rounded">
                         Level 4 • Advanced
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded transition-colors hover:bg-blue-50/50">
-                      <span className="text-slate-700">
+                    <div className="flex items-center justify-between text-[11px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 px-2 py-1 rounded transition-colors hover:bg-blue-50/50 dark:hover:bg-slate-800">
+                      <span className="text-slate-700 dark:text-slate-300">
                         Price Indices (CPI / WPI)
                       </span>
-                      <span className="font-mono text-[10px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">
+                      <span className="font-mono text-[10px] font-semibold text-amber-800 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 px-1.5 py-0.5 rounded">
                         Level 2 • Intermediate
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded transition-colors hover:bg-blue-50/50">
-                      <span className="text-slate-700">
+                    <div className="flex items-center justify-between text-[11px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 px-2 py-1 rounded transition-colors hover:bg-blue-50/50 dark:hover:bg-slate-800">
+                      <span className="text-slate-700 dark:text-slate-300">
                         Data Quality & Assurance (DQAF)
                       </span>
-                      <span className="font-mono text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">
+                      <span className="font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 px-1.5 py-0.5 rounded">
                         Level 3 • Proficient
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-100 flex items-start gap-2 text-[11px] text-slate-500 leading-normal">
+                <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-start gap-2 text-[11px] text-slate-500 dark:text-slate-400 leading-normal">
                   <Layers
                     size={14}
-                    className="shrink-0 text-slate-400 mt-0.5"
+                    className="shrink-0 text-slate-400 dark:text-slate-500 mt-0.5"
                   />
                   <span>
                     Upon completion of enrollment, AI skill intelligence maps
@@ -755,15 +763,18 @@ export const Register: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-slate-50 border border-slate-200 rounded p-3.5 text-xs text-slate-600 space-y-1.5 card-interactive">
-              <div className="flex items-center gap-1.5 font-semibold text-slate-800">
-                <Building2 size={14} className="text-slate-500" />
+            <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded p-3.5 text-xs text-slate-600 dark:text-slate-400 space-y-1.5 card-interactive">
+              <div className="flex items-center gap-1.5 font-semibold text-slate-800 dark:text-slate-200">
+                <Building2
+                  size={14}
+                  className="text-slate-500 dark:text-slate-400"
+                />
                 <span>NSSTA Cadre Support Helpdesk</span>
               </div>
-              <p className="text-[11px] text-slate-500 leading-normal">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-normal">
                 For official assistance regarding ISS/SSS cadre seniority
                 numbers or designation changes, contact the NSSTA Helpdesk at{" "}
-                <span className="font-mono text-slate-700">
+                <span className="font-mono text-slate-700 dark:text-slate-300">
                   support.oss@mospi.gov.in
                 </span>
                 .
