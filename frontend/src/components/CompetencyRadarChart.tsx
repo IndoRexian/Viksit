@@ -6,6 +6,8 @@ import {
   FileText,
   ArrowUpRight,
   CheckCircle2,
+  ChevronDown,
+  Check,
 } from "lucide-react";
 
 interface CompetencyRadarChartProps {
@@ -22,6 +24,8 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
   onBridgeGap,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] =
+    useState<boolean>(false);
   const [showTargetLayer, setShowTargetLayer] = useState<boolean>(true);
   const [showAssessedLayer, setShowAssessedLayer] = useState<boolean>(true);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -164,8 +168,153 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center bg-white border border-slate-300 rounded p-0.5 text-xs">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 w-full lg:w-auto">
+          {/* Mobile Category Dropdown - Custom shadcn-styled Dropdown */}
+          <div className="sm:hidden w-full relative">
+            {(() => {
+              const categoryOptions = [
+                {
+                  id: "all",
+                  label: "All Competencies",
+                  sublabel: "Full FRAC framework scope",
+                  count: items.length,
+                },
+                {
+                  id: "Domain",
+                  label: "Domain Competencies",
+                  sublabel: "Official core statistical domains",
+                  count: items.filter((i) => i.category === "Domain").length,
+                },
+                {
+                  id: "Functional",
+                  label: "Functional Competencies",
+                  sublabel: "Survey operations & methodology",
+                  count: items.filter((i) => i.category === "Functional")
+                    .length,
+                },
+                {
+                  id: "Behavioral",
+                  label: "Behavioral Competencies",
+                  sublabel: "Governance, leadership & ethics",
+                  count: items.filter((i) => i.category === "Behavioral")
+                    .length,
+                },
+                {
+                  id: "gaps",
+                  label: "Skill Gaps Only",
+                  sublabel: "Below cadre target proficiency",
+                  count: items.filter((i) => i.assessed_level < i.target_level)
+                    .length,
+                },
+              ];
+
+              const currentOpt =
+                categoryOptions.find((c) => c.id === selectedCategory) ||
+                categoryOptions[0];
+
+              return (
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setIsCategoryDropdownOpen((prev) => !prev)}
+                    className="w-full bg-white border border-slate-300 hover:border-slate-400 focus:border-blue-900 text-slate-900 rounded-lg px-3 py-2 shadow-2xs flex items-center justify-between gap-2.5 transition-all duration-200 cursor-pointer btn-press text-left"
+                    aria-expanded={isCategoryDropdownOpen}
+                    aria-haspopup="true"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-7 h-7 rounded-md bg-blue-50 text-blue-900 flex items-center justify-center shrink-0 border border-blue-100 font-mono text-xs font-bold">
+                        {currentOpt.count}
+                      </div>
+                      <div className="min-w-0">
+                        <span className="font-bold text-xs text-slate-900 block truncate">
+                          {currentOpt.label}
+                        </span>
+                        <span className="text-[10px] text-slate-500 block truncate">
+                          {currentOpt.sublabel}
+                        </span>
+                      </div>
+                    </div>
+
+                    <ChevronDown
+                      size={15}
+                      className={`text-slate-400 shrink-0 transition-transform duration-200 ${
+                        isCategoryDropdownOpen ? "rotate-180 text-blue-900" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {isCategoryDropdownOpen && (
+                    <>
+                      <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => setIsCategoryDropdownOpen(false)}
+                      />
+                      <div className="absolute top-full left-0 right-0 mt-1.5 z-50 bg-white/98 backdrop-blur-md border border-slate-200 rounded-xl shadow-xl ring-1 ring-slate-900/10 p-1.5 space-y-1 animate-scale-in">
+                        <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold border-b border-slate-100">
+                          Filter Spider Graph Axes
+                        </div>
+                        {categoryOptions.map((opt) => {
+                          const isSelected = selectedCategory === opt.id;
+                          return (
+                            <button
+                              key={opt.id}
+                              type="button"
+                              onClick={() => {
+                                setSelectedCategory(opt.id);
+                                setHoveredIndex(null);
+                                setIsCategoryDropdownOpen(false);
+                              }}
+                              className={`w-full flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg text-left transition-all duration-150 cursor-pointer ${
+                                isSelected
+                                  ? "bg-slate-900 text-white shadow-xs font-semibold"
+                                  : "text-slate-700 hover:bg-slate-100/80 hover:text-slate-900"
+                              }`}
+                            >
+                              <div className="flex items-center gap-2.5 min-w-0">
+                                <div
+                                  className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 font-mono text-xs font-bold ${
+                                    isSelected
+                                      ? "bg-slate-800 text-amber-400"
+                                      : "bg-slate-100 text-slate-700"
+                                  }`}
+                                >
+                                  {opt.count}
+                                </div>
+                                <div className="min-w-0">
+                                  <span className="text-xs font-semibold block truncate">
+                                    {opt.label}
+                                  </span>
+                                  <span
+                                    className={`text-[10px] block truncate ${
+                                      isSelected
+                                        ? "text-slate-300"
+                                        : "text-slate-500"
+                                    }`}
+                                  >
+                                    {opt.sublabel}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {isSelected && (
+                                <Check
+                                  size={14}
+                                  className="text-amber-400 shrink-0"
+                                />
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+                </div>
+              );
+            })()}
+          </div>
+
+          {/* Desktop/Tablet Category Tabs */}
+          <div className="hidden sm:flex items-center bg-white border border-slate-300 rounded p-0.5 text-xs">
             {["all", "Domain", "Functional", "Behavioral", "gaps"].map(
               (cat) => (
                 <button
@@ -174,7 +323,7 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                     setSelectedCategory(cat);
                     setHoveredIndex(null);
                   }}
-                  className={`px-2.5 py-1 font-semibold rounded cursor-pointer transition-all duration-150 capitalize ${
+                  className={`px-2.5 py-1 font-semibold rounded cursor-pointer transition-all duration-200 capitalize btn-press ${
                     selectedCategory === cat
                       ? "bg-slate-900 text-white shadow-xs"
                       : "text-slate-600 hover:text-slate-900"
@@ -228,204 +377,215 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
               </p>
             </div>
           ) : (
-            <div className="w-full max-w-135 aspect-square relative select-none">
-              <svg
-                viewBox={`0 0 ${size} ${size}`}
-                className="w-full h-full drop-shadow-xs overflow-visible"
-              >
-                <defs>
-                  <radialGradient
-                    id="targetRadialGradient"
-                    cx="50%"
-                    cy="50%"
-                    r="50%"
-                  >
-                    <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.05" />
-                    <stop
-                      offset="100%"
-                      stopColor="#f59e0b"
-                      stopOpacity="0.22"
-                    />
-                  </radialGradient>
+            <div className="w-full max-w-135 flex flex-col items-center select-none">
+              <div className="w-full aspect-square relative">
+                <svg
+                  viewBox={`0 0 ${size} ${size}`}
+                  className="w-full h-full drop-shadow-xs overflow-visible"
+                >
+                  <defs>
+                    <radialGradient
+                      id="targetRadialGradient"
+                      cx="50%"
+                      cy="50%"
+                      r="50%"
+                    >
+                      <stop
+                        offset="0%"
+                        stopColor="#f59e0b"
+                        stopOpacity="0.05"
+                      />
+                      <stop
+                        offset="100%"
+                        stopColor="#f59e0b"
+                        stopOpacity="0.22"
+                      />
+                    </radialGradient>
 
-                  <radialGradient
-                    id="assessedRadialGradient"
-                    cx="50%"
-                    cy="50%"
-                    r="50%"
-                  >
-                    <stop offset="0%" stopColor="#1d4ed8" stopOpacity="0.15" />
-                    <stop
-                      offset="100%"
-                      stopColor="#2563eb"
-                      stopOpacity="0.45"
-                    />
-                  </radialGradient>
+                    <radialGradient
+                      id="assessedRadialGradient"
+                      cx="50%"
+                      cy="50%"
+                      r="50%"
+                    >
+                      <stop
+                        offset="0%"
+                        stopColor="#1d4ed8"
+                        stopOpacity="0.15"
+                      />
+                      <stop
+                        offset="100%"
+                        stopColor="#2563eb"
+                        stopOpacity="0.45"
+                      />
+                    </radialGradient>
 
-                  <filter
-                    id="vertexGlow"
-                    x="-50%"
-                    y="-50%"
-                    width="200%"
-                    height="200%"
-                  >
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" />
-                    <feMerge>
-                      <feMergeNode />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                </defs>
+                    <filter
+                      id="vertexGlow"
+                      x="-50%"
+                      y="-50%"
+                      width="200%"
+                      height="200%"
+                    >
+                      <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" />
+                      <feMerge>
+                        <feMergeNode />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                  </defs>
 
-                {gridPolygons.map(({ level, points }) => (
-                  <g key={`grid-${level}`}>
-                    <polygon
-                      points={points}
-                      fill={
-                        level % 2 === 0
-                          ? "rgba(241, 245, 249, 0.6)"
-                          : "rgba(248, 250, 252, 0.3)"
-                      }
+                  {gridPolygons.map(({ level, points }) => (
+                    <g key={`grid-${level}`}>
+                      <polygon
+                        points={points}
+                        fill={
+                          level % 2 === 0
+                            ? "rgba(241, 245, 249, 0.6)"
+                            : "rgba(248, 250, 252, 0.3)"
+                        }
+                        stroke="#cbd5e1"
+                        strokeWidth={level === totalLevels ? "1.5" : "1"}
+                        strokeDasharray={level === totalLevels ? "none" : "2 2"}
+                      />
+                      <text
+                        x={center + 6}
+                        y={center - (level / totalLevels) * radius + 10}
+                        fontSize="9"
+                        fontFamily="monospace"
+                        fontWeight="bold"
+                        fill="#94a3b8"
+                      >
+                        L{level}
+                      </text>
+                    </g>
+                  ))}
+
+                  {axes.map(({ index, x2, y2 }) => (
+                    <line
+                      key={`axis-${index}`}
+                      x1={center}
+                      y1={center}
+                      x2={x2}
+                      y2={y2}
                       stroke="#cbd5e1"
-                      strokeWidth={level === totalLevels ? "1.5" : "1"}
-                      strokeDasharray={level === totalLevels ? "none" : "2 2"}
+                      strokeWidth="1"
                     />
-                    <text
-                      x={center + 6}
-                      y={center - (level / totalLevels) * radius + 10}
-                      fontSize="9"
-                      fontFamily="monospace"
-                      fontWeight="bold"
-                      fill="#94a3b8"
-                    >
-                      L{level}
-                    </text>
-                  </g>
-                ))}
+                  ))}
 
-                {axes.map(({ index, x2, y2 }) => (
-                  <line
-                    key={`axis-${index}`}
-                    x1={center}
-                    y1={center}
-                    x2={x2}
-                    y2={y2}
-                    stroke="#cbd5e1"
-                    strokeWidth="1"
-                  />
-                ))}
+                  {showTargetLayer && (
+                    <g className="transition-all duration-500 ease-out">
+                      <polygon
+                        points={targetPoints}
+                        fill="url(#targetRadialGradient)"
+                        stroke="#d97706"
+                        strokeWidth="2"
+                        strokeDasharray="4 3"
+                      />
+                    </g>
+                  )}
 
-                {showTargetLayer && (
-                  <g className="transition-all duration-500 ease-out">
-                    <polygon
-                      points={targetPoints}
-                      fill="url(#targetRadialGradient)"
-                      stroke="#d97706"
-                      strokeWidth="2"
-                      strokeDasharray="4 3"
-                    />
-                  </g>
-                )}
+                  {showAssessedLayer && (
+                    <g className="transition-all duration-500 ease-out">
+                      <polygon
+                        points={assessedPoints}
+                        fill="url(#assessedRadialGradient)"
+                        stroke="#1d4ed8"
+                        strokeWidth="2.5"
+                      />
+                    </g>
+                  )}
 
-                {showAssessedLayer && (
-                  <g className="transition-all duration-500 ease-out">
-                    <polygon
-                      points={assessedPoints}
-                      fill="url(#assessedRadialGradient)"
-                      stroke="#1d4ed8"
-                      strokeWidth="2.5"
-                    />
-                  </g>
-                )}
+                  {axes.map(({ index, lx, ly, item, angle }) => {
+                    if (!item) return null;
+                    const isHovered = hoveredIndex === index;
+                    const isAchieved = item.assessed_level >= item.target_level;
 
-                {axes.map(({ index, lx, ly, item, angle }) => {
-                  if (!item) return null;
-                  const isHovered = hoveredIndex === index;
-                  const isAchieved = item.assessed_level >= item.target_level;
+                    const tr = (item.target_level / totalLevels) * radius;
+                    const tx = center + tr * Math.cos(angle);
+                    const ty = center + tr * Math.sin(angle);
 
-                  const tr = (item.target_level / totalLevels) * radius;
-                  const tx = center + tr * Math.cos(angle);
-                  const ty = center + tr * Math.sin(angle);
+                    const ar = (item.assessed_level / totalLevels) * radius;
+                    const ax = center + ar * Math.cos(angle);
+                    const ay = center + ar * Math.sin(angle);
 
-                  const ar = (item.assessed_level / totalLevels) * radius;
-                  const ax = center + ar * Math.cos(angle);
-                  const ay = center + ar * Math.sin(angle);
+                    let textAnchor: "middle" | "start" | "end" = "middle";
+                    const cosAngle = Math.cos(angle);
+                    if (cosAngle > 0.3) textAnchor = "start";
+                    else if (cosAngle < -0.3) textAnchor = "end";
 
-                  let textAnchor: "middle" | "start" | "end" = "middle";
-                  const cosAngle = Math.cos(angle);
-                  if (cosAngle > 0.3) textAnchor = "start";
-                  else if (cosAngle < -0.3) textAnchor = "end";
+                    return (
+                      <g
+                        key={`node-${index}`}
+                        className="cursor-pointer group"
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        onClick={() => setSelectedItem(item)}
+                      >
+                        {showTargetLayer && (
+                          <circle
+                            cx={tx}
+                            cy={ty}
+                            r={isHovered ? 5 : 3.5}
+                            fill="#d97706"
+                            stroke="#ffffff"
+                            strokeWidth="1.5"
+                          />
+                        )}
 
-                  return (
-                    <g
-                      key={`node-${index}`}
-                      className="cursor-pointer group"
-                      onMouseEnter={() => setHoveredIndex(index)}
-                      onClick={() => setSelectedItem(item)}
-                    >
-                      {showTargetLayer && (
-                        <circle
-                          cx={tx}
-                          cy={ty}
-                          r={isHovered ? 5 : 3.5}
-                          fill="#d97706"
-                          stroke="#ffffff"
-                          strokeWidth="1.5"
-                        />
-                      )}
+                        {showAssessedLayer && (
+                          <circle
+                            cx={ax}
+                            cy={ay}
+                            r={isHovered ? 7 : 4.5}
+                            fill={isAchieved ? "#059669" : "#dc2626"}
+                            stroke="#ffffff"
+                            strokeWidth="2"
+                            filter={isHovered ? "url(#vertexGlow)" : undefined}
+                            className="transition-all duration-150"
+                          />
+                        )}
 
-                      {showAssessedLayer && (
+                        <text
+                          x={lx}
+                          y={ly}
+                          textAnchor={textAnchor}
+                          fontSize={isHovered ? "11" : "10"}
+                          fontWeight={isHovered ? "bold" : "600"}
+                          fill={isHovered ? "#0f172a" : "#475569"}
+                          className="transition-colors duration-150 select-none"
+                        >
+                          {item.code.replace("FRAC-", "")}
+                        </text>
+
                         <circle
                           cx={ax}
                           cy={ay}
-                          r={isHovered ? 7 : 4.5}
-                          fill={isAchieved ? "#059669" : "#dc2626"}
-                          stroke="#ffffff"
-                          strokeWidth="2"
-                          filter={isHovered ? "url(#vertexGlow)" : undefined}
-                          className="transition-all duration-150"
+                          r={18}
+                          fill="transparent"
+                          className="cursor-pointer"
                         />
-                      )}
+                      </g>
+                    );
+                  })}
+                </svg>
+              </div>
 
-                      <text
-                        x={lx}
-                        y={ly}
-                        textAnchor={textAnchor}
-                        fontSize={isHovered ? "11" : "10"}
-                        fontWeight={isHovered ? "bold" : "600"}
-                        fill={isHovered ? "#0f172a" : "#475569"}
-                        className="transition-colors duration-150 select-none"
-                      >
-                        {item.code.replace("FRAC-", "")}
-                      </text>
-
-                      <circle
-                        cx={ax}
-                        cy={ay}
-                        r={18}
-                        fill="transparent"
-                        className="cursor-pointer"
-                      />
-                    </g>
-                  );
-                })}
-              </svg>
-
-              <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-xs border border-slate-300 rounded px-3 py-1.5 flex items-center gap-4 text-[11px] font-mono shadow-xs">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-3 h-0.5 bg-amber-500 border-t border-dashed border-amber-700" />
+              {/* Legend placed below the chart without covering nodes */}
+              <div className="mt-3.5 bg-white border border-slate-300 rounded-md px-3 py-1.5 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-[10px] sm:text-[11px] font-mono shadow-2xs select-none">
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <span className="w-3 h-0.5 bg-amber-500 border-t border-dashed border-amber-700 shrink-0" />
                   <span className="text-amber-900 font-semibold">
                     Cadre Benchmark
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 bg-emerald-600 rounded-full inline-block" />
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <span className="w-2.5 h-2.5 bg-emerald-600 rounded-full inline-block shrink-0" />
                   <span className="text-emerald-900 font-semibold">
                     Benchmark Met
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 bg-rose-600 rounded-full inline-block" />
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <span className="w-2.5 h-2.5 bg-rose-600 rounded-full inline-block shrink-0" />
                   <span className="text-rose-900 font-semibold">
                     Gap Identified
                   </span>
@@ -442,17 +602,6 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="font-mono text-xs font-bold px-2 py-0.5 bg-blue-800 text-blue-100 rounded">
                     {activeHoverItem.code}
-                  </span>
-                  <span
-                    className={`px-1.5 py-0.2 font-mono text-[9px] font-bold rounded uppercase ${
-                      activeHoverItem.category === "Domain"
-                        ? "bg-blue-900/60 text-blue-300 border border-blue-700/50"
-                        : activeHoverItem.category === "Functional"
-                          ? "bg-purple-900/60 text-purple-300 border border-purple-700/50"
-                          : "bg-amber-900/60 text-amber-300 border border-amber-700/50"
-                    }`}
-                  >
-                    {activeHoverItem.category}
                   </span>
                 </div>
                 <span
@@ -530,30 +679,30 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full">
                 {onAssessCompetency && (
                   <button
                     onClick={() => onAssessCompetency(activeHoverItem)}
-                    className="flex-1 py-2 bg-blue-700 hover:bg-blue-600 text-white rounded text-xs font-semibold uppercase tracking-wider inline-flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-xs"
+                    className="w-full sm:flex-1 min-w-0 px-2.5 py-2 bg-blue-700 hover:bg-blue-600 text-white rounded text-xs font-semibold uppercase tracking-wider inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-200 shadow-xs btn-press"
                   >
-                    <FileText size={13} />
-                    <span>Assess Quiz</span>
+                    <FileText size={13} className="shrink-0" />
+                    <span className="truncate">Assess Quiz</span>
                   </button>
                 )}
                 {onBridgeGap && (
                   <button
                     onClick={() => onBridgeGap(activeHoverItem)}
-                    className="flex-1 py-2 bg-amber-600 hover:bg-amber-500 text-slate-950 rounded text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-xs"
+                    className="w-full sm:flex-1 min-w-0 px-2.5 py-2 bg-amber-600 hover:bg-amber-500 text-slate-950 rounded text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-200 shadow-xs btn-press"
                   >
-                    <span>Bridge Gap</span>
-                    <ArrowUpRight size={13} />
+                    <span className="truncate">Bridge Gap</span>
+                    <ArrowUpRight size={13} className="shrink-0" />
                   </button>
                 )}
               </div>
             </div>
           ) : null}
 
-          <div className="bg-slate-50 border border-slate-200 rounded p-4">
+          <div className="bg-slate-50 border border-slate-200 rounded p-4 card-interactive">
             <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block mb-1">
               Overall Cadre Alignment
             </span>
@@ -567,13 +716,13 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
             </div>
             <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-3">
               <div
-                className="bg-blue-900 h-full rounded-full transition-all duration-500"
+                className="bg-blue-900 h-full rounded-full transition-all duration-700 ease-out"
                 style={{ width: `${summary.alignmentPct}%` }}
               />
             </div>
 
             <div className="grid grid-cols-2 gap-2 text-[11px] pt-2 border-t border-slate-200">
-              <div className="bg-emerald-50 border border-emerald-200 p-2 rounded">
+              <div className="bg-emerald-50 border border-emerald-200 p-2 rounded card-interactive">
                 <span className="text-emerald-800 font-semibold block text-[10px] uppercase">
                   Top Proficiency
                 </span>
@@ -583,7 +732,7 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({
                 </span>
               </div>
 
-              <div className="bg-amber-50 border border-amber-200 p-2 rounded">
+              <div className="bg-amber-50 border border-amber-200 p-2 rounded card-interactive">
                 <span className="text-amber-800 font-semibold block text-[10px] uppercase">
                   Priority Upskill
                 </span>

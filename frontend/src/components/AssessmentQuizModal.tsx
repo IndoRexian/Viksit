@@ -272,7 +272,7 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                         <button
                           key={i}
                           onClick={() => setCurrentIdx(i)}
-                          className={`w-6 h-6 rounded text-[11px] font-mono font-bold transition-all cursor-pointer border ${
+                          className={`w-6 h-6 rounded text-[11px] font-mono font-bold transition-all duration-200 cursor-pointer border btn-press ${
                             currentIdx === i
                               ? "bg-slate-900 text-white border-slate-900"
                               : selectedAnswers[i]
@@ -286,9 +286,9 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                     </div>
                   </div>
 
-                  <div className="w-full bg-slate-100 h-1 rounded-full overflow-hidden mt-3">
+                  <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-3">
                     <div
-                      className="bg-blue-900 h-full transition-all duration-300 ease-out"
+                      className="bg-blue-900 h-full transition-all duration-500 ease-out rounded-full"
                       style={{
                         width: `${totalQuestions > 0 ? (answeredCount / totalQuestions) * 100 : 0}%`,
                       }}
@@ -296,7 +296,7 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                   </div>
                 </div>
 
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded">
+                <div className="p-4 bg-slate-50 border border-slate-200 rounded card-interactive">
                   <p className="text-sm font-medium text-slate-900 leading-relaxed">
                     {currentQuestion.question}
                   </p>
@@ -316,14 +316,14 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                         key={optKey}
                         type="button"
                         onClick={() => handleSelectOption(optKey)}
-                        className={`w-full text-left p-3.5 rounded border text-xs transition-all flex items-start gap-3 cursor-pointer ${
+                        className={`w-full text-left p-3 sm:p-3.5 rounded border text-xs transition-all duration-200 flex items-start gap-2.5 sm:gap-3 cursor-pointer btn-press min-w-0 overflow-hidden ${
                           isSelected
                             ? "bg-blue-50 border-blue-900 text-blue-950 font-medium shadow-xs"
                             : "bg-white border-slate-200 text-slate-800 hover:bg-slate-50 hover:border-slate-300"
                         }`}
                       >
                         <span
-                          className={`w-5 h-5 rounded font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5 ${
+                          className={`w-5 h-5 rounded font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5 transition-all ${
                             isSelected
                               ? "bg-blue-900 text-white"
                               : "bg-slate-100 text-slate-700 border border-slate-300"
@@ -331,7 +331,7 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                         >
                           {optKey}
                         </span>
-                        <span className="leading-relaxed flex-1">
+                        <span className="leading-relaxed flex-1 min-w-0 break-all sm:break-words [overflow-wrap:anywhere]">
                           {optText}
                         </span>
                       </button>
@@ -346,7 +346,7 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                       setCurrentIdx((prev) => Math.max(0, prev - 1))
                     }
                     disabled={currentIdx === 0}
-                    className="px-3.5 py-2 border border-slate-300 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none rounded text-xs font-semibold text-slate-700 inline-flex items-center gap-1.5 cursor-pointer transition-colors"
+                    className="px-3 sm:px-3.5 py-2 border border-slate-300 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none rounded text-xs font-semibold text-slate-700 inline-flex items-center gap-1.5 cursor-pointer transition-all duration-200 btn-press"
                   >
                     <ChevronLeft size={14} />
                     <span>Previous</span>
@@ -361,7 +361,7 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                             Math.min(totalQuestions - 1, prev + 1),
                           )
                         }
-                        className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-colors"
+                        className="px-3.5 sm:px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-all duration-200 btn-press"
                       >
                         <span>Next</span>
                         <ChevronRight size={14} />
@@ -371,7 +371,7 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                         type="button"
                         onClick={handleSubmitQuiz}
                         disabled={answeredCount < totalQuestions}
-                        className="px-4 py-2 bg-blue-900 hover:bg-blue-950 text-white rounded text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5 shadow-xs disabled:opacity-40 disabled:pointer-events-none cursor-pointer transition-colors"
+                        className="px-3.5 sm:px-4 py-2 bg-blue-900 hover:bg-blue-950 text-white rounded text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5 shadow-xs disabled:opacity-40 disabled:pointer-events-none cursor-pointer transition-all duration-200 btn-press"
                       >
                         <span>Submit Evaluation</span>
                       </button>
@@ -380,7 +380,6 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                 </div>
               </div>
             )}
-
           {!loading && !error && quizData && isSubmitted && (
             <div className="space-y-6">
               {(() => {
@@ -393,48 +392,55 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
 
                 return (
                   <div
-                    className={`p-5 rounded border ${
+                    className={`p-3.5 sm:p-5 rounded-lg border ${
                       isPassed
                         ? "bg-emerald-50 border-emerald-300 text-emerald-950"
                         : "bg-slate-100 border-slate-300 text-slate-900"
-                    } flex flex-col sm:flex-row items-center justify-between gap-4`}
+                    } flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4`}
                   >
-                    <div className="flex items-center gap-3.5">
+                    <div className="flex items-start gap-3 w-full sm:w-auto min-w-0">
                       <div
-                        className={`w-11 h-11 rounded flex items-center justify-center shrink-0 ${
+                        className={`w-9 h-9 sm:w-11 sm:h-11 rounded-lg flex items-center justify-center shrink-0 mt-0.5 sm:mt-0 ${
                           isPassed
                             ? "bg-emerald-700 text-white"
                             : "bg-slate-800 text-white"
                         }`}
                       >
-                        <Award size={22} />
+                        <Award size={20} />
                       </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-serif text-base font-bold">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col xs:flex-row xs:items-center gap-1.5 xs:gap-2">
+                          <h3 className="font-serif text-sm sm:text-base font-bold leading-snug">
                             {isPassed
                               ? "Proficiency Benchmark Validated"
                               : "Proficiency Level Maintained"}
-                          </span>
-                          <span className="font-mono text-xs px-2 py-0.5 rounded font-bold bg-white border border-slate-300">
+                          </h3>
+                          <span className="self-start xs:self-auto font-mono text-[10px] sm:text-xs px-2 py-0.5 rounded font-bold bg-white border border-slate-300 whitespace-nowrap shadow-2xs">
                             {score} / {totalQuestions} Correct (
                             {Math.round((score / totalQuestions) * 100)}%)
                           </span>
                         </div>
-                        <p className="text-xs text-slate-600 mt-1">
-                          Evaluated Level:{" "}
-                          <strong className="text-slate-900 font-bold">
-                            Level {evaluatedLevel}
-                          </strong>{" "}
-                          • Cadre Target:{" "}
-                          <strong>Level {competency.target_level}</strong>
-                        </p>
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-600 mt-1.5">
+                          <span>
+                            Evaluated Level:{" "}
+                            <strong className="text-slate-900 font-bold">
+                              Level {evaluatedLevel}
+                            </strong>
+                          </span>
+                          <span className="text-slate-400">•</span>
+                          <span>
+                            Cadre Target:{" "}
+                            <strong className="text-slate-800 font-semibold">
+                              Level {competency.target_level}
+                            </strong>
+                          </span>
+                        </div>
                       </div>
                     </div>
 
                     {saveSuccess && (
-                      <div className="px-3 py-1.5 bg-emerald-700 text-white rounded text-xs font-semibold inline-flex items-center gap-1.5 shadow-xs">
-                        <CheckCircle2 size={14} />
+                      <div className="px-2.5 sm:px-3 py-1 sm:py-1.5 bg-emerald-700 text-white rounded text-xs font-semibold inline-flex items-center gap-1.5 shadow-xs shrink-0 self-start sm:self-auto">
+                        <CheckCircle2 size={13} />
                         <span>Matrix Updated</span>
                       </div>
                     )}
@@ -457,7 +463,7 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                   return (
                     <div
                       key={idx}
-                      className={`p-3.5 rounded border text-xs space-y-2.5 ${
+                      className={`p-3 sm:p-3.5 rounded border text-xs space-y-2.5 ${
                         isCorrect
                           ? "bg-slate-50 border-slate-200"
                           : "bg-red-50/20 border-slate-200"
@@ -468,19 +474,33 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                           className={`w-5 h-5 rounded flex items-center justify-center font-mono text-[10px] font-bold shrink-0 mt-0.5 ${
                             isCorrect
                               ? "bg-emerald-700 text-white"
-                              : "bg-slate-700 text-white"
+                              : "bg-rose-700 text-white"
                           }`}
                         >
                           {isCorrect ? <Check size={11} /> : "✗"}
                         </span>
-                        <div className="flex-1">
-                          <p className="font-semibold text-slate-900 leading-snug">
-                            Q{idx + 1}: {q.question}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center justify-between gap-1.5 mb-1">
+                            <span className="font-semibold text-slate-900 leading-snug">
+                              Question {idx + 1}
+                            </span>
+                            <span
+                              className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded shrink-0 ${
+                                isCorrect
+                                  ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                                  : "bg-rose-100 text-rose-800 border border-rose-300"
+                              }`}
+                            >
+                              {isCorrect ? "✓ Correct" : "✗ Incorrect"}
+                            </span>
+                          </div>
+                          <p className="font-medium text-slate-800 leading-snug text-xs break-words">
+                            {q.question}
                           </p>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pl-7">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pl-0 sm:pl-7">
                         {(
                           Object.keys(q.options) as Array<"A" | "B" | "C" | "D">
                         ).map((optKey) => {
@@ -494,28 +514,30 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                               "bg-emerald-50 border-emerald-300 text-emerald-950 font-semibold";
                           } else if (isUserSelected && !isCorrectOpt) {
                             style =
-                              "bg-slate-100 border-slate-300 text-slate-800";
+                              "bg-rose-50/80 border-rose-200 text-rose-950 font-medium";
                           }
 
                           return (
                             <div
                               key={optKey}
-                              className={`p-2 rounded border text-[11px] flex items-start gap-2 ${style}`}
+                              className={`p-2 sm:p-2.5 rounded border text-[11px] flex items-start justify-between gap-1.5 xs:gap-2 min-w-0 overflow-hidden ${style}`}
                             >
-                              <span className="font-mono font-bold shrink-0">
-                                {optKey}.
-                              </span>
-                              <span className="flex-1">
-                                {q.options[optKey]}
-                              </span>
+                              <div className="flex items-start gap-1.5 min-w-0 flex-1 overflow-hidden">
+                                <span className="font-mono font-bold shrink-0 mt-0.5">
+                                  {optKey}.
+                                </span>
+                                <span className="flex-1 break-all sm:break-words [overflow-wrap:anywhere] leading-relaxed min-w-0">
+                                  {q.options[optKey]}
+                                </span>
+                              </div>
                               {isCorrectOpt && (
-                                <span className="text-[10px] font-mono text-emerald-800 font-bold shrink-0">
+                                <span className="hidden sm:inline-block text-[10px] font-mono text-emerald-800 bg-emerald-100/90 px-1.5 py-0.5 rounded font-bold shrink-0 whitespace-nowrap">
                                   ✓ Correct
                                 </span>
                               )}
                               {isUserSelected && !isCorrectOpt && (
-                                <span className="text-[10px] font-mono text-slate-600 font-bold shrink-0">
-                                  Selected
+                                <span className="hidden sm:inline-block text-[10px] font-mono text-rose-700 bg-rose-100/90 px-1.5 py-0.5 rounded font-bold shrink-0 whitespace-nowrap">
+                                  ✗ Selected
                                 </span>
                               )}
                             </div>
@@ -524,7 +546,7 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                       </div>
 
                       {q.explanation && (
-                        <div className="ml-7 p-2.5 bg-white border border-slate-200 rounded text-[11px] text-slate-700 leading-relaxed">
+                        <div className="ml-0 sm:ml-7 p-2.5 bg-white border border-slate-200 rounded text-[11px] text-slate-700 leading-relaxed break-words">
                           <strong className="text-slate-900 font-semibold">
                             Technical Basis:{" "}
                           </strong>

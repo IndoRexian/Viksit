@@ -66,7 +66,7 @@ export const EnrollmentModal: React.FC<EnrollmentModalProps> = ({
       >
         <button
           onClick={handleAnimatedClose}
-          className="absolute top-3.5 right-3.5 z-10 p-1.5 rounded bg-slate-900/70 hover:bg-slate-900 text-white cursor-pointer transition-colors"
+          className="absolute top-3.5 right-3.5 z-10 p-1.5 rounded bg-slate-900/70 hover:bg-slate-900 text-white cursor-pointer transition-colors btn-press"
           title="Close modal"
         >
           <X size={15} />
@@ -90,7 +90,7 @@ export const EnrollmentModal: React.FC<EnrollmentModalProps> = ({
           <div className="absolute inset-0 bg-linear-to-t from-slate-950/90 via-slate-950/40 to-transparent" />
 
           <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-700 text-white text-xs font-semibold rounded shadow-sm">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-700 text-white text-xs font-semibold rounded shadow-sm animate-badge-pop">
               <CheckCircle2 size={13} />
               <span>Enrollment Confirmed</span>
             </div>
@@ -115,7 +115,7 @@ export const EnrollmentModal: React.FC<EnrollmentModalProps> = ({
             </h2>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 py-3 px-3.5 bg-slate-50 border border-slate-200 rounded text-xs">
+          <div className="grid grid-cols-3 gap-2 py-3 px-3.5 bg-slate-50 border border-slate-200 rounded text-xs card-interactive">
             <div className="flex items-center gap-2">
               <Clock size={14} className="text-slate-600 shrink-0" />
               <div>
@@ -175,7 +175,7 @@ export const EnrollmentModal: React.FC<EnrollmentModalProps> = ({
                 {course.tags.map((tag, i) => (
                   <span
                     key={i}
-                    className="px-2 py-0.5 bg-slate-100 border border-slate-200 text-slate-700 text-[11px] font-mono rounded"
+                    className="px-2 py-0.5 bg-slate-100 border border-slate-200 text-slate-700 text-[11px] font-mono rounded hover:bg-slate-200 transition-colors"
                   >
                     {tag}
                   </span>
@@ -192,7 +192,7 @@ export const EnrollmentModal: React.FC<EnrollmentModalProps> = ({
             <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
               <button
                 onClick={handleAnimatedClose}
-                className="px-3.5 py-1.5 bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs font-semibold rounded cursor-pointer transition-colors w-full sm:w-auto"
+                className="px-3.5 py-1.5 bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs font-semibold rounded cursor-pointer transition-all duration-200 btn-press w-full sm:w-auto"
               >
                 Close
               </button>
@@ -200,7 +200,7 @@ export const EnrollmentModal: React.FC<EnrollmentModalProps> = ({
                 href="https://portal.igotkarmayogi.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="px-3.5 py-1.5 bg-blue-900 hover:bg-blue-950 text-white text-xs font-semibold rounded inline-flex items-center justify-center gap-1.5 transition-colors w-full sm:w-auto"
+                className="px-3.5 py-1.5 bg-blue-900 hover:bg-blue-950 text-white text-xs font-semibold rounded inline-flex items-center justify-center gap-1.5 transition-all duration-200 btn-press w-full sm:w-auto shadow-xs"
               >
                 <span>Go to iGOT Portal</span>
                 <ExternalLink size={12} />

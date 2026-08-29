@@ -50,6 +50,30 @@ export interface DocumentQuizResponse {
   questions: DocumentQuizQuestion[];
 }
 
+export interface ChatMessage {
+  role: "user" | "assistant" | "model" | "system";
+  content: string;
+}
+
+export interface ActionExecuted {
+  type: "enroll_course";
+  courseId: string;
+  courseTitle?: string;
+  officialId: string;
+}
+
+export interface AIChatResponse {
+  reply: string;
+  action_executed?: ActionExecuted | null;
+  action_status?: "success" | "already_enrolled" | "not_found" | "error" | null;
+  action_message?: string | null;
+}
+
+export interface AIChatRequest {
+  messages: ChatMessage[];
+  uploaded_material_text?: string | null;
+}
+
 export const aiService = {
   async getCompetencyQuiz(
     query: SkillAssessmentQuery,
@@ -87,6 +111,13 @@ export const aiService = {
     return apiRequest<DocumentQuizResponse>("/ai/generate-document-quiz", {
       method: "POST",
       body: formData,
+    });
+  },
+
+  async chatWithAssistant(request: AIChatRequest): Promise<AIChatResponse> {
+    return apiRequest<AIChatResponse>("/ai/chat", {
+      method: "POST",
+      body: JSON.stringify(request),
     });
   },
 };

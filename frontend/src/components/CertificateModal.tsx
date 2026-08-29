@@ -1,5 +1,13 @@
-import React, { useRef } from "react";
-import { CheckCircle2, Download, ShieldCheck, X } from "lucide-react";
+import React, { useRef, useState, useEffect } from "react";
+import {
+  CheckCircle2,
+  Download,
+  Printer,
+  ShieldCheck,
+  X,
+  Loader2,
+} from "lucide-react";
+import { toPng } from "html-to-image";
 
 export interface CertificateDetails {
   certificateId: string;
@@ -29,8 +37,76 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
   details,
 }) => {
   const certRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState<number>(1);
+  const [isExporting, setIsExporting] = useState<boolean>(false);
+  const [isRendered, setIsRendered] = useState<boolean>(isOpen);
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
 
-  if (!isOpen || !details) return null;
+  // Responsive scale calculation to fit certificate completely on mobile / smaller viewports
+  const updateScale = () => {
+    if (!containerRef.current) return;
+    const container = containerRef.current;
+    const paddingX = window.innerWidth < 640 ? 16 : 48;
+    const paddingY = window.innerWidth < 640 ? 16 : 48;
+    const availableWidth = container.clientWidth - paddingX;
+    const availableHeight = container.clientHeight - paddingY;
+
+    const scaleW = availableWidth > 0 ? availableWidth / 820 : 1;
+    const scaleH = availableHeight > 0 ? availableHeight / 580 : 1;
+
+    // Fit within both width and height, cap at 1.0 (never over-scale)
+    const newScale = Math.min(1, Math.max(0.2, Math.min(scaleW, scaleH)));
+    setScale(newScale);
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsRendered(true);
+      setIsAnimating(false);
+      // Ensure initial unmounted state is rendered in DOM first
+      const timer = setTimeout(() => {
+        setIsAnimating(true);
+      }, 25);
+      return () => clearTimeout(timer);
+    } else {
+      setIsAnimating(false);
+      const timer = setTimeout(() => {
+        setIsRendered(false);
+      }, 220);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    updateScale();
+    const raf = requestAnimationFrame(updateScale);
+    const timer1 = setTimeout(updateScale, 50);
+    const timer2 = setTimeout(updateScale, 250);
+
+    const handleResize = () => updateScale();
+    window.addEventListener("resize", handleResize);
+
+    let resizeObserver: ResizeObserver | null = null;
+    if (containerRef.current && typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(() => {
+        updateScale();
+      });
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      window.removeEventListener("resize", handleResize);
+      resizeObserver?.disconnect();
+    };
+  }, [isOpen, isAnimating]);
+
+  if (!isRendered || !details) return null;
 
   const formattedDate = new Date(details.completedAt).toLocaleDateString(
     "en-IN",
@@ -41,6 +117,44 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
     },
   );
 
+  // Direct High-Resolution Download (Guaranteed A4 Landscape on Mobile & Desktop)
+  const handleDownloadImage = async () => {
+    if (!certRef.current) return;
+    setIsExporting(true);
+    try {
+      const dataUrl = await toPng(certRef.current, {
+        cacheBust: true,
+        pixelRatio: 2.5, // Crisp 300+ DPI Retina rendering
+        quality: 1,
+        backgroundColor: "#fffdf7",
+        width: 820,
+        height: 580,
+        style: {
+          transform: "none",
+          transformOrigin: "top left",
+          left: "0",
+          top: "0",
+        },
+      });
+
+      const link = document.createElement("a");
+      link.download = `MoSPI_Certificate_${details.certificateId}.png`;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error(
+        "Direct image export error, falling back to print dialog:",
+        err,
+      );
+      handlePrint();
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  // Dedicated A4 Landscape Print Engine
   const handlePrint = () => {
     const iframe = document.createElement("iframe");
     iframe.style.position = "fixed";
@@ -417,192 +531,245 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-700 rounded-xl shadow-2xl max-w-4xl w-full overflow-hidden flex flex-col max-h-[95vh]">
-        <div className="bg-slate-950 px-5 py-3 border-b border-slate-800 flex items-center justify-between text-white shrink-0">
-          <div className="flex items-center gap-2">
-            <ShieldCheck size={16} className="text-amber-400" />
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
-              Official MoSPI • iGOT Karmayogi Sovereign Certificate
+    <div
+      onClick={onClose}
+      className={`fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 transition-all duration-300 ease-out ${
+        isAnimating
+          ? "bg-slate-950/80 backdrop-blur-xs opacity-100"
+          : "bg-slate-950/0 backdrop-blur-none opacity-0 pointer-events-none"
+      }`}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className={`bg-slate-900 border border-slate-700 rounded-xl shadow-2xl max-w-4xl w-full overflow-hidden flex flex-col max-h-[95vh] transition-all duration-300 ease-out transform ${
+          isAnimating
+            ? "scale-100 opacity-100 translate-y-0"
+            : "scale-90 opacity-0 translate-y-4"
+        }`}
+      >
+        {/* Modal Top Control Bar */}
+        <div className="bg-slate-950 px-3 sm:px-5 py-2.5 sm:py-3 border-b border-slate-800 flex items-center justify-between text-white shrink-0 gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 shrink">
+            <ShieldCheck size={16} className="text-amber-400 shrink-0" />
+            <span className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider text-slate-200 truncate">
+              <span className="sm:hidden">MoSPI Certificate</span>
+              <span className="hidden sm:inline">
+                MoSPI • iGOT Karmayogi Certificate
+              </span>
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Primary Direct Download Button (Mobile Icon / Desktop Text) */}
+            <button
+              onClick={handleDownloadImage}
+              disabled={isExporting}
+              className="p-2 sm:px-3 sm:py-1.5 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-950 rounded text-xs font-bold inline-flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-xs disabled:opacity-50 shrink-0"
+              title="Download High-Resolution Landscape Certificate (PNG/Image)"
+              aria-label="Download Certificate"
+            >
+              {isExporting ? (
+                <>
+                  <Loader2 size={14} className="animate-spin shrink-0" />
+                  <span className="hidden sm:inline">Exporting...</span>
+                </>
+              ) : (
+                <>
+                  <Download size={14} className="shrink-0" />
+                  <span className="hidden sm:inline">Download Certificate</span>
+                </>
+              )}
+            </button>
+
+            {/* Print / PDF Engine Button (Mobile Icon / Desktop Text) */}
             <button
               onClick={handlePrint}
-              className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer transition-colors shadow-xs"
-              title="Print or Save as PDF"
+              className="p-2 sm:px-2.5 sm:py-1.5 bg-slate-800 hover:bg-slate-700 active:bg-slate-900 text-slate-200 rounded text-xs font-semibold inline-flex items-center justify-center gap-1 cursor-pointer transition-colors shrink-0"
+              title="Print to Physical Printer / System PDF"
+              aria-label="Print or Save as PDF"
             >
-              <Download size={13} />
-              <span>Save as PDF / Print</span>
+              <Printer size={14} className="shrink-0" />
+              <span className="hidden sm:inline">Print / PDF</span>
             </button>
+
+            {/* Close Modal Button */}
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition-colors"
+              className="p-1.5 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition-colors shrink-0 cursor-pointer"
+              title="Close"
+              aria-label="Close Certificate Modal"
             >
               <X size={18} />
             </button>
           </div>
         </div>
 
-        <div className="p-4 sm:p-8 overflow-y-auto bg-slate-200 flex justify-center items-center">
+        {/* Responsive Landscape Canvas Container */}
+        <div
+          ref={containerRef}
+          className="p-2 sm:p-6 bg-slate-200 flex-1 overflow-auto flex items-center justify-center min-h-[220px]"
+        >
+          {/* Scaled Bounding Box */}
           <div
-            id="sovereign-certificate-preview"
-            ref={certRef}
-            className="w-full max-w-210 bg-[#fffdf7] text-slate-900 border-8 border-double border-blue-950 p-6 sm:p-10 rounded-sm shadow-xl relative overflow-hidden flex flex-col justify-between aspect-[1.414/1] min-h-130"
+            style={{
+              width: `${Math.round(820 * scale)}px`,
+              height: `${Math.round(580 * scale)}px`,
+            }}
+            className="relative shrink-0 flex items-center justify-center transition-all duration-100"
           >
-            <div className="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-amber-600 pointer-events-none" />
-            <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-amber-600 pointer-events-none" />
-            <div className="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-amber-600 pointer-events-none" />
-            <div className="absolute bottom-2 right-2 w-8 h-8 border-b-2 border-r-2 border-amber-600 pointer-events-none" />
+            {/* THE CERTIFICATE CANVAS (Strict Fixed Landscape Aspect Ratio) */}
+            <div
+              id="sovereign-certificate-preview"
+              ref={certRef}
+              style={{
+                transform: `scale(${scale})`,
+                transformOrigin: "top left",
+              }}
+              className="w-[820px] min-w-[820px] h-[580px] min-h-[580px] bg-[#fffdf7] text-slate-900 border-8 border-double border-blue-950 p-6 sm:p-8 rounded-sm shadow-xl absolute top-0 left-0 overflow-hidden flex flex-col justify-between shrink-0 box-border select-none"
+            >
+              {/* Corner Ornamental Accents */}
+              <div className="absolute top-2 left-2 w-7 h-7 border-t-2 border-l-2 border-amber-600 pointer-events-none" />
+              <div className="absolute top-2 right-2 w-7 h-7 border-t-2 border-r-2 border-amber-600 pointer-events-none" />
+              <div className="absolute bottom-2 left-2 w-7 h-7 border-b-2 border-l-2 border-amber-600 pointer-events-none" />
+              <div className="absolute bottom-2 right-2 w-7 h-7 border-b-2 border-r-2 border-amber-600 pointer-events-none" />
 
-            <div className="absolute inset-0 flex items-center justify-center opacity-8 pointer-events-none">
-              <img
-                src="/NSSTA.png"
-                alt="NSSTA Watermark"
-                className="w-56 h-auto grayscale opacity-80 pointer-events-none"
-              />
-            </div>
-
-            <div className="text-center space-y-1.5 border-b-2 border-amber-600/60 pb-4 relative z-10">
-              <div className="flex items-center justify-center gap-3 mb-1">
-                <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.25em] text-slate-700 font-bold">
-                  Government of India • भारत सरकार
-                </span>
+              {/* Sovereign NSSTA Watermark */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-8 pointer-events-none">
+                <img
+                  src="/NSSTA.png"
+                  alt="NSSTA Watermark"
+                  className="w-56 h-auto grayscale opacity-80 pointer-events-none"
+                />
               </div>
 
-              <h1 className="font-serif text-lg sm:text-xl font-bold tracking-tight text-blue-950 uppercase">
-                Ministry of Statistics and Programme Implementation
-              </h1>
-              <p className="text-[11px] sm:text-xs font-serif text-slate-700">
-                National Statistical Systems Training Academy (NSSTA) • iGOT
-                Karmayogi Framework
-              </p>
+              {/* Header: National Emblem & Authorities */}
+              <div className="text-center space-y-1 border-b-2 border-amber-600/60 pb-3 relative z-10">
+                <div className="flex items-center justify-center gap-3 mb-0.5">
+                  <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-slate-700 font-bold">
+                    Government of India • भारत सरकार
+                  </span>
+                </div>
 
-              <div className="pt-2">
-                <span className="inline-block px-4 py-0.5 bg-amber-100/80 border border-amber-400 text-amber-950 font-serif font-bold text-xs uppercase tracking-widest rounded-xs shadow-2xs">
-                  Certificate of Competency Fulfillment & Professional Mastery
-                </span>
+                <h1 className="font-serif text-lg font-bold tracking-tight text-blue-950 uppercase">
+                  Ministry of Statistics and Programme Implementation
+                </h1>
+                <p className="text-[11px] font-serif text-slate-700">
+                  National Statistical Systems Training Academy (NSSTA) • iGOT
+                  Karmayogi Framework
+                </p>
+
+                <div className="pt-1.5">
+                  <span className="inline-block px-4 py-0.5 bg-amber-100/80 border border-amber-400 text-amber-950 font-serif font-bold text-xs uppercase tracking-widest rounded-xs shadow-2xs">
+                    Certificate of Competency Fulfillment & Professional Mastery
+                  </span>
+                </div>
               </div>
-            </div>
 
-            <div className="text-center py-4 sm:py-6 space-y-3 relative z-10">
-              <p className="font-serif italic text-xs sm:text-sm text-slate-600">
-                This is to officially certify that
-              </p>
+              {/* Body: Recipient & Course Details */}
+              <div className="text-center py-2 space-y-2 relative z-10">
+                <p className="font-serif italic text-xs text-slate-600">
+                  This is to officially certify that
+                </p>
 
-              <div className="space-y-1">
-                <h2 className="font-serif text-2xl sm:text-3xl font-extrabold text-blue-950 tracking-tight border-b border-dashed border-slate-300 pb-1 max-w-lg mx-auto">
-                  {details.officerName}
-                </h2>
-                <p className="text-xs sm:text-sm font-medium text-slate-700">
-                  <span className="font-semibold">
-                    {details.officerDesignation}
-                  </span>{" "}
-                  • {details.officerDepartment}
-                  {details.cadreId && (
-                    <span className="font-mono text-slate-500 ml-1">
-                      (@{details.cadreId})
+                <div className="space-y-0.5">
+                  <h2 className="font-serif text-2xl font-extrabold text-blue-950 tracking-tight border-b border-dashed border-slate-300 pb-1 max-w-lg mx-auto">
+                    {details.officerName}
+                  </h2>
+                  <p className="text-xs font-medium text-slate-700">
+                    <span className="font-semibold">
+                      {details.officerDesignation}
+                    </span>{" "}
+                    • {details.officerDepartment}
+                    {details.cadreId && (
+                      <span className="font-mono text-slate-500 ml-1">
+                        (@{details.cadreId})
+                      </span>
+                    )}
+                  </p>
+                </div>
+
+                <p className="font-serif text-[11px] text-slate-600 max-w-xl mx-auto leading-relaxed pt-1">
+                  has successfully fulfilled all prescribed curriculum
+                  standards, applied rigorous statistical protocols, and
+                  achieved competency elevation in the accredited program:
+                </p>
+
+                <div className="bg-amber-50/70 border border-amber-300/80 rounded py-2 px-4 max-w-lg mx-auto shadow-2xs">
+                  <h3 className="font-serif text-sm font-bold text-blue-950">
+                    {details.courseName}
+                  </h3>
+                  {details.badgeName && (
+                    <span className="text-[11px] font-mono text-amber-900 font-semibold block">
+                      Accredited Badge: {details.badgeName}
                     </span>
                   )}
-                </p>
-              </div>
+                </div>
 
-              <p className="font-serif text-xs text-slate-600 max-w-xl mx-auto leading-relaxed pt-1">
-                has successfully fulfilled all prescribed curriculum standards,
-                applied rigorous statistical protocols, and achieved competency
-                elevation in the accredited program:
-              </p>
-
-              <div className="bg-amber-50/70 border border-amber-300/80 rounded py-2 px-4 max-w-lg mx-auto shadow-2xs">
-                <h3 className="font-serif text-sm sm:text-base font-bold text-blue-950">
-                  {details.courseName}
-                </h3>
-                {details.badgeName && (
-                  <span className="text-[11px] font-mono text-amber-900 font-semibold block">
-                    Accredited Badge: {details.badgeName}
-                  </span>
-                )}
-              </div>
-
-              {details.elevatedCompetencies &&
-                details.elevatedCompetencies.length > 0 && (
-                  <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1">
-                    <span className="text-[10px] font-mono text-slate-500 uppercase">
-                      FRAC Elevation:
-                    </span>
-                    {details.elevatedCompetencies.map((c, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2 py-0.5 bg-emerald-50 border border-emerald-300 text-emerald-900 font-mono text-[10px] font-bold rounded"
-                      >
-                        {c.name} (Level {c.newLevel})
+                {details.elevatedCompetencies &&
+                  details.elevatedCompetencies.length > 0 && (
+                    <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1">
+                      <span className="text-[10px] font-mono text-slate-500 uppercase">
+                        FRAC Elevation:
                       </span>
-                    ))}
-                  </div>
-                )}
-            </div>
+                      {details.elevatedCompetencies.map((c, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-0.5 bg-emerald-50 border border-emerald-300 text-emerald-900 font-mono text-[10px] font-bold rounded"
+                        >
+                          {c.name} (Level {c.newLevel})
+                        </span>
+                      ))}
+                    </div>
+                  )}
+              </div>
 
-            <div className="border-t border-slate-300 pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10">
-              <div className="text-left space-y-1">
-                <div className="flex items-center gap-1 text-[11px] text-emerald-800 font-semibold font-mono">
-                  <CheckCircle2 size={13} />
-                  <span>Verified MoSPI Digital Credential</span>
+              {/* Footer: Signatures & Sovereign Verification Seal */}
+              <div className="border-t border-slate-300 pt-3 flex items-center justify-between gap-4 relative z-10">
+                {/* Left: Certificate ID & Date */}
+                <div className="text-left space-y-0.5">
+                  <div className="flex items-center gap-1 text-[11px] text-emerald-800 font-semibold font-mono">
+                    <CheckCircle2 size={13} />
+                    <span>Verified MoSPI Digital Credential</span>
+                  </div>
+                  <div className="text-[10px] font-mono text-slate-600">
+                    <span>Certificate ID: </span>
+                    <span className="font-bold text-slate-900 select-all">
+                      {details.certificateId}
+                    </span>
+                  </div>
+                  <div className="text-[10px] font-mono text-slate-500">
+                    Date of Issue: {formattedDate}
+                  </div>
                 </div>
-                <div className="text-[10px] font-mono text-slate-600">
-                  <span>Certificate ID: </span>
-                  <span className="font-bold text-slate-900 select-all">
-                    {details.certificateId}
+
+                {/* Center: NSSTA Certified Seal Medal */}
+                <div className="shrink-0 flex flex-col items-center">
+                  <div className="w-11 h-11 rounded-full bg-radial from-amber-100 via-amber-200 to-amber-300 border-2 border-amber-500 shadow-md flex items-center justify-center p-1">
+                    <img
+                      src="/NSSTA.png"
+                      alt="NSSTA Seal"
+                      className="w-7 h-7 object-contain"
+                    />
+                  </div>
+                  <span className="text-[8px] font-mono font-bold uppercase tracking-widest text-amber-900 mt-0.5">
+                    NSSTA Certified
                   </span>
                 </div>
-                <div className="text-[10px] font-mono text-slate-500">
-                  Date of Issue: {formattedDate}
-                </div>
-              </div>
 
-              <div className="shrink-0 flex flex-col items-center">
-                <div className="w-12 h-12 rounded-full bg-radial from-amber-100 via-amber-200 to-amber-300 border-2 border-amber-500 shadow-md flex items-center justify-center p-1">
-                  <img
-                    src="/NSSTA.png"
-                    alt="NSSTA Seal"
-                    className="w-8 h-8 object-contain"
-                  />
+                {/* Right: Authorized Signatures */}
+                <div className="text-right space-y-0.5 w-56">
+                  <div className="font-serif text-xs font-bold text-slate-900 border-b border-slate-400 pb-0.5">
+                    Director General
+                  </div>
+                  <p className="text-[10px] font-serif text-slate-600">
+                    National Statistical Systems Training Academy (NSSTA)
+                  </p>
+                  <p className="text-[9px] font-mono text-slate-500">
+                    Ministry of Statistics & Programme Implementation
+                  </p>
                 </div>
-                <span className="text-[8px] font-mono font-bold uppercase tracking-widest text-amber-900 mt-1">
-                  NSSTA Certified
-                </span>
-              </div>
-
-              <div className="text-right space-y-1 sm:w-56">
-                <div className="font-serif text-xs font-bold text-slate-900 border-b border-slate-400 pb-0.5">
-                  Director General
-                </div>
-                <p className="text-[10px] font-serif text-slate-600">
-                  National Statistical Systems Training Academy (NSSTA)
-                </p>
-                <p className="text-[9px] font-mono text-slate-500">
-                  Ministry of Statistics & Programme Implementation
-                </p>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className="bg-slate-950 px-5 py-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 shrink-0">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handlePrint}
-              className="px-4 py-1.5 bg-blue-900 hover:bg-blue-800 text-white rounded font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-xs"
-            >
-              <Download size={13} />
-              <span>Save as PDF / Print</span>
-            </button>
-            <button
-              onClick={onClose}
-              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded cursor-pointer"
-            >
-              Close
-            </button>
           </div>
         </div>
       </div>

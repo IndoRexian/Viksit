@@ -148,7 +148,7 @@ export const QualificationsInput: React.FC<QualificationsInputProps> = ({
           return (
             <div
               key={index}
-              className="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 px-2.5 py-1 rounded text-xs font-medium cursor-pointer transition-colors select-none"
+              className="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 px-2.5 py-1 rounded text-xs font-medium cursor-pointer transition-all duration-200 select-none animate-badge-pop"
               onClick={(e) => {
                 e.stopPropagation();
                 startEditing(index);
@@ -158,7 +158,7 @@ export const QualificationsInput: React.FC<QualificationsInputProps> = ({
               <span>{qualification}</span>
               <button
                 type="button"
-                className="inline-flex items-center justify-center p-0.5 text-slate-400 hover:text-red-700 transition-colors"
+                className="inline-flex items-center justify-center p-0.5 text-slate-400 hover:text-red-700 transition-colors btn-press"
                 onClick={(e) => removePill(index, e)}
                 title="Remove qualification"
                 aria-label={`Remove ${qualification}`}

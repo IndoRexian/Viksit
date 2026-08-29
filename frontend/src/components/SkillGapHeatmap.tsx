@@ -14,6 +14,8 @@ import {
   Layers,
   Building2,
   Info,
+  ChevronDown,
+  Check,
 } from "lucide-react";
 
 interface SkillGapHeatmapProps {
@@ -42,6 +44,9 @@ export const SkillGapHeatmap: React.FC<SkillGapHeatmapProps> = ({
   const [hoveredComp, setHoveredComp] = useState<CompetencyItem | null>(null);
   const [pinnedComp, setPinnedComp] = useState<CompetencyItem | null>(null);
   const [selectedDivision, setSelectedDivision] = useState<string>("all");
+  const [openDropdown, setOpenDropdown] = useState<
+    "status" | "category" | "division" | null
+  >(null);
 
   const groupedDivisions: DivisionSummary[] = useMemo(() => {
     if (divisionSummaries && divisionSummaries.length > 0) {
@@ -144,48 +149,6 @@ export const SkillGapHeatmap: React.FC<SkillGapHeatmapProps> = ({
     return { total, achieved, urgent, gaps };
   }, [filteredDivisions]);
 
-  const getCellHeatStyle = (item: CompetencyItem) => {
-    const isExceeded = item.assessed_level > item.target_level;
-    const isAchieved = item.assessed_level === item.target_level;
-    const isUrgent =
-      item.gap >= 2 || (item.assessed_level === 1 && item.target_level >= 3);
-
-    if (isExceeded) {
-      return {
-        bg: "bg-emerald-600 hover:bg-emerald-500",
-        border: "border-emerald-500",
-        text: "text-white",
-        badge: "Exceeds Target",
-        colorKey: "surplus",
-      };
-    }
-    if (isAchieved) {
-      return {
-        bg: "bg-teal-600 hover:bg-teal-500",
-        border: "border-teal-500",
-        text: "text-white",
-        badge: "Benchmark Met",
-        colorKey: "achieved",
-      };
-    }
-    if (isUrgent) {
-      return {
-        bg: "bg-rose-600 hover:bg-rose-500 ring-1 ring-rose-400/80 shadow-xs",
-        border: "border-rose-500",
-        text: "text-white",
-        badge: "Urgent Upskill",
-        colorKey: "urgent",
-      };
-    }
-    return {
-      bg: "bg-amber-500 hover:bg-amber-400",
-      border: "border-amber-400",
-      text: "text-slate-950",
-      badge: "Minor Gap (-1)",
-      colorKey: "minor",
-    };
-  };
-
   const activeComp =
     hoveredComp || pinnedComp || (items.length > 0 ? items[0] : null);
 
@@ -194,9 +157,6 @@ export const SkillGapHeatmap: React.FC<SkillGapHeatmapProps> = ({
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2 py-0.5 bg-rose-900 text-white font-mono text-[10px] font-bold uppercase rounded">
-              Division Heatmap
-            </span>
             <span className="text-xs text-slate-500 font-medium">
               Cadre Skill Gap & Benchmark Matrix
             </span>
@@ -220,7 +180,7 @@ export const SkillGapHeatmap: React.FC<SkillGapHeatmapProps> = ({
           <div className="flex items-center bg-slate-100 p-1 border border-slate-300 rounded text-xs">
             <button
               onClick={() => setViewMode("matrix")}
-              className={`px-2.5 py-1 font-semibold rounded cursor-pointer inline-flex items-center gap-1 transition-all duration-150 ${
+              className={`px-2.5 py-1 font-semibold rounded cursor-pointer inline-flex items-center gap-1 transition-all duration-200 btn-press ${
                 viewMode === "matrix"
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-600 hover:text-slate-900"
@@ -232,7 +192,7 @@ export const SkillGapHeatmap: React.FC<SkillGapHeatmapProps> = ({
             </button>
             <button
               onClick={() => setViewMode("cards")}
-              className={`px-2.5 py-1 font-semibold rounded cursor-pointer inline-flex items-center gap-1 transition-all duration-150 ${
+              className={`px-2.5 py-1 font-semibold rounded cursor-pointer inline-flex items-center gap-1 transition-all duration-200 btn-press ${
                 viewMode === "cards"
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-600 hover:text-slate-900"
@@ -246,77 +206,175 @@ export const SkillGapHeatmap: React.FC<SkillGapHeatmapProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 border border-slate-200 p-4 rounded">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-800 shrink-0">
-            <CheckCircle2 size={18} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 bg-slate-50 border border-slate-200 p-3 sm:p-4 rounded min-w-0">
+        <div className="flex items-center gap-3 card-interactive p-2.5 sm:p-3 rounded bg-white border border-slate-200 min-w-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-800 shrink-0">
+            <CheckCircle2 size={16} />
           </div>
-          <div>
-            <span className="text-[10px] font-mono uppercase text-slate-500 block">
+          <div className="min-w-0 flex-1">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-medium block">
               Benchmark Achieved
             </span>
-            <span className="font-mono text-base font-bold text-slate-900">
-              {totalStats.achieved} Competencies
-            </span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <span className="font-mono text-base sm:text-lg font-bold text-slate-900">
+                {totalStats.achieved}
+              </span>
+              <span className="text-[11px] sm:text-xs font-mono text-slate-600">
+                Competencies
+              </span>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded bg-rose-100 border border-rose-300 flex items-center justify-center text-rose-700 shrink-0">
-            <Flame size={18} />
+        <div className="flex items-center gap-3 card-interactive p-2.5 sm:p-3 rounded bg-white border border-slate-200 min-w-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded bg-rose-100 border border-rose-300 flex items-center justify-center text-rose-700 shrink-0">
+            <Flame size={16} />
           </div>
-          <div>
-            <span className="text-[10px] font-mono uppercase text-slate-500 block">
+          <div className="min-w-0 flex-1">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-medium block">
               Urgent Upskilling
             </span>
-            <span className="font-mono text-base font-bold text-rose-700">
-              {totalStats.urgent} Critical Gaps
-            </span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <span className="font-mono text-base sm:text-lg font-bold text-rose-700">
+                {totalStats.urgent}
+              </span>
+              <span className="text-[11px] sm:text-xs font-mono text-rose-700 font-medium">
+                Critical Gaps
+              </span>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 shrink-0">
-            <AlertTriangle size={18} />
+        <div className="flex items-center gap-3 card-interactive p-2.5 sm:p-3 rounded bg-white border border-slate-200 min-w-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 shrink-0">
+            <AlertTriangle size={16} />
           </div>
-          <div>
-            <span className="text-[10px] font-mono uppercase text-slate-500 block">
+          <div className="min-w-0 flex-1">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-medium block">
               Minor Skill Gaps
             </span>
-            <span className="font-mono text-base font-bold text-amber-800">
-              {totalStats.gaps - totalStats.urgent} Competencies
-            </span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <span className="font-mono text-base sm:text-lg font-bold text-amber-800">
+                {totalStats.gaps - totalStats.urgent}
+              </span>
+              <span className="text-[11px] sm:text-xs font-mono text-amber-800 font-medium">
+                Competencies
+              </span>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded bg-blue-100 border border-blue-300 flex items-center justify-center text-blue-900 shrink-0">
-            <Building2 size={18} />
+        <div className="flex items-center gap-3 card-interactive p-2.5 sm:p-3 rounded bg-white border border-slate-200 min-w-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded bg-blue-100 border border-blue-300 flex items-center justify-center text-blue-900 shrink-0">
+            <Building2 size={16} />
           </div>
-          <div>
-            <span className="text-[10px] font-mono uppercase text-slate-500 block">
+          <div className="min-w-0 flex-1">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-medium block">
               Divisions Monitored
             </span>
-            <span className="font-mono text-base font-bold text-slate-900">
-              {filteredDivisions.length} Divisions
-            </span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <span className="font-mono text-base sm:text-lg font-bold text-slate-900">
+                {filteredDivisions.length}
+              </span>
+              <span className="text-[11px] sm:text-xs font-mono text-slate-600">
+                Divisions
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-3 border border-slate-200 rounded">
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center bg-slate-100 p-0.5 border border-slate-300 rounded text-xs">
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 bg-white p-3 border border-slate-200 rounded min-w-0">
+        <div className="flex flex-wrap items-center gap-2 flex-1 min-w-0">
+          {/* 1. Mobile Status Dropdown (sm:hidden) */}
+          <div className="sm:hidden w-full min-w-0 relative">
+            {(() => {
+              const statusOptions = [
+                { id: "all" as const, label: "All Items" },
+                { id: "urgent" as const, label: "Urgent Gaps" },
+                { id: "gaps" as const, label: "Skill Gaps" },
+                { id: "achieved" as const, label: "Met Benchmarks" },
+              ];
+              const curStatus =
+                statusOptions.find((s) => s.id === statusFilter) ||
+                statusOptions[0];
+
+              return (
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOpenDropdown((prev) =>
+                        prev === "status" ? null : "status",
+                      )
+                    }
+                    className="w-full bg-slate-50 border border-slate-300 hover:border-slate-400 focus:border-blue-900 text-slate-900 rounded-lg px-3 py-2 text-xs font-semibold shadow-2xs flex items-center justify-between gap-2 transition-all duration-200 cursor-pointer btn-press text-left"
+                    aria-expanded={openDropdown === "status"}
+                  >
+                    <span className="truncate">{curStatus.label}</span>
+                    <ChevronDown
+                      size={14}
+                      className={`text-slate-400 shrink-0 transition-transform duration-200 ${
+                        openDropdown === "status"
+                          ? "rotate-180 text-blue-900"
+                          : ""
+                      }`}
+                    />
+                  </button>
+
+                  {openDropdown === "status" && (
+                    <>
+                      <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => setOpenDropdown(null)}
+                      />
+                      <div className="absolute top-full left-0 right-0 mt-1 z-50 bg-white/98 backdrop-blur-md border border-slate-200 rounded-xl shadow-xl ring-1 ring-slate-900/10 p-1 space-y-0.5 animate-scale-in">
+                        {statusOptions.map((st) => {
+                          const isSelected = statusFilter === st.id;
+                          return (
+                            <button
+                              key={st.id}
+                              type="button"
+                              onClick={() => {
+                                setStatusFilter(st.id);
+                                setOpenDropdown(null);
+                              }}
+                              className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md text-xs text-left transition-all duration-150 cursor-pointer ${
+                                isSelected
+                                  ? "bg-slate-900 text-white font-semibold shadow-xs"
+                                  : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                              }`}
+                            >
+                              <span>{st.label}</span>
+                              {isSelected && (
+                                <Check
+                                  size={13}
+                                  className="text-amber-400 shrink-0"
+                                />
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+                </div>
+              );
+            })()}
+          </div>
+
+          {/* Desktop Status Button Group (hidden sm:flex) */}
+          <div className="hidden sm:flex items-center bg-slate-100 p-0.5 border border-slate-300 rounded text-xs shrink-0">
             {[
               { id: "all", label: "All Items" },
-              { id: "urgent", label: "🔥 Urgent Gaps" },
+              { id: "urgent", label: "Urgent Gaps" },
               { id: "gaps", label: "Skill Gaps" },
               { id: "achieved", label: "Met Benchmarks" },
             ].map((st) => (
               <button
                 key={st.id}
                 onClick={() => setStatusFilter(st.id as typeof statusFilter)}
-                className={`px-2.5 py-1 font-semibold rounded cursor-pointer transition-all duration-150 ${
+                className={`px-2.5 py-1 font-semibold rounded cursor-pointer transition-all duration-200 whitespace-nowrap btn-press ${
                   statusFilter === st.id
                     ? "bg-slate-900 text-white shadow-xs"
                     : "text-slate-600 hover:text-slate-900"
@@ -327,32 +385,181 @@ export const SkillGapHeatmap: React.FC<SkillGapHeatmapProps> = ({
             ))}
           </div>
 
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="bg-white border border-slate-300 text-slate-700 text-xs rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-slate-400 cursor-pointer"
-          >
-            <option value="all">All Categories</option>
-            <option value="Domain">Domain</option>
-            <option value="Functional">Functional</option>
-            <option value="Behavioral">Behavioral</option>
-          </select>
+          {/* 2. Custom Category Dropdown */}
+          <div className="w-full sm:w-auto min-w-0 relative">
+            {(() => {
+              const categoryOptions = [
+                { id: "all", label: "All Categories" },
+                { id: "Domain", label: "Domain" },
+                { id: "Functional", label: "Functional" },
+                { id: "Behavioral", label: "Behavioral" },
+              ];
+              const curCat =
+                categoryOptions.find((c) => c.id === categoryFilter) ||
+                categoryOptions[0];
 
-          <select
-            value={selectedDivision}
-            onChange={(e) => setSelectedDivision(e.target.value)}
-            className="bg-white border border-slate-300 text-slate-700 text-xs rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-slate-400 cursor-pointer max-w-50 truncate"
-          >
-            <option value="all">All MoSPI Divisions</option>
-            {groupedDivisions.map((d) => (
-              <option key={d.division} value={d.division}>
-                {d.division}
-              </option>
-            ))}
-          </select>
+              return (
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOpenDropdown((prev) =>
+                        prev === "category" ? null : "category",
+                      )
+                    }
+                    className="w-full sm:w-auto min-w-0 sm:min-w-[130px] bg-white border border-slate-300 hover:border-slate-400 focus:border-blue-900 text-slate-800 rounded px-2.5 py-1.5 text-xs font-semibold shadow-2xs flex items-center justify-between gap-2 transition-all duration-200 cursor-pointer btn-press text-left"
+                    aria-expanded={openDropdown === "category"}
+                  >
+                    <span className="truncate">{curCat.label}</span>
+                    <ChevronDown
+                      size={13}
+                      className={`text-slate-400 shrink-0 transition-transform duration-200 ${
+                        openDropdown === "category"
+                          ? "rotate-180 text-blue-900"
+                          : ""
+                      }`}
+                    />
+                  </button>
+
+                  {openDropdown === "category" && (
+                    <>
+                      <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => setOpenDropdown(null)}
+                      />
+                      <div className="absolute top-full left-0 right-0 sm:right-auto mt-1 z-50 sm:min-w-[150px] bg-white/98 backdrop-blur-md border border-slate-200 rounded-xl shadow-xl ring-1 ring-slate-900/10 p-1 space-y-0.5 animate-scale-in">
+                        {categoryOptions.map((cat) => {
+                          const isSelected = categoryFilter === cat.id;
+                          return (
+                            <button
+                              key={cat.id}
+                              type="button"
+                              onClick={() => {
+                                setCategoryFilter(cat.id);
+                                setOpenDropdown(null);
+                              }}
+                              className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md text-xs text-left transition-all duration-150 cursor-pointer ${
+                                isSelected
+                                  ? "bg-slate-900 text-white font-semibold shadow-xs"
+                                  : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                              }`}
+                            >
+                              <span>{cat.label}</span>
+                              {isSelected && (
+                                <Check
+                                  size={13}
+                                  className="text-amber-400 shrink-0"
+                                />
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+                </div>
+              );
+            })()}
+          </div>
+
+          {/* 3. Custom Division Dropdown */}
+          <div className="w-full sm:w-auto sm:flex-initial min-w-0 max-w-full sm:max-w-64 relative">
+            {(() => {
+              const curDivLabel =
+                selectedDivision === "all"
+                  ? "All MoSPI Divisions"
+                  : selectedDivision;
+
+              return (
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOpenDropdown((prev) =>
+                        prev === "division" ? null : "division",
+                      )
+                    }
+                    className="w-full sm:w-auto min-w-0 sm:min-w-[160px] bg-white border border-slate-300 hover:border-slate-400 focus:border-blue-900 text-slate-800 rounded px-2.5 py-1.5 text-xs font-semibold shadow-2xs flex items-center justify-between gap-2 transition-all duration-200 cursor-pointer btn-press text-left"
+                    aria-expanded={openDropdown === "division"}
+                    title={curDivLabel}
+                  >
+                    <span className="truncate">{curDivLabel}</span>
+                    <ChevronDown
+                      size={13}
+                      className={`text-slate-400 shrink-0 transition-transform duration-200 ${
+                        openDropdown === "division"
+                          ? "rotate-180 text-blue-900"
+                          : ""
+                      }`}
+                    />
+                  </button>
+
+                  {openDropdown === "division" && (
+                    <>
+                      <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => setOpenDropdown(null)}
+                      />
+                      <div className="absolute top-full left-0 right-0 sm:right-auto sm:w-72 mt-1 z-50 max-h-64 overflow-y-auto bg-white/98 backdrop-blur-md border border-slate-200 rounded-xl shadow-xl ring-1 ring-slate-900/10 p-1 space-y-0.5 animate-scale-in">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedDivision("all");
+                            setOpenDropdown(null);
+                          }}
+                          className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md text-xs text-left transition-all duration-150 cursor-pointer ${
+                            selectedDivision === "all"
+                              ? "bg-slate-900 text-white font-semibold shadow-xs"
+                              : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                          }`}
+                        >
+                          <span className="truncate font-medium">
+                            All MoSPI Divisions
+                          </span>
+                          {selectedDivision === "all" && (
+                            <Check
+                              size={13}
+                              className="text-amber-400 shrink-0"
+                            />
+                          )}
+                        </button>
+                        {groupedDivisions.map((d) => {
+                          const isSelected = selectedDivision === d.division;
+                          return (
+                            <button
+                              key={d.division}
+                              type="button"
+                              onClick={() => {
+                                setSelectedDivision(d.division);
+                                setOpenDropdown(null);
+                              }}
+                              className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md text-xs text-left transition-all duration-150 cursor-pointer ${
+                                isSelected
+                                  ? "bg-slate-900 text-white font-semibold shadow-xs"
+                                  : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                              }`}
+                              title={d.division}
+                            >
+                              <span className="truncate">{d.division}</span>
+                              {isSelected && (
+                                <Check
+                                  size={13}
+                                  className="text-amber-400 shrink-0"
+                                />
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+                </div>
+              );
+            })()}
+          </div>
         </div>
 
-        <div className="relative min-w-55">
+        <div className="relative w-full lg:w-auto lg:min-w-55 min-w-0">
           <Search
             size={13}
             className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-slate-400"
@@ -362,7 +569,7 @@ export const SkillGapHeatmap: React.FC<SkillGapHeatmapProps> = ({
             placeholder="Search competency or course..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-8 pr-3 py-1 bg-slate-50 border border-slate-300 rounded text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-500"
+            className="w-full min-w-0 pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-500"
           />
         </div>
       </div>
@@ -439,50 +646,102 @@ export const SkillGapHeatmap: React.FC<SkillGapHeatmapProps> = ({
                       </div>
                     </div>
 
-                    <div className="p-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+                    <div className="p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2.5">
                       {div.items.map((item) => {
-                        const style = getCellHeatStyle(item);
                         const isSelected = activeComp?.id === item.id;
+                        const isExceeded =
+                          item.assessed_level > item.target_level;
+                        const isAchieved =
+                          item.assessed_level === item.target_level;
+                        const isUrgent =
+                          item.gap >= 2 ||
+                          (item.assessed_level === 1 && item.target_level >= 3);
+
+                        const style = isExceeded
+                          ? {
+                              bg: "bg-emerald-600 hover:bg-emerald-500",
+                              border: "border-emerald-500",
+                              text: "text-white",
+                              badge: "Exceeds Target",
+                            }
+                          : isAchieved
+                            ? {
+                                bg: "bg-teal-600 hover:bg-teal-500",
+                                border: "border-teal-500",
+                                text: "text-white",
+                                badge: "Benchmark Met",
+                              }
+                            : isUrgent
+                              ? {
+                                  bg: "bg-rose-600 hover:bg-rose-500 ring-1 ring-rose-400/80 shadow-xs",
+                                  border: "border-rose-500",
+                                  text: "text-white",
+                                  badge: "Urgent Upskill",
+                                }
+                              : {
+                                  bg: "bg-amber-500 hover:bg-amber-400",
+                                  border: "border-amber-400",
+                                  text: "text-slate-950",
+                                  badge: "Minor Gap (-1)",
+                                };
 
                         return (
                           <div
                             key={item.id}
                             onMouseEnter={() => setHoveredComp(item)}
                             onClick={() => setPinnedComp(item)}
-                            className={`p-2.5 rounded border transition-all duration-150 cursor-pointer text-left relative select-none ${style.bg} ${style.border} ${style.text} ${
+                            className={`p-3 rounded-lg border transition-all duration-200 cursor-pointer text-left relative select-none flex flex-col justify-between ${style.bg} ${style.border} ${style.text} ${
                               isSelected
-                                ? "ring-2 ring-slate-900 ring-offset-2 scale-[1.02]"
-                                : ""
+                                ? "ring-3 ring-slate-900 ring-offset-2 scale-[1.02] shadow-md z-10"
+                                : "hover:shadow-sm"
                             }`}
                           >
-                            <div className="flex items-start justify-between gap-1 mb-1">
-                              <span className="font-mono text-[10px] font-bold tracking-tight uppercase opacity-90">
-                                {item.code.replace("FRAC-", "")}
-                              </span>
-                              {item.gap >= 2 ? (
-                                <Flame
-                                  size={12}
-                                  className="text-amber-200 shrink-0"
-                                />
-                              ) : item.gap === 0 ? (
-                                <CheckCircle2
-                                  size={12}
-                                  className="text-emerald-200 shrink-0"
-                                />
-                              ) : null}
+                            <div>
+                              {/* Header: Code, Category, Status Icon */}
+                              <div className="flex items-center justify-between gap-1.5 mb-1.5">
+                                <span className="font-mono text-xs font-bold tracking-tight uppercase px-1.5 py-0.5 rounded bg-black/20 backdrop-blur-xs">
+                                  {item.code.replace("FRAC-", "")}
+                                </span>
+                                <div className="flex items-center gap-1">
+                                  <span className="font-mono text-[10px] opacity-90 px-1.5 py-0.5 rounded bg-black/10">
+                                    {item.category}
+                                  </span>
+                                  {isUrgent ? (
+                                    <Flame
+                                      size={13}
+                                      className="text-amber-200 shrink-0"
+                                    />
+                                  ) : isAchieved || isExceeded ? (
+                                    <CheckCircle2
+                                      size={13}
+                                      className="text-emerald-200 shrink-0"
+                                    />
+                                  ) : null}
+                                </div>
+                              </div>
+
+                              {/* Competency Name without line-clamp */}
+                              <p className="text-xs sm:text-sm font-bold leading-snug break-words mb-2.5">
+                                {item.name}
+                              </p>
                             </div>
 
-                            <p className="text-[11px] font-semibold line-clamp-2 leading-snug mb-2">
-                              {item.name}
-                            </p>
-
-                            <div className="flex items-center justify-between text-[10px] font-mono pt-1 border-t border-white/20">
-                              <span className="opacity-90">
-                                Cur: <strong>L{item.assessed_level}</strong>
+                            {/* Footer: Status on top, Current vs Required Levels below */}
+                            <div className="pt-2 border-t border-white/20 flex flex-col gap-1 text-xs font-mono">
+                              <span className="text-[10.5px] font-bold opacity-95">
+                                {style.badge}
                               </span>
-                              <span className="opacity-90">
-                                Req: <strong>L{item.target_level}</strong>
-                              </span>
+                              <div className="flex items-center gap-1.5 text-[11px] opacity-90">
+                                <span>
+                                  Current:{" "}
+                                  <strong>L{item.assessed_level}</strong>
+                                </span>
+                                <span className="opacity-60">•</span>
+                                <span>
+                                  Required:{" "}
+                                  <strong>L{item.target_level}</strong>
+                                </span>
+                              </div>
                             </div>
                           </div>
                         );
@@ -601,17 +860,6 @@ export const SkillGapHeatmap: React.FC<SkillGapHeatmapProps> = ({
                   <span className="font-mono text-xs font-bold px-2 py-0.5 bg-blue-800 text-blue-100 rounded">
                     {activeComp.code}
                   </span>
-                  <span
-                    className={`px-1.5 py-0.2 font-mono text-[9px] font-bold rounded uppercase ${
-                      activeComp.category === "Domain"
-                        ? "bg-blue-900/60 text-blue-300 border border-blue-700/50"
-                        : activeComp.category === "Functional"
-                          ? "bg-purple-900/60 text-purple-300 border border-purple-700/50"
-                          : "bg-amber-900/60 text-amber-300 border border-amber-700/50"
-                    }`}
-                  >
-                    {activeComp.category}
-                  </span>
                 </div>
 
                 <span
@@ -712,23 +960,23 @@ export const SkillGapHeatmap: React.FC<SkillGapHeatmapProps> = ({
                   </div>
                 )}
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full">
                 {onAssessCompetency && (
                   <button
                     onClick={() => onAssessCompetency(activeComp)}
-                    className="flex-1 py-2 bg-blue-700 hover:bg-blue-600 text-white rounded text-xs font-semibold uppercase tracking-wider inline-flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-xs"
+                    className="w-full sm:flex-1 min-w-0 px-2.5 py-2 bg-blue-700 hover:bg-blue-600 text-white rounded text-xs font-semibold uppercase tracking-wider inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-200 shadow-xs btn-press"
                   >
-                    <FileText size={13} />
-                    <span>Assess Quiz</span>
+                    <FileText size={13} className="shrink-0" />
+                    <span className="truncate">Assess Quiz</span>
                   </button>
                 )}
                 {onBridgeGap && (
                   <button
                     onClick={() => onBridgeGap(activeComp)}
-                    className="flex-1 py-2 bg-amber-600 hover:bg-amber-500 text-slate-950 rounded text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-xs"
+                    className="w-full sm:flex-1 min-w-0 px-2.5 py-2 bg-amber-600 hover:bg-amber-500 text-slate-950 rounded text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-200 shadow-xs btn-press"
                   >
-                    <span>View Courses</span>
-                    <ArrowUpRight size={13} />
+                    <span className="truncate">View Courses</span>
+                    <ArrowUpRight size={13} className="shrink-0" />
                   </button>
                 )}
               </div>

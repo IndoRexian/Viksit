@@ -137,7 +137,7 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
             return (
               <div
                 key={index}
-                className="group flex items-start justify-between bg-white border border-slate-200 hover:border-slate-300 rounded p-2.5 transition-colors"
+                className="group flex items-start justify-between bg-white border border-slate-200 hover:border-slate-300 rounded p-2.5 transition-all duration-200 animate-badge-pop"
                 onClick={() => startEditing(index)}
               >
                 <div className="flex items-start gap-2.5 flex-1 pr-2">
@@ -152,7 +152,7 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
                 <div className="flex items-center gap-1 shrink-0 opacity-80 group-hover:opacity-100">
                   <button
                     type="button"
-                    className="p-1 text-slate-400 hover:text-blue-700 rounded transition-colors"
+                    className="p-1 text-slate-400 hover:text-blue-700 rounded transition-colors btn-press"
                     onClick={(e) => {
                       e.stopPropagation();
                       startEditing(index);
@@ -163,7 +163,7 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
                   </button>
                   <button
                     type="button"
-                    className="p-1 text-slate-400 hover:text-red-700 rounded transition-colors"
+                    className="p-1 text-slate-400 hover:text-red-700 rounded transition-colors btn-press"
                     onClick={(e) => removeExperience(index, e)}
                     title="Delete record"
                     aria-label={`Remove record ${indexNumber}`}
@@ -189,7 +189,7 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
         />
         <button
           type="button"
-          className="h-9 px-3.5 bg-slate-800 hover:bg-slate-900 text-white rounded text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+          className="h-9 px-3.5 bg-slate-800 hover:bg-slate-900 text-white rounded text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 btn-press"
           onClick={() => addExperience(inputValue)}
           disabled={!inputValue.trim()}
         >
@@ -198,7 +198,8 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
         </button>
       </div>
       <span className="text-[11px] text-slate-500">
-        Specify division, key survey rounds (e.g. NSS 78th Round, PLFS, ASI), national accounting accounts, or analytical responsibilities.
+        Specify division, key survey rounds (e.g. NSS 78th Round, PLFS, ASI),
+        national accounting accounts, or analytical responsibilities.
       </span>
     </div>
   );
