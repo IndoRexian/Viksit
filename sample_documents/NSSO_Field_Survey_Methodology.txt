@@ -1,0 +1,36 @@
+GOVERNMENT OF INDIA
+MINISTRY OF STATISTICS AND PROGRAMME IMPLEMENTATION (MoSPI)
+NATIONAL SAMPLE SURVEY OFFICE (NSSO) - SURVEY DESIGN AND RESEARCH DIVISION (SDRD)
+
+FIELD OPERATIONS MANUAL: MULTI-STAGE STRATIFIED SAMPLING & FIELD INVESTIGATION PROTOCOLS
+
+1. SAMPLING DESIGN & SAMPLE SELECTION METHODOLOGY
+The National Sample Survey (NSS) employs a Stratified Multi-Stage Sampling Design for household socio-economic surveys across rural and urban sectors of India.
+
+1.1 Primary Sampling Units (PSUs):
+- Rural Sector: The First Stage Units (FSUs) are Census Villages (or Revenue Villages as per latest Population Census directory).
+- Urban Sector: The FSUs are Urban Frame Survey (UFS) blocks demarcated and updated quinquennially by NSSO Field Operations Division (FOD).
+
+1.2 Ultimate Stage Units (USUs):
+The Ultimate Stage Units are households in socio-economic surveys, and manufacturing/services unincorporated enterprises in enterprise surveys.
+
+1.3 Sub-stratification and FSU Allocation:
+Within each district, rural and urban sectors constitute basic strata.
+- In rural areas, if village population exceeds 1,200 as per Census, the village is divided into two or more sub-units termed 'Hamlet-Groups' (HGs) having roughly equal population (around 600 persons each). Two hamlet-groups are selected by Simple Random Sampling Without Replacement (SRSWOR).
+- In urban areas, UFS blocks with population exceeding 1,200 are similarly partitioned into 'Sub-Blocks' (SBs), from which two sub-blocks are selected.
+
+2. LISTING & HOUSEHOLD STRATIFICATION
+In each selected FSU (or selected HGs/SBs combined), a complete door-to-door listing of all resident households is executed in Schedule 0.0.
+Households are classified into Second Stage Strata (SSS) based on:
+- SSS 1: Affluent/High-Income households (owning four-wheeler, tractor, or salaried member in organized sector)
+- SSS 2: Middle-income households with principal income from non-agricultural enterprise
+- SSS 3: Other remaining households (agricultural labor, informal wage workers)
+
+From each SSS, sample households are drawn using Circular Systematic Sampling (CSS) with independent random starts to ensure representative coverage across wealth quintiles.
+
+3. DATA VALIDATION & NONSAMPLING ERROR MITIGATION
+To eliminate nonsampling bias and investigator fatigue:
+- Inspection Protocol: Minimum 10% of canvas schedules must be independently re-interviewed by Senior Statistical Officers (Superintendents/Assistant Directors).
+- Scrutiny Program: Automated relational and range consistency checks in the Computer Assisted Personal Interviewing (CAPI) tablet software flag invalid response combinations (e.g. child age under 5 with completed postgraduate degree).
+- Replacement Rule: No substitution of selected sample households is permitted in the field without formal written authorization from the Regional Head of FOD.
+
