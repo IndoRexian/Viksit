@@ -103,7 +103,7 @@ def get_competency_quiz(
 ):
     client = get_gemini_client()
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.6-flash",
         contents=get_skill_assessment_prompt(
             competency_name, competency_description, category, department, level
         ),
@@ -204,7 +204,7 @@ def generate_document_quiz(
     )
 
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.6-flash",
         contents=[
             uploaded_file,
             user_prompt,

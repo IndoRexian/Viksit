@@ -191,6 +191,7 @@ export const Dashboard: React.FC = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchCourses();
     fetchRecommendations();
     fetchMatrix();
@@ -360,14 +361,16 @@ export const Dashboard: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate("/admin")}
-              className="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold rounded text-xs inline-flex items-center gap-1.5 cursor-pointer transition-colors shadow-xs"
-              title="Switch to Ministry / Training Administrator Governance Dashboard"
-            >
-              <ShieldCheck size={13} />
-              <span>Admin Console</span>
-            </button>
+            {user?.role === "admin" && (
+              <button
+                onClick={() => navigate("/admin")}
+                className="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold rounded text-xs inline-flex items-center gap-1.5 cursor-pointer transition-colors shadow-xs"
+                title="Switch to Ministry / Training Administrator Governance Dashboard"
+              >
+                <ShieldCheck size={13} />
+                <span>Admin Console</span>
+              </button>
+            )}
 
             <button
               className="px-3 py-1.5 bg-slate-800 hover:bg-red-900/80 border border-slate-700 text-slate-200 hover:text-white rounded text-xs font-medium inline-flex items-center gap-1.5 cursor-pointer transition-colors"
