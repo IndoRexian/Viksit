@@ -255,7 +255,7 @@ export const Register: React.FC = () => {
         </div>
       </header>
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 animate-scale-in">
         <div className="mb-6 pb-4 border-b border-slate-300 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
           <div>
             <div className="text-[11px] font-mono uppercase tracking-widest text-slate-500 mb-1">
@@ -269,15 +269,16 @@ export const Register: React.FC = () => {
             Already registered?{" "}
             <Link
               to="/login"
-              className="font-semibold text-blue-900 hover:underline"
+              className="font-semibold text-blue-900 hover:underline inline-flex items-center gap-1 btn-press"
             >
-              Sign in to console
+              <span>Sign in to console</span>
+              <ArrowRight size={12} />
             </Link>
           </div>
         </div>
 
         {error && (
-          <div className="flex items-start gap-2.5 bg-red-50 border border-red-200 text-red-800 p-3.5 rounded text-xs font-medium mb-6">
+          <div className="flex items-start gap-2.5 bg-red-50 border border-red-200 text-red-800 p-3.5 rounded text-xs font-medium mb-6 animate-slide-down">
             <AlertCircle size={17} className="text-red-600 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
@@ -286,7 +287,7 @@ export const Register: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <form
             onSubmit={handleSubmit}
-            className="lg:col-span-8 bg-white border border-slate-300 rounded shadow-xs p-6 sm:p-8 space-y-6"
+            className="lg:col-span-8 bg-white border border-slate-300 rounded shadow-xs p-6 sm:p-8 space-y-6 card-interactive"
             noValidate
           >
             <div>
@@ -307,7 +308,7 @@ export const Register: React.FC = () => {
                   </label>
                   <input
                     type="text"
-                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 shadow-xs focus:outline-none ${
+                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 shadow-xs focus:outline-none transition-all duration-200 ${
                       isNameInvalid
                         ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
                         : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
@@ -318,7 +319,7 @@ export const Register: React.FC = () => {
                     required
                   />
                   {isNameInvalid && (
-                    <span className="text-[11px] text-red-600 block">
+                    <span className="text-[11px] text-red-600 block animate-slide-down">
                       Name is required.
                     </span>
                   )}
@@ -338,12 +339,12 @@ export const Register: React.FC = () => {
                         </span>
                       )}
                       {usernameStatus === "available" && (
-                        <span className="text-emerald-700 font-semibold flex items-center gap-0.5">
+                        <span className="text-emerald-700 font-semibold flex items-center gap-0.5 animate-badge-pop">
                           <CheckCircle2 size={11} /> Available
                         </span>
                       )}
                       {usernameStatus === "taken" && (
-                        <span className="text-red-600 font-semibold">
+                        <span className="text-red-600 font-semibold animate-shake">
                           Unavailable
                         </span>
                       )}
@@ -351,7 +352,7 @@ export const Register: React.FC = () => {
                   </div>
                   <input
                     type="text"
-                    className={`w-full h-9 px-3 rounded border text-xs font-mono text-slate-900 shadow-xs focus:outline-none ${
+                    className={`w-full h-9 px-3 rounded border text-xs font-mono text-slate-900 shadow-xs focus:outline-none transition-all duration-200 ${
                       isUsernameInvalid
                         ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
                         : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
@@ -362,7 +363,7 @@ export const Register: React.FC = () => {
                     required
                   />
                   {isUsernameInvalid && (
-                    <span className="text-[11px] text-red-600 block">
+                    <span className="text-[11px] text-red-600 block animate-slide-down">
                       {usernameStatus === "taken"
                         ? "Username is taken. Choose another."
                         : "Minimum 3 characters required."}
@@ -377,7 +378,7 @@ export const Register: React.FC = () => {
                   </label>
                   <input
                     type="email"
-                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 shadow-xs focus:outline-none ${
+                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 shadow-xs focus:outline-none transition-all duration-200 ${
                       isEmailInvalid
                         ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
                         : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
@@ -388,7 +389,7 @@ export const Register: React.FC = () => {
                     required
                   />
                   {isEmailInvalid && (
-                    <span className="text-[11px] text-red-600 block">
+                    <span className="text-[11px] text-red-600 block animate-slide-down">
                       Valid official email address is required.
                     </span>
                   )}
@@ -400,7 +401,7 @@ export const Register: React.FC = () => {
                   </label>
                   <input
                     type="tel"
-                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 shadow-xs focus:outline-none ${
+                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 shadow-xs focus:outline-none transition-all duration-200 ${
                       isPhoneInvalid
                         ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
                         : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
@@ -411,7 +412,7 @@ export const Register: React.FC = () => {
                     required
                   />
                   {isPhoneInvalid && (
-                    <span className="text-[11px] text-red-600 block">
+                    <span className="text-[11px] text-red-600 block animate-slide-down">
                       10-digit mobile number required.
                     </span>
                   )}
@@ -422,7 +423,7 @@ export const Register: React.FC = () => {
                     Gender
                   </label>
                   <select
-                    className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                    className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
                   >
@@ -438,7 +439,7 @@ export const Register: React.FC = () => {
                   </label>
                   <input
                     type="date"
-                    className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                    className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
                     value={dob}
                     onChange={(e) => setDob(e.target.value)}
                   />
@@ -463,7 +464,7 @@ export const Register: React.FC = () => {
                     <span className="text-red-600">*</span>
                   </label>
                   <select
-                    className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                    className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
                     value={designation}
                     onChange={(e) => setDesignation(e.target.value)}
                   >
@@ -485,7 +486,7 @@ export const Register: React.FC = () => {
                     <span className="text-red-600">*</span>
                   </label>
                   <select
-                    className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                    className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
                   >
@@ -505,7 +506,7 @@ export const Register: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                      className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
                       placeholder="e.g. Senior Demographer / Consultant"
                       value={customDesignation}
                       onChange={(e) => setCustomDesignation(e.target.value)}
@@ -521,7 +522,7 @@ export const Register: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
+                      className="w-full h-9 px-3 rounded border border-slate-300 bg-white text-xs text-slate-900 shadow-xs focus:outline-none focus:border-blue-700 focus:ring-1 focus:ring-blue-700 transition-colors"
                       placeholder="e.g. Planning Commission / State Statistical Bureau"
                       value={customDepartment}
                       onChange={(e) => setCustomDepartment(e.target.value)}
@@ -570,7 +571,7 @@ export const Register: React.FC = () => {
                   <div className="relative flex items-center">
                     <input
                       type={showPassword ? "text" : "password"}
-                      className={`w-full h-9 pl-3 pr-9 rounded border text-xs text-slate-900 shadow-xs focus:outline-none ${
+                      className={`w-full h-9 pl-3 pr-9 rounded border text-xs text-slate-900 shadow-xs focus:outline-none transition-all duration-200 ${
                         isPasswordInvalid
                           ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
                           : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
@@ -581,7 +582,7 @@ export const Register: React.FC = () => {
                     />
                     <button
                       type="button"
-                      className="absolute right-2.5 text-slate-400 hover:text-slate-700 cursor-pointer p-1"
+                      className="absolute right-2.5 text-slate-400 hover:text-slate-700 cursor-pointer p-1 transition-colors btn-press"
                       onClick={() => setShowPassword(!showPassword)}
                       tabIndex={-1}
                     >
@@ -589,7 +590,7 @@ export const Register: React.FC = () => {
                     </button>
                   </div>
                   {isPasswordInvalid && (
-                    <span className="text-[11px] text-red-600 block">
+                    <span className="text-[11px] text-red-600 block animate-slide-down">
                       Password must be at least 6 characters.
                     </span>
                   )}
@@ -601,7 +602,7 @@ export const Register: React.FC = () => {
                   </label>
                   <input
                     type="password"
-                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 shadow-xs focus:outline-none ${
+                    className={`w-full h-9 px-3 rounded border text-xs text-slate-900 shadow-xs focus:outline-none transition-all duration-200 ${
                       isConfirmPasswordInvalid
                         ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
                         : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
@@ -611,7 +612,7 @@ export const Register: React.FC = () => {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                   {isConfirmPasswordInvalid && (
-                    <span className="text-[11px] text-red-600 block">
+                    <span className="text-[11px] text-red-600 block animate-slide-down">
                       Passwords do not match.
                     </span>
                   )}
@@ -627,7 +628,7 @@ export const Register: React.FC = () => {
               </span>
               <button
                 type="submit"
-                className="w-full sm:w-auto h-10 px-6 bg-blue-900 hover:bg-blue-950 text-white rounded text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-xs shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto h-10 px-6 bg-blue-900 hover:bg-blue-950 text-white rounded text-xs font-bold uppercase tracking-wider inline-flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 shadow-xs shrink-0 btn-press disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={loading}
               >
                 {loading ? (
@@ -646,7 +647,7 @@ export const Register: React.FC = () => {
           </form>
 
           <div className="lg:col-span-4 space-y-4">
-            <div className="bg-white border border-slate-300 rounded shadow-xs overflow-hidden">
+            <div className="bg-white border border-slate-300 rounded shadow-xs overflow-hidden card-interactive">
               <div className="bg-slate-900 text-white px-4 py-3 border-b border-slate-800 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <FileSpreadsheet size={16} className="text-amber-400" />
@@ -654,7 +655,7 @@ export const Register: React.FC = () => {
                     Competency Dossier Preview
                   </span>
                 </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 bg-blue-950 border border-blue-800 text-blue-300">
+                <span className="text-[10px] font-mono px-2 py-0.5 bg-blue-950 border border-blue-800 text-blue-300 animate-pulse-subtle">
                   LIVE
                 </span>
               </div>
@@ -683,7 +684,7 @@ export const Register: React.FC = () => {
                 </div>
 
                 <div className="pt-2 border-t border-slate-100 grid grid-cols-2 gap-2 text-left">
-                  <div className="bg-slate-50 border border-slate-200 p-2 rounded">
+                  <div className="bg-slate-50 border border-slate-200 p-2 rounded transition-colors hover:bg-slate-100">
                     <span className="text-[10px] font-mono text-slate-500 uppercase block">
                       Qualifications
                     </span>
@@ -691,7 +692,7 @@ export const Register: React.FC = () => {
                       {qualifications.length}
                     </span>
                   </div>
-                  <div className="bg-slate-50 border border-slate-200 p-2 rounded">
+                  <div className="bg-slate-50 border border-slate-200 p-2 rounded transition-colors hover:bg-slate-100">
                     <span className="text-[10px] font-mono text-slate-500 uppercase block">
                       Service Records
                     </span>
@@ -706,7 +707,7 @@ export const Register: React.FC = () => {
                     FRAC Competency Framework Alignment
                   </span>
                   <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded">
+                    <div className="flex items-center justify-between text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded transition-colors hover:bg-blue-50/50">
                       <span className="text-slate-700">
                         Survey Sampling & Estimation
                       </span>
@@ -714,7 +715,7 @@ export const Register: React.FC = () => {
                         Level 3 • Proficient
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded">
+                    <div className="flex items-center justify-between text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded transition-colors hover:bg-blue-50/50">
                       <span className="text-slate-700">
                         National Accounting (SNA 2008)
                       </span>
@@ -722,7 +723,7 @@ export const Register: React.FC = () => {
                         Level 4 • Advanced
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded">
+                    <div className="flex items-center justify-between text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded transition-colors hover:bg-blue-50/50">
                       <span className="text-slate-700">
                         Price Indices (CPI / WPI)
                       </span>
@@ -730,7 +731,7 @@ export const Register: React.FC = () => {
                         Level 2 • Intermediate
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded">
+                    <div className="flex items-center justify-between text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded transition-colors hover:bg-blue-50/50">
                       <span className="text-slate-700">
                         Data Quality & Assurance (DQAF)
                       </span>
@@ -754,7 +755,7 @@ export const Register: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-slate-50 border border-slate-200 rounded p-3.5 text-xs text-slate-600 space-y-1.5">
+            <div className="bg-slate-50 border border-slate-200 rounded p-3.5 text-xs text-slate-600 space-y-1.5 card-interactive">
               <div className="flex items-center gap-1.5 font-semibold text-slate-800">
                 <Building2 size={14} className="text-slate-500" />
                 <span>NSSTA Cadre Support Helpdesk</span>

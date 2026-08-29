@@ -149,8 +149,8 @@ export const Login: React.FC = () => {
         </div>
       </header>
 
-      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 my-6">
-        <div className="w-full max-w-4xl bg-white border border-slate-300 shadow-sm rounded-none sm:rounded-md grid grid-cols-1 md:grid-cols-12 overflow-hidden">
+      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 my-6 animate-scale-in">
+        <div className="w-full max-w-4xl bg-white border border-slate-300 shadow-sm rounded-none sm:rounded-md grid grid-cols-1 md:grid-cols-12 overflow-hidden card-interactive">
           <div className="md:col-span-5 bg-slate-900 text-white p-6 sm:p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-800">
             <div>
               <div className="inline-block px-2 py-0.5 bg-blue-950 border border-blue-800 text-[11px] font-mono text-blue-300 uppercase tracking-wide mb-4">
@@ -165,10 +165,10 @@ export const Login: React.FC = () => {
               </p>
 
               <div className="space-y-3.5 pt-4 border-t border-slate-800">
-                <div className="flex items-start gap-2.5">
+                <div className="flex items-start gap-2.5 group">
                   <Building2
                     size={16}
-                    className="text-amber-400 shrink-0 mt-0.5"
+                    className="text-amber-400 shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-200"
                   />
                   <div className="text-xs">
                     <span className="font-semibold text-slate-200 block">
@@ -181,10 +181,10 @@ export const Login: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2.5">
+                <div className="flex items-start gap-2.5 group">
                   <FileCheck2
                     size={16}
-                    className="text-emerald-400 shrink-0 mt-0.5"
+                    className="text-emerald-400 shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-200"
                   />
                   <div className="text-xs">
                     <span className="font-semibold text-slate-200 block">
@@ -197,8 +197,11 @@ export const Login: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2.5">
-                  <Shield size={16} className="text-blue-400 shrink-0 mt-0.5" />
+                <div className="flex items-start gap-2.5 group">
+                  <Shield
+                    size={16}
+                    className="text-blue-400 shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-200"
+                  />
                   <div className="text-xs">
                     <span className="font-semibold text-slate-200 block">
                       National Statistical Cadre
@@ -230,7 +233,7 @@ export const Login: React.FC = () => {
               </div>
 
               {error && (
-                <div className="flex items-start gap-2 bg-red-50 border border-red-200 text-red-800 p-3 rounded text-xs font-medium mb-5">
+                <div className="flex items-start gap-2 bg-red-50 border border-red-200 text-red-800 p-3 rounded text-xs font-medium mb-5 animate-slide-down">
                   <AlertCircle
                     size={16}
                     className="text-red-600 shrink-0 mt-0.5"
@@ -247,7 +250,7 @@ export const Login: React.FC = () => {
                   <div className="grid grid-cols-3 gap-1 bg-slate-100 p-1 border border-slate-200 rounded">
                     <button
                       type="button"
-                      className={`py-1.5 text-xs font-medium rounded transition-colors cursor-pointer ${
+                      className={`py-1.5 text-xs font-medium rounded transition-all duration-200 cursor-pointer btn-press ${
                         loginMethod === "username"
                           ? "bg-white text-blue-900 font-semibold shadow-xs border border-slate-300"
                           : "text-slate-600 hover:text-slate-900"
@@ -262,7 +265,7 @@ export const Login: React.FC = () => {
                     </button>
                     <button
                       type="button"
-                      className={`py-1.5 text-xs font-medium rounded transition-colors cursor-pointer ${
+                      className={`py-1.5 text-xs font-medium rounded transition-all duration-200 cursor-pointer btn-press ${
                         loginMethod === "email"
                           ? "bg-white text-blue-900 font-semibold shadow-xs border border-slate-300"
                           : "text-slate-600 hover:text-slate-900"
@@ -277,7 +280,7 @@ export const Login: React.FC = () => {
                     </button>
                     <button
                       type="button"
-                      className={`py-1.5 text-xs font-medium rounded transition-colors cursor-pointer ${
+                      className={`py-1.5 text-xs font-medium rounded transition-all duration-200 cursor-pointer btn-press ${
                         loginMethod === "phone"
                           ? "bg-white text-blue-900 font-semibold shadow-xs border border-slate-300"
                           : "text-slate-600 hover:text-slate-900"
@@ -311,7 +314,7 @@ export const Login: React.FC = () => {
                           ? "email"
                           : "text"
                     }
-                    className={`w-full h-10 px-3 rounded border text-xs text-slate-900 shadow-xs transition-colors placeholder:text-slate-400 focus:outline-none ${
+                    className={`w-full h-10 px-3 rounded border text-xs text-slate-900 shadow-xs transition-all duration-200 placeholder:text-slate-400 focus:outline-none ${
                       isEmailInvalid || isPhoneInvalid || isUsernameInvalid
                         ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
                         : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
@@ -328,7 +331,7 @@ export const Login: React.FC = () => {
                     autoComplete="username"
                   />
                   {identifierError && (
-                    <span className="block text-[11px] text-red-600 font-medium mt-0.5">
+                    <span className="block text-[11px] text-red-600 font-medium mt-0.5 animate-slide-down">
                       {identifierError}
                     </span>
                   )}
@@ -346,7 +349,7 @@ export const Login: React.FC = () => {
                   <div className="relative flex items-center">
                     <input
                       type={showPassword ? "text" : "password"}
-                      className={`w-full h-10 pl-3 pr-9 rounded border text-xs text-slate-900 shadow-xs transition-colors placeholder:text-slate-400 focus:outline-none ${
+                      className={`w-full h-10 pl-3 pr-9 rounded border text-xs text-slate-900 shadow-xs transition-all duration-200 placeholder:text-slate-400 focus:outline-none ${
                         isPasswordInvalid
                           ? "border-red-500 bg-red-50/20 ring-1 ring-red-500"
                           : "border-slate-300 bg-white focus:border-blue-700 focus:ring-1 focus:ring-blue-700"
@@ -358,7 +361,7 @@ export const Login: React.FC = () => {
                     />
                     <button
                       type="button"
-                      className="absolute right-2.5 text-slate-400 hover:text-slate-700 cursor-pointer p-1"
+                      className="absolute right-2.5 text-slate-400 hover:text-slate-700 cursor-pointer p-1 transition-colors btn-press"
                       onClick={() => setShowPassword(!showPassword)}
                       tabIndex={-1}
                       aria-label={
@@ -369,7 +372,7 @@ export const Login: React.FC = () => {
                     </button>
                   </div>
                   {isPasswordInvalid && (
-                    <span className="block text-[11px] text-red-600 font-medium mt-0.5">
+                    <span className="block text-[11px] text-red-600 font-medium mt-0.5 animate-slide-down">
                       Password is required (minimum 6 characters).
                     </span>
                   )}
@@ -378,7 +381,7 @@ export const Login: React.FC = () => {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full h-10 bg-blue-900 hover:bg-blue-950 text-white rounded text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full h-10 bg-blue-900 hover:bg-blue-950 text-white rounded text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 shadow-xs btn-press disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={loading}
                   >
                     {loading ? (
