@@ -1,4 +1,4 @@
-from typing import List, Literal
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -71,3 +71,37 @@ class DocumentQuizResponse(BaseModel):
     questions: List[DocumentQuizQuestion] = Field(
         ..., description="List of generated quiz questions"
     )
+
+
+class ChatMessage(BaseModel):
+    role: Literal["user", "assistant", "model", "system"] = Field(
+        ..., description="Role of the message sender"
+    )
+    content: str = Field(
+        ..., min_length=1, max_length=10000, description="Message text content"
+    )
+
+
+class AIChatRequest(BaseModel):
+    messages: List[ChatMessage] = Field(
+        ..., min_length=1, description="Conversation history with the user"
+    )
+    uploaded_material_text: Optional[str] = Field(
+        None, max_length=20000, description="Optional active document context"
+    )
+
+
+class ActionExecuted(BaseModel):
+    type: Literal["enroll_course"]
+    courseId: str
+    courseTitle: Optional[str] = None
+    officialId: str
+
+
+class AIChatResponse(BaseModel):
+    reply: str = Field(..., description="Conversational reply text")
+    action_executed: Optional[ActionExecuted] = None
+    action_status: Optional[
+        Literal["success", "already_enrolled", "not_found", "error"]
+    ] = None
+    action_message: Optional[str] = None

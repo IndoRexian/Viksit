@@ -43,6 +43,50 @@ def get_db():
         db.close()
 
 
+def _sync_postgres_sequences():
+    """Ensure PostgreSQL primary key sequences and defaults are in place and synchronized."""
+    if "sqlite" in db_url:
+        return
+
+    tables = ["courses", "users", "competencies", "user_courses", "user_competencies"]
+    with engine.connect() as conn:
+        for tbl in tables:
+            seq_name = f"{tbl}_id_seq"
+            try:
+                is_identity = conn.execute(
+                    text(
+                        f"SELECT is_identity FROM information_schema.columns "
+                        f"WHERE table_name = '{tbl}' AND column_name = 'id';"
+                    )
+                ).scalar()
+
+                if is_identity != "YES":
+                    conn.execute(
+                        text(
+                            f"CREATE SEQUENCE IF NOT EXISTS {seq_name}; "
+                            f"ALTER TABLE {tbl} ALTER COLUMN id SET DEFAULT nextval('{seq_name}');"
+                        )
+                    )
+
+                conn.execute(text(f"""
+                        DO $$
+                        DECLARE
+                            max_val BIGINT;
+                        BEGIN
+                            SELECT COALESCE(MAX(id), 0) + 1 INTO max_val FROM {tbl};
+                            IF EXISTS (SELECT 1 FROM pg_class WHERE relname = '{seq_name}' AND relkind = 'S') THEN
+                                PERFORM setval('{seq_name}', max_val, false);
+                            END IF;
+                        END $$;
+                        """))
+                conn.commit()
+            except Exception as e:
+                try:
+                    conn.rollback()
+                except Exception:
+                    pass
+
+
 def _migrate_columns():
     """Ensure newly added columns exist in existing PostgreSQL/SQLite tables."""
     migration_statements = [
@@ -72,6 +116,11 @@ def init_db():
         _migrate_columns()
     except Exception as e:
         print(f"Migration notice: {e}")
+
+    try:
+        _sync_postgres_sequences()
+    except Exception as e:
+        print(f"Sequence sync notice: {e}")
 
     try:
         from services.competencies import seed_competencies_from_csv

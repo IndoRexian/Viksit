@@ -17,12 +17,15 @@ from fastapi import (
     status,
 )
 from schemas.ai import (
+    AIChatRequest,
+    AIChatResponse,
     DocumentQuizResponse,
     SkillAssessmentQuery,
     SkillAssessmentResponse,
 )
 from services import competencies as competency_service
 from services.ai import generate_document_quiz, get_competency_quiz
+from services.ai_chat import execute_ai_chat
 from sqlalchemy.orm import Session
 
 logger = logging.getLogger(__name__)
@@ -100,3 +103,21 @@ async def generate_quiz_from_document(
                 os.remove(temp_file_path)
             except Exception:
                 pass
+
+
+@router.post(
+    "/chat",
+    response_model=AIChatResponse,
+    summary="Interactive AI Learning Assistant & Competency Mentor chat (Gemini 3.6 Flash)",
+)
+def chat_with_assistant(
+    payload: AIChatRequest,
+    db: Session = Depends(get_db),
+    current_user: schema.User = Depends(get_current_user),
+):
+    """
+    Handles conversational interactions with the AI Learning Assistant powered by Gemini 3.6 Flash.
+    Uses FRAC Competency Matrix and personalized iGOT/NSSTA course catalog as live ground truth.
+    Provides strict zero-trust validation for course enrollments while rejecting unauthorized actions.
+    """
+    return execute_ai_chat(db=db, user=current_user, request=payload)
