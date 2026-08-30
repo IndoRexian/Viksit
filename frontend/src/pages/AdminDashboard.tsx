@@ -961,7 +961,7 @@ export const AdminDashboard: React.FC = () => {
                               <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                                 Division
                               </span>
-                              <h4 className="font-serif text-sm font-bold text-slate-900 dark:text-white leading-snug break-words">
+                              <h4 className="font-serif text-sm font-bold text-slate-900 dark:text-white leading-snug wrap-break-word">
                                 {div.division}
                               </h4>
                             </div>
@@ -1458,7 +1458,7 @@ export const AdminDashboard: React.FC = () => {
                     {/* Row 1: Officer Name, Username & Skill Index Badge */}
                     <div className="flex items-start justify-between gap-2.5 min-w-0 border-b border-slate-100 dark:border-slate-800 pb-2">
                       <div className="min-w-0 flex-1">
-                        <h4 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white leading-snug break-words">
+                        <h4 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white leading-snug wrap-break-word">
                           {officer.name}
                         </h4>
                         <span className="font-mono text-[10.5px] text-slate-500 dark:text-slate-400 block truncate">
@@ -1488,7 +1488,7 @@ export const AdminDashboard: React.FC = () => {
                           {officer.cadre_type}
                         </span>
                       </div>
-                      <div className="text-slate-600 dark:text-slate-400 text-[11.5px] break-words">
+                      <div className="text-slate-600 dark:text-slate-400 text-[11.5px] wrap-break-word">
                         {officer.department}
                       </div>
                     </div>
@@ -1750,7 +1750,7 @@ export const AdminDashboard: React.FC = () => {
                       <span className="font-bold text-slate-900 dark:text-white text-xs block">
                         {cert.user_name}
                       </span>
-                      <div className="text-slate-600 dark:text-slate-400 text-[11px] break-words">
+                      <div className="text-slate-600 dark:text-slate-400 text-[11px] wrap-break-word">
                         {cert.user_designation} • {cert.user_department}
                       </div>
                     </div>
@@ -1761,7 +1761,7 @@ export const AdminDashboard: React.FC = () => {
                         <span className="text-[9.5px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                           Accredited Course & Badge
                         </span>
-                        <span className="font-semibold text-slate-900 dark:text-white text-xs block mt-0.5 break-words">
+                        <span className="font-semibold text-slate-900 dark:text-white text-xs block mt-0.5 wrap-break-word">
                           {cert.course_name}
                         </span>
                       </div>
@@ -2074,7 +2074,7 @@ export const AdminDashboard: React.FC = () => {
                         Cadre Classification
                       </span>
                       <div className="flex flex-col">
-                        <span className="font-mono text-xs sm:text-sm font-bold text-blue-900 dark:text-blue-400 leading-snug break-words">
+                        <span className="font-mono text-xs sm:text-sm font-bold text-blue-900 dark:text-blue-400 leading-snug wrap-break-word">
                           {officerDetail.cadre_type || "Cadre"}
                         </span>
                       </div>
@@ -2133,7 +2133,7 @@ export const AdminDashboard: React.FC = () => {
                             {/* Header: Name & Status */}
                             <div className="flex items-start justify-between gap-2">
                               <div className="min-w-0 flex-1">
-                                <h5 className="font-bold text-xs text-slate-900 dark:text-white break-words">
+                                <h5 className="font-bold text-xs text-slate-900 dark:text-white wrap-break-word">
                                   {comp.name}
                                 </h5>
                                 <span className="font-mono text-[10.5px] text-slate-500 dark:text-slate-400 block mt-0.5">
@@ -2632,7 +2632,7 @@ export const AdminDashboard: React.FC = () => {
                             />
                             <div className="flex-1 min-w-0 flex flex-col gap-1">
                               <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-2 min-w-0">
-                                <span className="font-bold text-slate-900 dark:text-white text-xs leading-snug break-words">
+                                <span className="font-bold text-slate-900 dark:text-white text-xs leading-snug wrap-break-word">
                                   {comp.name}
                                 </span>
                                 <div className="flex items-center gap-1.5 shrink-0 flex-wrap self-start sm:self-auto">
@@ -2646,7 +2646,7 @@ export const AdminDashboard: React.FC = () => {
                                   )}
                                 </div>
                               </div>
-                              <div className="text-[10.5px] text-slate-600 dark:text-slate-400 font-medium break-words leading-tight min-w-0">
+                              <div className="text-[10.5px] text-slate-600 dark:text-slate-400 font-medium wrap-break-word leading-tight min-w-0">
                                 {comp.department}
                               </div>
                             </div>

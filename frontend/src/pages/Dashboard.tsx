@@ -1636,7 +1636,7 @@ export const Dashboard: React.FC = () => {
                               </div>
 
                               {comp.description && (
-                                <p className="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed break-words">
+                                <p className="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed wrap-break-word">
                                   {comp.description}
                                 </p>
                               )}
@@ -1648,7 +1648,7 @@ export const Dashboard: React.FC = () => {
                                       (cName, idx) => (
                                         <span
                                           key={idx}
-                                          className="text-[10px] font-mono bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 break-words leading-tight"
+                                          className="text-[10px] font-mono bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 wrap-break-word leading-tight"
                                         >
                                           📚 {cName}
                                         </span>
@@ -1790,7 +1790,7 @@ export const Dashboard: React.FC = () => {
                                       </span>
                                     </div>
                                     {comp.description && (
-                                      <p className="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed break-words">
+                                      <p className="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed wrap-break-word">
                                         {comp.description}
                                       </p>
                                     )}
@@ -1801,7 +1801,7 @@ export const Dashboard: React.FC = () => {
                                             (cName, idx) => (
                                               <span
                                                 key={idx}
-                                                className="text-[10px] font-mono bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 break-words leading-tight"
+                                                className="text-[10px] font-mono bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 wrap-break-word leading-tight"
                                               >
                                                 {cName}
                                               </span>
@@ -2235,30 +2235,30 @@ export const Dashboard: React.FC = () => {
                                       size={13}
                                       className="text-amber-600 dark:text-amber-400 shrink-0 mt-0.5"
                                     />
-                                    <span className="break-words leading-tight">
+                                    <span className="wrap-break-word leading-tight">
                                       Target: {rec.targeted_competency}
                                     </span>
                                   </div>
-                                  <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed font-sans break-words">
+                                  <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed font-sans wrap-break-word">
                                     {rec.reason}
                                   </p>
                                 </div>
 
                                 {course.by && (
-                                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-0.5 break-words">
+                                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-0.5 wrap-break-word">
                                     {course.by}
                                   </span>
                                 )}
 
                                 <h4
-                                  className="font-serif text-sm font-bold text-slate-900 dark:text-white mb-1 leading-snug group-hover:text-blue-900 dark:group-hover:text-amber-300 transition-colors break-words"
+                                  className="font-serif text-sm font-bold text-slate-900 dark:text-white mb-1 leading-snug group-hover:text-blue-900 dark:group-hover:text-amber-300 transition-colors wrap-break-word"
                                   title={course.name}
                                 >
                                   {course.name}
                                 </h4>
 
                                 {course.course_description && (
-                                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-2 sm:mb-3 break-words">
+                                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-2 sm:mb-3 wrap-break-word">
                                     {course.course_description}
                                   </p>
                                 )}
@@ -2268,7 +2268,7 @@ export const Dashboard: React.FC = () => {
                                     {course.tags.slice(0, 3).map((t, idx) => (
                                       <span
                                         key={idx}
-                                        className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors break-words"
+                                        className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors wrap-break-word"
                                       >
                                         {t}
                                       </span>
@@ -2503,7 +2503,7 @@ export const Dashboard: React.FC = () => {
                                                 size={13}
                                                 className="text-amber-300 shrink-0"
                                               />
-                                              <span className="break-words">
+                                              <span className="wrap-break-word">
                                                 {progressUpdatingId ===
                                                 course.id
                                                   ? "Elevating Competencies..."
@@ -2530,20 +2530,20 @@ export const Dashboard: React.FC = () => {
                                   })()}
 
                                 {course.by && (
-                                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1 break-words">
+                                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1 wrap-break-word">
                                     {course.by}
                                   </span>
                                 )}
 
                                 <h3
-                                  className="font-serif text-sm font-bold text-slate-900 dark:text-white mb-1.5 leading-snug group-hover:text-blue-900 dark:group-hover:text-amber-300 transition-colors break-words"
+                                  className="font-serif text-sm font-bold text-slate-900 dark:text-white mb-1.5 leading-snug group-hover:text-blue-900 dark:group-hover:text-amber-300 transition-colors wrap-break-word"
                                   title={course.name}
                                 >
                                   {course.name}
                                 </h3>
 
                                 {course.course_description && (
-                                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-3 break-words">
+                                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-3 wrap-break-word">
                                     {course.course_description}
                                   </p>
                                 )}

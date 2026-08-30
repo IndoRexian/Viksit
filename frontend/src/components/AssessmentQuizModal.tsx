@@ -333,7 +333,7 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                         >
                           {optKey}
                         </span>
-                        <span className="leading-relaxed flex-1 min-w-0 break-all sm:break-words [overflow-wrap:anywhere]">
+                        <span className="leading-relaxed flex-1 min-w-0 break-all sm:wrap-break-word [overflow-wrap:anywhere]">
                           {optText}
                         </span>
                       </button>
@@ -496,7 +496,7 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                               {isCorrect ? "✓ Correct" : "✗ Incorrect"}
                             </span>
                           </div>
-                          <p className="font-medium text-slate-800 dark:text-slate-200 leading-snug text-xs break-words">
+                          <p className="font-medium text-slate-800 dark:text-slate-200 leading-snug text-xs wrap-break-word">
                             {q.question}
                           </p>
                         </div>
@@ -528,7 +528,7 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                                 <span className="font-mono font-bold shrink-0 mt-0.5">
                                   {optKey}.
                                 </span>
-                                <span className="flex-1 break-all sm:break-words [overflow-wrap:anywhere] leading-relaxed min-w-0">
+                                <span className="flex-1 break-all sm:wrap-break-word [overflow-wrap:anywhere] leading-relaxed min-w-0">
                                   {q.options[optKey]}
                                 </span>
                               </div>
@@ -548,7 +548,7 @@ export const AssessmentQuizModal: React.FC<AssessmentQuizModalProps> = ({
                       </div>
 
                       {q.explanation && (
-                        <div className="ml-0 sm:ml-7 p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed break-words">
+                        <div className="ml-0 sm:ml-7 p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed wrap-break-word">
                           <strong className="text-slate-900 dark:text-white font-semibold">
                             Technical Basis:{" "}
                           </strong>

@@ -556,7 +556,7 @@ export const DocumentQuizStudio: React.FC<DocumentQuizStudioProps> = ({
               }`}
             >
               <FileText size={15} className="shrink-0" />
-              <span className="break-words">
+              <span className="wrap-break-word">
                 Generate Assessment Quiz ({numQuestions} MCQs)
               </span>
             </button>

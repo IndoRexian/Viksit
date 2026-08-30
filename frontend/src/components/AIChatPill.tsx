@@ -157,7 +157,7 @@ const FormattedMarkdown: React.FC<{ content: string }> = ({ content }) => {
         }
 
         return (
-          <p key={bIdx} className="break-words">
+          <p key={bIdx} className="wrap-break-word">
             {lines.map((line, lIdx) => (
               <React.Fragment key={lIdx}>
                 {lIdx > 0 && <br />}

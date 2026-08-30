@@ -723,7 +723,7 @@ export const SkillGapHeatmap: React.FC<SkillGapHeatmapProps> = ({
                               </div>
 
                               {/* Competency Name without line-clamp */}
-                              <p className="text-xs sm:text-sm font-bold leading-snug break-words mb-2.5">
+                              <p className="text-xs sm:text-sm font-bold leading-snug wrap-break-word mb-2.5">
                                 {item.name}
                               </p>
                             </div>
