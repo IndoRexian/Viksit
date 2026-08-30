@@ -579,12 +579,12 @@ export const Dashboard: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setIsNavDropdownOpen((prev) => !prev)}
-                    className="w-full bg-white dark:bg-slate-850 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 focus:border-blue-900 dark:focus:border-blue-500 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 shadow-2xs flex items-center justify-between gap-2.5 transition-all duration-200 cursor-pointer btn-press text-left"
+                    className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 focus:border-blue-900 dark:focus:border-blue-500 text-slate-900 dark:text-white rounded-lg px-3 py-2 shadow-2xs flex items-center justify-between gap-2.5 transition-all duration-200 cursor-pointer btn-press text-left"
                     aria-expanded={isNavDropdownOpen}
                     aria-haspopup="true"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-7 h-7 rounded-md bg-blue-50 dark:bg-blue-950/80 text-blue-900 dark:text-blue-300 flex items-center justify-center shrink-0 border border-blue-100 dark:border-blue-800">
+                      <div className="w-7 h-7 rounded-md bg-blue-50 dark:bg-slate-700 text-blue-900 dark:text-amber-400 flex items-center justify-center shrink-0 border border-blue-100 dark:border-slate-600">
                         <CurrentIcon size={14} />
                       </div>
                       <div className="min-w-0">
@@ -599,7 +599,7 @@ export const Dashboard: React.FC = () => {
 
                     <ChevronDown
                       size={15}
-                      className={`text-slate-400 shrink-0 transition-transform duration-200 ${
+                      className={`text-slate-400 dark:text-slate-400 shrink-0 transition-transform duration-200 ${
                         isNavDropdownOpen
                           ? "rotate-180 text-blue-900 dark:text-amber-400"
                           : ""

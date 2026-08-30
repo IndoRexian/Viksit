@@ -177,7 +177,7 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
         )}
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <input
           ref={inputRef}
           type="text"
@@ -189,7 +189,7 @@ export const ExperienceInput: React.FC<ExperienceInputProps> = ({
         />
         <button
           type="button"
-          className="h-9 px-3.5 bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white rounded text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 btn-press"
+          className="w-full sm:w-auto h-9 px-3.5 bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white rounded text-xs font-semibold inline-flex items-center justify-center gap-1.5 cursor-pointer transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed shrink-0 btn-press"
           onClick={() => addExperience(inputValue)}
           disabled={!inputValue.trim()}
         >

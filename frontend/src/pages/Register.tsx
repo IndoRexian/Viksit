@@ -15,6 +15,8 @@ import {
   FileSpreadsheet,
   Layers,
   ArrowRight,
+  ChevronDown,
+  Check,
 } from "lucide-react";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -83,6 +85,12 @@ export const Register: React.FC = () => {
   );
   const [customDesignation, setCustomDesignation] = useState("");
   const [customDepartment, setCustomDepartment] = useState("");
+
+  const [isGenderDropdownOpen, setIsGenderDropdownOpen] = useState(false);
+  const [isDesignationDropdownOpen, setIsDesignationDropdownOpen] =
+    useState(false);
+  const [isDepartmentDropdownOpen, setIsDepartmentDropdownOpen] =
+    useState(false);
 
   const [qualifications, setQualifications] = useState<string[]>([
     "M.Sc Statistics",
@@ -424,19 +432,65 @@ export const Register: React.FC = () => {
                   )}
                 </div>
 
-                <div className="space-y-1">
+                <div className="space-y-1 relative">
                   <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     Gender
                   </label>
-                  <select
-                    className="w-full h-9 px-3 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                  >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setIsGenderDropdownOpen((prev) => !prev)}
+                      className="w-full h-9 px-3 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-600 focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500 text-xs text-slate-900 dark:text-slate-100 shadow-xs flex items-center justify-between gap-2 transition-all duration-200 cursor-pointer btn-press text-left"
+                      aria-expanded={isGenderDropdownOpen}
+                    >
+                      <span className="truncate">{gender}</span>
+                      <ChevronDown
+                        size={14}
+                        className={`text-slate-400 dark:text-slate-400 shrink-0 transition-transform duration-200 ${
+                          isGenderDropdownOpen
+                            ? "rotate-180 text-blue-900 dark:text-amber-400"
+                            : ""
+                        }`}
+                      />
+                    </button>
+
+                    {isGenderDropdownOpen && (
+                      <>
+                        <div
+                          className="fixed inset-0 z-40"
+                          onClick={() => setIsGenderDropdownOpen(false)}
+                        />
+                        <div className="absolute top-full left-0 right-0 mt-1 z-50 bg-white/98 dark:bg-slate-900/98 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-lg shadow-xl ring-1 ring-slate-900/10 dark:ring-white/10 p-1 space-y-0.5 animate-scale-in">
+                          {["Male", "Female", "Other"].map((g) => {
+                            const isSelected = gender === g;
+                            return (
+                              <button
+                                key={g}
+                                type="button"
+                                onClick={() => {
+                                  setGender(g);
+                                  setIsGenderDropdownOpen(false);
+                                }}
+                                className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md text-xs text-left transition-all duration-150 cursor-pointer ${
+                                  isSelected
+                                    ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 font-semibold shadow-xs"
+                                    : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+                                }`}
+                              >
+                                <span className="truncate">{g}</span>
+                                {isSelected && (
+                                  <Check
+                                    size={13}
+                                    className="text-amber-400 shrink-0"
+                                  />
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 <div className="space-y-1">
@@ -464,44 +518,142 @@ export const Register: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
+                <div className="space-y-1 relative">
                   <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     Official Designation / Post{" "}
                     <span className="text-red-600 dark:text-red-400">*</span>
                   </label>
-                  <select
-                    className="w-full h-9 px-3 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
-                    value={designation}
-                    onChange={(e) => setDesignation(e.target.value)}
-                  >
-                    {DESIGNATIONS.map((group, gIdx) => (
-                      <optgroup key={gIdx} label={group.group}>
-                        {group.options.map((opt, oIdx) => (
-                          <option key={oIdx} value={opt}>
-                            {opt}
-                          </option>
-                        ))}
-                      </optgroup>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setIsDesignationDropdownOpen((prev) => !prev)
+                      }
+                      className="w-full h-9 px-3 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-600 focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500 text-xs text-slate-900 dark:text-slate-100 shadow-xs flex items-center justify-between gap-2 transition-all duration-200 cursor-pointer btn-press text-left"
+                      aria-expanded={isDesignationDropdownOpen}
+                    >
+                      <span className="truncate">{designation}</span>
+                      <ChevronDown
+                        size={14}
+                        className={`text-slate-400 dark:text-slate-400 shrink-0 transition-transform duration-200 ${
+                          isDesignationDropdownOpen
+                            ? "rotate-180 text-blue-900 dark:text-amber-400"
+                            : ""
+                        }`}
+                      />
+                    </button>
+
+                    {isDesignationDropdownOpen && (
+                      <>
+                        <div
+                          className="fixed inset-0 z-40"
+                          onClick={() => setIsDesignationDropdownOpen(false)}
+                        />
+                        <div className="absolute top-full left-0 right-0 mt-1 z-50 bg-white/98 dark:bg-slate-900/98 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-lg shadow-xl ring-1 ring-slate-900/10 dark:ring-white/10 p-1 space-y-1 max-h-64 overflow-y-auto animate-scale-in">
+                          {DESIGNATIONS.map((group, gIdx) => (
+                            <div key={gIdx} className="space-y-0.5">
+                              <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold border-b border-slate-100 dark:border-slate-800">
+                                {group.group}
+                              </div>
+                              {group.options.map((opt, oIdx) => {
+                                const isSelected = designation === opt;
+                                return (
+                                  <button
+                                    key={oIdx}
+                                    type="button"
+                                    onClick={() => {
+                                      setDesignation(opt);
+                                      setIsDesignationDropdownOpen(false);
+                                    }}
+                                    className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md text-xs text-left transition-all duration-150 cursor-pointer ${
+                                      isSelected
+                                        ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 font-semibold shadow-xs"
+                                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+                                    }`}
+                                  >
+                                    <span className="truncate">{opt}</span>
+                                    {isSelected && (
+                                      <Check
+                                        size={13}
+                                        className="text-amber-400 shrink-0"
+                                      />
+                                    )}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
 
-                <div className="space-y-1">
+                <div className="space-y-1 relative">
                   <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                     Division / Wing / Directorate{" "}
                     <span className="text-red-600 dark:text-red-400">*</span>
                   </label>
-                  <select
-                    className="w-full h-9 px-3 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-slate-100 shadow-xs focus:outline-none focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
-                    value={department}
-                    onChange={(e) => setDepartment(e.target.value)}
-                  >
-                    {DEPARTMENTS.map((dept, idx) => (
-                      <option key={idx} value={dept}>
-                        {dept}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setIsDepartmentDropdownOpen((prev) => !prev)
+                      }
+                      className="w-full h-9 px-3 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-600 focus:border-blue-700 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-700 dark:focus:ring-blue-500 text-xs text-slate-900 dark:text-slate-100 shadow-xs flex items-center justify-between gap-2 transition-all duration-200 cursor-pointer btn-press text-left"
+                      aria-expanded={isDepartmentDropdownOpen}
+                    >
+                      <span className="truncate">{department}</span>
+                      <ChevronDown
+                        size={14}
+                        className={`text-slate-400 dark:text-slate-400 shrink-0 transition-transform duration-200 ${
+                          isDepartmentDropdownOpen
+                            ? "rotate-180 text-blue-900 dark:text-amber-400"
+                            : ""
+                        }`}
+                      />
+                    </button>
+
+                    {isDepartmentDropdownOpen && (
+                      <>
+                        <div
+                          className="fixed inset-0 z-40"
+                          onClick={() => setIsDepartmentDropdownOpen(false)}
+                        />
+                        <div className="absolute top-full left-0 right-0 mt-1 z-50 bg-white/98 dark:bg-slate-900/98 backdrop-blur-md border border-slate-200 dark:border-slate-800 rounded-lg shadow-xl ring-1 ring-slate-900/10 dark:ring-white/10 p-1 space-y-0.5 max-h-64 overflow-y-auto animate-scale-in">
+                          <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold border-b border-slate-100 dark:border-slate-800">
+                            MoSPI Divisions & State Wings
+                          </div>
+                          {DEPARTMENTS.map((dept, idx) => {
+                            const isSelected = department === dept;
+                            return (
+                              <button
+                                key={idx}
+                                type="button"
+                                onClick={() => {
+                                  setDepartment(dept);
+                                  setIsDepartmentDropdownOpen(false);
+                                }}
+                                className={`w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md text-xs text-left transition-all duration-150 cursor-pointer ${
+                                  isSelected
+                                    ? "bg-slate-900 dark:bg-slate-800 text-white dark:text-amber-300 font-semibold shadow-xs"
+                                    : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+                                }`}
+                              >
+                                <span className="truncate">{dept}</span>
+                                {isSelected && (
+                                  <Check
+                                    size={13}
+                                    className="text-amber-400 shrink-0"
+                                  />
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 {designation === "Other" && (
@@ -715,35 +867,35 @@ export const Register: React.FC = () => {
                     FRAC Competency Framework Alignment
                   </span>
                   <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-[11px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 px-2 py-1 rounded transition-colors hover:bg-blue-50/50 dark:hover:bg-slate-800">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 text-[11px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 px-2 py-1.5 sm:py-1 rounded transition-colors hover:bg-blue-50/50 dark:hover:bg-slate-800">
                       <span className="text-slate-700 dark:text-slate-300">
                         Survey Sampling & Estimation
                       </span>
-                      <span className="font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 px-1.5 py-0.5 rounded">
+                      <span className="self-end sm:self-auto text-right font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap">
                         Level 3 • Proficient
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 px-2 py-1 rounded transition-colors hover:bg-blue-50/50 dark:hover:bg-slate-800">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 text-[11px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 px-2 py-1.5 sm:py-1 rounded transition-colors hover:bg-blue-50/50 dark:hover:bg-slate-800">
                       <span className="text-slate-700 dark:text-slate-300">
                         National Accounting (SNA 2008)
                       </span>
-                      <span className="font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 px-1.5 py-0.5 rounded">
+                      <span className="self-end sm:self-auto text-right font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap">
                         Level 4 • Advanced
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 px-2 py-1 rounded transition-colors hover:bg-blue-50/50 dark:hover:bg-slate-800">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 text-[11px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 px-2 py-1.5 sm:py-1 rounded transition-colors hover:bg-blue-50/50 dark:hover:bg-slate-800">
                       <span className="text-slate-700 dark:text-slate-300">
                         Price Indices (CPI / WPI)
                       </span>
-                      <span className="font-mono text-[10px] font-semibold text-amber-800 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 px-1.5 py-0.5 rounded">
+                      <span className="self-end sm:self-auto text-right font-mono text-[10px] font-semibold text-amber-800 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap">
                         Level 2 • Intermediate
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 px-2 py-1 rounded transition-colors hover:bg-blue-50/50 dark:hover:bg-slate-800">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 text-[11px] bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 px-2 py-1.5 sm:py-1 rounded transition-colors hover:bg-blue-50/50 dark:hover:bg-slate-800">
                       <span className="text-slate-700 dark:text-slate-300">
                         Data Quality & Assurance (DQAF)
                       </span>
-                      <span className="font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 px-1.5 py-0.5 rounded">
+                      <span className="self-end sm:self-auto text-right font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap">
                         Level 3 • Proficient
                       </span>
                     </div>

@@ -953,7 +953,7 @@ export const AdminDashboard: React.FC = () => {
                       return (
                         <div
                           key={idx}
-                          className="p-4 space-y-3 bg-white dark:bg-slate-900 hover:bg-slate-50/70 dark:hover:bg-slate-850 transition-colors"
+                          className="p-4 space-y-3 bg-white dark:bg-slate-900 hover:bg-slate-50/70 dark:hover:bg-slate-800/60 transition-colors"
                         >
                           {/* Row 1: Division Name & Readiness Index Badge */}
                           <div className="flex items-start justify-between gap-2.5">
