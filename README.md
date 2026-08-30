@@ -1,4 +1,4 @@
-# 🇮🇳 MoSPI Skill Intelligence & Competency Development Platform
+# MoSPI Skill Intelligence & Competency Development Platform
 ### Smart India Hackathon (SIH 2026) | Mission Karmayogi & NSSTA-TPAC Aligned
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.141-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
