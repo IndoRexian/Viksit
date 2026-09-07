@@ -1850,10 +1850,6 @@ export const Home: React.FC = () => {
               Government of India. Aligned with Mission Karmayogi and NSSTA-TPAC
               directives.
             </p>
-            <div className="text-[11px] font-mono text-slate-500">
-              National Statistical Systems Training Academy (NSSTA), Plot No.
-              22, Knowledge Park-II, Greater Noida, Uttar Pradesh 201310.
-            </div>
           </div>
 
           <div className="space-y-2 font-mono text-xs">
@@ -1928,8 +1924,6 @@ export const Home: React.FC = () => {
           </div>
           <div className="flex items-center gap-4">
             <span>National Informatics Centre (NIC) Hosted</span>
-            <span>•</span>
-            <span>Version 2.4.0</span>
           </div>
         </div>
       </footer>

@@ -476,11 +476,6 @@ export const Login: React.FC = () => {
             © {new Date().getFullYear()} Ministry of Statistics and Programme
             Implementation (MoSPI), Government of India.
           </span>
-          <div className="flex items-center gap-4 font-mono text-[10px]">
-            <span>Version 2.4.0-OSS</span>
-            <span>•</span>
-            <span>Integrated with iGOT Karmayogi</span>
-          </div>
         </div>
       </footer>
     </div>
