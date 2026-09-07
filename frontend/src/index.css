@@ -33,6 +33,10 @@ html.dark {
   color-scheme: dark;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html, body, #root {
   min-height: 100vh;
   margin: 0;
@@ -436,6 +440,116 @@ html.dark ::-webkit-scrollbar-thumb:hover {
   animation: messageAssistantEnter 240ms cubic-bezier(0.16, 1, 0.3, 1) both;
   transform-origin: bottom left;
 }
+
+@keyframes marqueeAnim {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marqueeReverseAnim {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes carousel-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes spotlightAnim {
+  0%, 100% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+}
+
+@keyframes beamGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@utility animate-marquee {
+  animation: marqueeAnim 35s linear infinite;
+}
+
+@utility animate-marquee-reverse {
+  animation: marqueeReverseAnim 35s linear infinite;
+}
+
+@utility animate-marquee-fast {
+  animation: marqueeAnim 22s linear infinite;
+}
+
+@utility animate-spotlight {
+  animation: spotlightAnim 8s ease-in-out infinite;
+}
+
+@utility animate-beam {
+  background-size: 200% 200%;
+  animation: beamGradient 6s ease infinite;
+}
+
+.marquee-container:hover .animate-marquee,
+.marquee-container:hover .animate-marquee-reverse,
+.marquee-container:hover .animate-marquee-fast {
+  animation-play-state: paused;
+}
+
+/* ReactBits Background Patterns (Light + Dark Mode Adaptive) */
+.reactbits-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(148, 163, 184, 0.14) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.14) 1px, transparent 1px);
+}
+html.dark .reactbits-grid {
+  background-image: 
+    linear-gradient(to right, rgba(51, 65, 85, 0.28) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(51, 65, 85, 0.28) 1px, transparent 1px);
+}
+
+.reactbits-dots {
+  background-size: 24px 24px;
+  background-image: radial-gradient(rgba(148, 163, 184, 0.28) 1.2px, transparent 1.2px);
+}
+html.dark .reactbits-dots {
+  background-image: radial-gradient(rgba(71, 85, 105, 0.4) 1.2px, transparent 1.2px);
+}
+
+.mask-radial-fade {
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 60%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 60%, transparent 100%);
+}
+
+.mask-radial-bottom {
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 50%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 50%, transparent 100%);
+}
+
+
 
 
 

@@ -17,6 +17,7 @@ import {
   ArrowRight,
   ChevronDown,
   Check,
+  Menu,
 } from "lucide-react";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -108,6 +109,7 @@ export const Register: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const cleaned = username.trim().toLowerCase();
@@ -239,7 +241,7 @@ export const Register: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950 flex flex-col justify-between font-sans text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <header className="bg-slate-900 text-white border-b-2 border-amber-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img
               src="/favicon.svg"
@@ -260,8 +262,52 @@ export const Register: React.FC = () => {
               <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
               <span>Official Cadre Enrollment Portal</span>
             </div>
-            <ThemeToggle />
+            <div className="hidden sm:block">
+              <ThemeToggle />
+            </div>
+            <div className="sm:hidden flex items-center gap-2">
+              <ThemeToggle />
+              <button
+                type="button"
+                onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
+                className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 flex items-center justify-center cursor-pointer transition-colors shadow-2xs btn-press"
+                aria-label="Account and Navigation Menu"
+                aria-expanded={isMobileMenuOpen}
+                aria-haspopup="true"
+                aria-controls="register-mobile-navigation"
+              >
+                <Menu size={16} />
+              </button>
+            </div>
           </div>
+
+          {isMobileMenuOpen && (
+            <>
+              <div
+                className="fixed inset-0 z-40"
+                onClick={() => setIsMobileMenuOpen(false)}
+              />
+              <div
+                id="register-mobile-navigation"
+                className="absolute right-4 top-full z-50 mt-2 w-56 bg-slate-900/98 backdrop-blur-md border border-slate-700 text-white rounded-xl shadow-2xl ring-1 ring-slate-800 p-1.5 space-y-1 animate-scale-in sm:hidden"
+              >
+                <Link
+                  to="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full flex items-center px-2.5 py-2 rounded-lg text-xs font-bold text-slate-200 hover:bg-slate-800 hover:text-amber-400 transition-colors"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full flex items-center px-2.5 py-2 rounded-lg text-xs font-bold text-amber-400 hover:bg-slate-800 transition-colors"
+                >
+                  Official Login
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </header>
 

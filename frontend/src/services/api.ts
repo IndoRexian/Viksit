@@ -26,9 +26,7 @@ export async function apiRequest<T>(
       headers,
     });
   } catch (networkErr: unknown) {
-    throw new Error(
-      "Unable to connect to the server. Please ensure the backend is running and try again.",
-    );
+    throw new Error("Unable to connect to the server. Please try again later.");
   }
 
   if (!response.ok) {
