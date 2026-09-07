@@ -22,6 +22,7 @@ import {
   HelpCircle,
   ChevronDown,
   Menu,
+  Loader2,
 } from "lucide-react";
 
 interface FeatureSlide {
@@ -491,7 +492,7 @@ const FAQS = [
 ];
 
 export const Home: React.FC = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
 
   // Carousel State
@@ -621,17 +622,22 @@ export const Home: React.FC = () => {
               <ThemeToggle />
             </div>
 
-            {user ? (
+            {loading ? (
+              <button
+                type="button"
+                disabled
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 rounded text-xs font-medium opacity-80 cursor-wait"
+              >
+                <Loader2 size={13} className="animate-spin" />
+                Checking login status...
+              </button>
+            ) : user ? (
               <div className="hidden sm:flex items-center gap-2">
                 <button
-                  onClick={() =>
-                    navigate(user.role === "admin" ? "/admin" : "/dashboard")
-                  }
+                  onClick={() => navigate("/dashboard")}
                   className="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold rounded text-xs inline-flex items-center gap-1.5 cursor-pointer transition-all duration-200 shadow-xs btn-press hover:shadow-md"
                 >
-                  <span>
-                    {user.role === "admin" ? "Admin Console" : "My Dashboard"}
-                  </span>
+                  <span>Officer Portal</span>
                   <ArrowRight size={13} />
                 </button>
               </div>
@@ -697,15 +703,20 @@ export const Home: React.FC = () => {
                   </a>
                 ))}
 
-                {user ? (
+                {loading ? (
+                  <div className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs font-semibold text-slate-400">
+                    <Loader2 size={14} className="animate-spin" />
+                    <span>Checking login status...</span>
+                  </div>
+                ) : user ? (
                   <button
                     onClick={() => {
                       setIsMobileMenuOpen(false);
-                      navigate(user.role === "admin" ? "/admin" : "/dashboard");
+                      navigate("/dashboard");
                     }}
                     className="w-full flex items-center px-2.5 py-2 rounded-lg text-xs font-bold text-amber-400 hover:bg-slate-800 transition-colors cursor-pointer text-left"
                   >
-                    {user.role === "admin" ? "Admin Console" : "My Dashboard"}
+                    Officer Portal
                   </button>
                 ) : (
                   <>
@@ -792,17 +803,21 @@ export const Home: React.FC = () => {
               <ArrowRight size={16} />
             </a>
 
-            {user ? (
+            {loading ? (
               <button
-                onClick={() =>
-                  navigate(user.role === "admin" ? "/admin" : "/dashboard")
-                }
+                type="button"
+                disabled
+                className="px-6 py-3 bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-semibold text-sm rounded shadow-sm flex items-center gap-2 cursor-wait"
+              >
+                <Loader2 size={16} className="animate-spin" />
+                <span>Checking login status...</span>
+              </button>
+            ) : user ? (
+              <button
+                onClick={() => navigate("/dashboard")}
                 className="px-6 py-3 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white font-semibold text-sm rounded shadow-sm flex items-center gap-2 btn-press transition-all cursor-pointer"
               >
-                <span>
-                  Launch{" "}
-                  {user.role === "admin" ? "Admin Portal" : "Officer Portal"}
-                </span>
+                <span>Launch Officer Portal</span>
                 <ChevronRight size={16} className="text-amber-400" />
               </button>
             ) : (
@@ -1117,14 +1132,21 @@ export const Home: React.FC = () => {
                 </button>
               </div>
 
-              {user ? (
+              {loading ? (
                 <button
-                  onClick={() =>
-                    navigate(user.role === "admin" ? "/admin" : "/dashboard")
-                  }
+                  type="button"
+                  disabled
+                  className="px-4 py-2 bg-slate-800 text-slate-400 text-xs font-semibold rounded flex items-center gap-1.5 cursor-wait"
+                >
+                  <Loader2 size={14} className="animate-spin" />
+                  <span>Checking login status...</span>
+                </button>
+              ) : user ? (
+                <button
+                  onClick={() => navigate("/dashboard")}
                   className="px-4 py-2 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white text-xs font-semibold rounded flex items-center gap-1.5 btn-press cursor-pointer"
                 >
-                  <span>Launch in Portal</span>
+                  <span>Officer Portal</span>
                   <ArrowRight size={14} />
                 </button>
               ) : (
@@ -1770,17 +1792,21 @@ export const Home: React.FC = () => {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            {user ? (
+            {loading ? (
               <button
-                onClick={() =>
-                  navigate(user.role === "admin" ? "/admin" : "/dashboard")
-                }
+                type="button"
+                disabled
+                className="px-6 py-3 bg-slate-800 text-slate-400 font-semibold text-sm rounded shadow-md flex items-center gap-2 cursor-wait"
+              >
+                <Loader2 size={16} className="animate-spin" />
+                <span>Checking login status...</span>
+              </button>
+            ) : user ? (
+              <button
+                onClick={() => navigate("/dashboard")}
                 className="px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm rounded shadow-md btn-press flex items-center gap-2 cursor-pointer"
               >
-                <span>
-                  Launch{" "}
-                  {user.role === "admin" ? "Admin Console" : "Officer Portal"}
-                </span>
+                <span>Launch Officer Portal</span>
                 <ArrowRight size={16} />
               </button>
             ) : (
