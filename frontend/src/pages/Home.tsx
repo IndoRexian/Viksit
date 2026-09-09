@@ -447,7 +447,7 @@ const MARQUEE_ITEMS_ROW2: MarqueeItem[] = [
   {
     id: "ai_calib",
     name: "AI-Powered Assessment Calibration",
-    division: "Samarth Sankhyiki Core AI",
+    division: "Viksit Core AI",
     category: "AI Psychometrics & Evaluation",
     level: "FRAC Level 4 • Technical",
     description:
@@ -470,7 +470,7 @@ const MARQUEE_ITEMS_ROW2: MarqueeItem[] = [
 
 const FAQS = [
   {
-    q: "How does Samarth Sankhyiki align with Mission Karmayogi and FRAC?",
+    q: "How does Viksit align with Mission Karmayogi and FRAC?",
     a: "The platform implements the Framework for Roles, Activities, and Competencies (FRAC) recommended under Mission Karmayogi. Every statistical designation across ISS, SSS, and State DES is mapped against specific proficiency benchmarks (L1 Foundation to L5 Expert) across Domain, Functional, and Behavioural categories.",
   },
   {
@@ -775,10 +775,9 @@ export const Home: React.FC = () => {
 
           {/* Main Hero Headline */}
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 dark:text-white max-w-4xl leading-[1.15] mb-4">
-            Samarth Sankhyiki
+            Viksit
             <span className="block text-xl sm:text-2xl lg:text-3xl font-sans font-medium text-amber-700 dark:text-amber-400 mt-2">
-              सामर्थ्य सांख्यिकी • Skill Intelligence & Adaptive Capacity
-              Building
+              विकसित • Skill Intelligence & Adaptive Capacity Building
             </span>
           </h1>
 
@@ -1841,7 +1840,7 @@ export const Home: React.FC = () => {
                 className="w-7 h-7 object-contain"
               />
               <span className="font-serif text-sm font-bold text-slate-900 dark:text-slate-200">
-                Samarth Sankhyiki • सामर्थ्य सांख्यिकी
+                Viksit • विकसित
               </span>
             </div>
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed max-w-md">

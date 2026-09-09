@@ -205,7 +205,7 @@ export const Login: React.FC = () => {
                 Official Gateway
               </div>
               <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight mb-2">
-                Samarth Sankhyiki
+                Viksit
               </h1>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6 font-normal">
                 Skill Intelligence & Adaptive Capacity Building Platform for
