@@ -1,6 +1,5 @@
-# Viksit
-## MoSPI Skill Intelligence & Competency Development Platform
-
+# Viksit-MoSPI Skill Intelligence & Competency Development Platform
+## View the Working Prototype [here](https://sih.shiplab.dpdns.org/).
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.141-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.13-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org)
 [![React](https://img.shields.io/badge/React-19.2-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
